@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<!--Scott Caruso-->
+<!--MiU 1206-->
+<!--Project 3 -->
+
+<html>
+	<head>
+		<title>Planeswalker's Binder</title>
+		<meta name="description" content="A user-populated database of Magic: The Gathering cards he/she owns." />
+		<meta name="keywords" content="magic, trading card game, database, magic the gathering" />
+		<meta name="robots" content="index, follow" />
+		<meta name="author" content="Scott Caruso" />
+		<meta name="viewport" content="user-scalable=no, width=device-width" />
+		<meta name="viewport" content="target-densitydpi=device-dpi" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320"/>
+		<meta charset="utf-8" />
+        <link href="css/styles.css" rel="stylesheet" />	
+
+		<!-- REMINDER FROM JQ Template: Mobile IE needs ClearType for smoothing fonts -->
+		<meta http-equiv="cleartype" content="on">
+	
+		<!-- JQ TEMPLATE - StyleSheets under here -->
+		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css" />
+		<!-- JQ TEMPLATE - JavaScript is normally at the end of the body, except for Modernizr which enables HTML5 elements & feature detects -->
+		<script src="js/libs/modernizr.custom.min.js"></script>
+		<!-- JQUuery Mobile Links -->
+		<script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
+		<script src="js/libs/jquery.validate.min.js" type="text/javascript"></script>
+		<script src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script>
+	</head>
+	
+	<body>
+		<div data-role="page" id="home" data-theme="d">
+	        <header>
+	            <img src="img/mainlogo.png" alt="Planeswalker's Binder">
+	        <!-- Commenting out Search Box 
+	            <div class="search">
+	        		<form action="" method="post" id="form">
+						<input type="text" id="searchbox" value="Scour library" size="15" />
+						<input type="button" value="Go!" id="search" />
+					</form>
+				</div> -->
+			</header>
+
+			<div data-role="content" id="display">
+				<p>View and manage your Magic: The Gathering card data from anywhere. Get ready for your next battle in the Planesverse!</p>
+				<div class="cta">
+					<a href="#display"><img src="img/cta_viewlibrary.png"></a>
+				</div>
+				<div class="search">
+					<input type="search" name="search" id="searchbox" placeholder="Enter Card Name" data-mini="true" />
+					<button type="submit" data-mini="true" id="searchbutton">Quick Search Binder</button>
+					<p>DEBUG: Search is currently CASE SENSITIVE</p>
+				</div>
+				<nav>
+					<ul data-role="listview" data-inset="true" data-theme="d">
+						<li data-role="list-divider">Browse by...</li>
+						</li>
+						<li><a href="#display">All Cards</a></li>
+						<li><a href="#" id="recentcards">Recent</a></li>
+						<li><a href="#colors">Color</a>
+							<!-- <ul>
+								<li>
+									<a href="#display" id="whitemenu">
+									<img src="img/white.png" />
+									<h2>White</h2>
+									<p>Browse all white cards.</p>
+									</a></li>
+								<li>
+									<a href="#display" id="blackmenu">
+									<img src="img/black.png" />
+									<h2>Black</h2>
+									<p>Browse all black cards.</p>
+								</a></li>
+								<li>
+									<a href="#display" id="bluemenu">
+									<img src="img/blue.png" />
+									<h2>Blue</h2>
+									<p>Browse all blue cards.</p>
+								</a></li>
+								<li>
+									<a href="#display" id="redmenu">
+									<img src="img/red.png" />
+									<h2>Red</h2>
+									<p>Browse all red cards.</p>
+								</a></li>
+								<li>
+									<a href="#display" id="greenmenu">
+									<img src="img/green.png" />
+									<h2>Green</h2>
+									<p>Browse all Green cards.</p>
+								</a></li>
+								<li>
+									<a href="#display" id="colorlessmenu">
+									<img src="img/colorless.png" />
+									<h2>Colorless</h2>
+									<p>Browse all Colorless cards.</p>
+								</a></li>
+							</ul>-->
+						</li>
+						<li><a href="#categories">Category</a>
+							<!--<ul>
+								<li>
+									<a href="#display" id="creature">
+									<img src="img/creature.png" />
+									<h2>Creature</h2>
+									<p>Browse all creature cards.</p>
+								</a></li>
+								<li>
+									<a href="#display" id="planeswalker">
+									<img src="img/planeswalker.png" />
+									<h2>Planeswalker</h2>
+									<p>Browse all planeswalker cards.</p>
+								</a></li>
+								<li>
+									<a href="#display" id="instant">
+									<img src="img/instant.png" />
+									<h2>Instant</h2>
+									<p>Browse all instant cards.</p>
+								</a></li>
+								<li>
+									<a href="#display" id="sorcery">
+									<img src="img/sorcery.png" />
+									<h2>Sorcery</h2>
+									<p>Browse all sorcery cards.</p>
+								</a></li>
+								<li>
+									<a href="#display" id="buff">
+									<img src="img/enchantment-buff.png" />
+									<h2>Enchantment-Buff</h2>
+									<p>Browse all Buff cards.</p>
+								</a></li>
+								<li>
+									<a href="#display" id="curse">
+									<img src="img/enchantment-curse.png" />
+									<h2>Enchament-Curse</h2>
+									<p>Browse all Curse cards.</p>
+								</a></li>
+								<li>
+									<a href="#display" id="artifact">
+									<img src="img/Artifact.png" />
+									<h2>Artifact</h2>
+									<p>Browse all Artifact cards.</p>
+								</a></li>
+								<li>
+									<a href="#display" id="land">
+									<img src="img/land.png" />
+									<h2>Land</h2>
+									<p>Browse all land cards.</p>
+								</a></li>
+							</ul>
+						</li>-->
+						<li data-role="list-divider">Data Functions</li>
+						<li>
+						<a href="#addcard" id="addcard">Add a Card</a>
+						</li>
+						<li data-icon="false"><a href="#" id="eraseData">Clear Binder</a></li>
+						<li data-icon="false"><a href="#" id="fillJsonData">[DEBUG] Fill Binder</a></li>
+					</ul>
+				</nav>
+			</div>
+
+			<div data-role="footer" data-id="mainnav" data-theme="b">
+				<div data-role="navbar">
+					<uL>
+						<li><a href="index.html">Home</a></li>
+						<li><a href="#about">About/Links</a></li>
+					</ul>
+				</div>
+			</div>
+		</div> <!-- Main Page-->
+
+		<div data-role="page" id="colors" data-theme="d">
+	        <header>
+	            <img src="img/mainlogo.png" alt="Planeswalker's Binder">
+	            <div data-role="header" data-theme="b">
+					<h1>Browse Colors</h1>
+					<a href="index.html" data-icon="back">Back</a>
+				</div>
+			</header>
+
+			<div data-role="content" id="display">
+				<nav>
+					<ul data-role="listview" data-inset="true" data-theme="d">
+						<li>
+							<a href="#display" id="whitemenu">
+							<img src="img/white.png" />
+							<h2>White</h2>
+							<p>Browse all white cards.</p>
+							</a></li>
+						<li>
+							<a href="#display" id="blackmenu">
+							<img src="img/black.png" />
+							<h2>Black</h2>
+							<p>Browse all black cards.</p>
+						</a></li>
+						<li>
+							<a href="#display" id="bluemenu">
+							<img src="img/blue.png" />
+							<h2>Blue</h2>
+							<p>Browse all blue cards.</p>
+						</a></li>
+						<li>
+							<a href="#display" id="redmenu">
+							<img src="img/red.png" />
+							<h2>Red</h2>
+							<p>Browse all red cards.</p>
+						</a></li>
+						<li>
+							<a href="#display" id="greenmenu">
+							<img src="img/green.png" />
+							<h2>Green</h2>
+							<p>Browse all Green cards.</p>
+						</a></li>
+						<li>
+							<a href="#display" id="colorlessmenu">
+							<img src="img/colorless.png" />
+							<h2>Colorless</h2>
+							<p>Browse all Colorless cards.</p>
+						</a></li>
+					</ul>
+				</nav>
+			</div>
+
+			<div data-role="footer" data-id="mainnav" data-theme="b">
+				<div data-role="navbar">
+					<uL>
+						<li><a href="index.html">Home</a></li>
+						<li><a href="#about">About/Links</a></li>
+					</ul>
+				</div>
+			</div>
+		</div> <!-- Color List -->
+
+		<div data-role="page" id="categories" data-theme="d">
+	        <header>
+	            <img src="img/mainlogo.png" alt="Planeswalker's Binder">
+	            <div data-role="header" data-theme="b">
+					<h1>Browse Categ.</h1>
+					<a href="index.html" data-icon="back">Back</a>
+				</div>
+			</header>
+				<nav>
+					<ul data-role="listview" data-inset="true" data-theme="d">
+						<li>
+							<a href="#display" id="creature">
+							<img src="img/creature.png" />
+							<h2>Creature</h2>
+							<p>Browse all creature cards.</p>
+						</a></li>
+						<li>
+							<a href="#display" id="planeswalker">
+							<img src="img/planeswalker.png" />
+							<h2>Planeswalker</h2>
+							<p>Browse all planeswalker cards.</p>
+						</a></li>
+						<li>
+							<a href="#display" id="instant">
+							<img src="img/instant.png" />
+							<h2>Instant</h2>
+							<p>Browse all instant cards.</p>
+						</a></li>
+						<li>
+							<a href="#display" id="sorcery">
+							<img src="img/sorcery.png" />
+							<h2>Sorcery</h2>
+							<p>Browse all sorcery cards.</p>
+						</a></li>
+						<li>
+							<a href="#display" id="buff">
+							<img src="img/enchantment-buff.png" />
+							<h2>Enchantment-Buff</h2>
+							<p>Browse all Buff cards.</p>
+						</a></li>
+						<li>
+							<a href="#display" id="curse">
+							<img src="img/enchantment-curse.png" />
+							<h2>Enchament-Curse</h2>
+							<p>Browse all Curse cards.</p>
+						</a></li>
+						<li>
+							<a href="#display" id="artifact">
+							<img src="img/Artifact.png" />
+							<h2>Artifact</h2>
+							<p>Browse all Artifact cards.</p>
+						</a></li>
+						<li>
+							<a href="#display" id="land">
+							<img src="img/land.png" />
+							<h2>Land</h2>
+							<p>Browse all land cards.</p>
+						</a></li>
+					</ul>	
+				</nav>
+			</div>
+
+			<div data-role="footer" data-id="mainnav" data-theme="b">
+				<div data-role="navbar">
+					<uL>
+						<li><a href="index.html">Home</a></li>
+						<li><a href="#about">About/Links</a></li>
+					</ul>
+				</div>
+			</div>
+		</div> <!-- Category Page-->
+
+		<div data-role="page" id="display" data-add-back-btn="true">
+
+			<img src="img/mainlogo.png" />
+			<div data-role="header" data-theme="b">
+				<h1>Display Cards</h1>
+				<a href="index.html" data-icon="back">Back</a>
+			</div>
+			<div data-role="content">
+				<div id="displaybucket" class="displaybucket">
+				</div>
+				<h2>DEBUG: TODO - Display the correct cards with each link.</h2>
+				<p>This page is under construction. It will display the user's cards!</p>
+			</div>
+			<div data-role="footer" data-id="mainnav" data-theme="b">
+				<div data-role="navbar">
+					<uL>
+						<li><a href="index.html">Home</a></li>
+						<li><a href="#about">About/Links</a></li>
+					</ul>
+				</div>
+			</div>
+		</div> <!-- Display Page -->
+
+		<div data-role="page" id="about" data-add-back-btn="true">
+			<img src="img/mainlogo.png"  />
+			<div data-role="header" data-theme="b">
+				<h1>About This App</h1>
+				<a href="index.html" data-icon="back">Back</a>
+			</div>
+			<div data-role="content">
+				<ul data-role="listview" data-inset="true">
+					<li><a href="http://scottcaruso.github.com/caruso_scott_miu/Gold/index.html">gh-pages Link</a></li>
+					<li><a href="https://github.com/scottcaruso/caruso_scott_miu">Master Github Repository</a></li>
+					<li><a href="Bronze/index.html" data-ajax="false">Bronze App</a>
+					<li><a href="#knownissues">Known Bugs</a></li>
+				</ul>
+			</div>
+			<div data-role="footer" data-id="mainnav" data-theme="b">
+				<div data-role="navbar">
+					<uL>
+						<li><a href="index.html">Home</a></li>
+						<li><a href="#about">About/Links</a></li>
+					</ul>
+				</div>
+			</div>
+		</div> <!-- About Page -->
+
+		<div data-role="page" id="knownissues" data-add-back-btn="true">
+			<img src="img/mainlogo.png"  />
+			<div data-role="header" data-theme="b">
+				<h1>Known Issues List</h1>
+				<a href="index.html" data-icon="back">Back</a>
+			</div>
+			<div data-role="content">
+				<div data-role="collapsible" data-theme="b">
+					<h1>Edit Card Page - Slider</h1>
+					<p>When editing a card, the Mana Cost slider goes to its default of "3" rather than whatever the card's default is.</p>
+				</div></a>
+				<div data-role="collapsible" data-theme="b">
+					<h1>Viewing Edit Card after backing out of Add Card</h1>
+					<p>Going to Edit Card after using Back/Home to exit Add Card causes some elements of the form to not populate properly. This does not occur if the user Adds a card from the Add Card page.</p>
+				</div></a>
+				<div data-role="collapsible" data-theme="b">
+					<h1>Reset Form</h1>
+					<p>The Reset Form button only clears text fields for some reason. Need to investigate further to see if we can fix it.</p>
+				</div></a>
+				<div data-role="collapsible" data-theme="b">
+					<h1>Edit/Delete Links</h1>
+					<p>Sometimes, the Edit and Delete links on the Display Cards page blend in to the gradient background. Sometimes they look fine. I can't figure out why it happens. Need to investigate.</p>
+				</div></a>
+			</div>
+			<div data-role="footer" data-id="mainnav" data-theme="b">
+				<div data-role="navbar">
+					<uL>
+						<li><a href="index.html">Home</a></li>
+						<li><a href="#about">About/Links</a></li>
+					</ul>
+				</div>
+			</div>
+		</div> <!-- Known Bugs -->
+
+
+		<div data-role="page" id="addcard" data-add-back-btn="true">
+			<img src="img/mainlogo.png"  />
+			<div data-role="header" data-theme="b">
+				<h1>Add New Card</h1>
+				<a href="index.html" data-icon="back">Back</a>
+			</div>
+			<div data-role="content">
+				<h2 class="formtext">Quickly add a new card to your binder with this form.</h2>
+				<p>Fields with a * are required.</p>
+				<form action="" method="post" id="addcardform">
+					<div data-role="fieldcontain" class="infoclasses">
+						<div data-role="fieldcontain" class="formfield">
+							<h3>Primary Details</h3>
+							<label for="cardname">Card Name*</label>
+							<input type="text" name="cardname" id="cardname" class="required" placeholder="Enter a card name.">
+						</div>
+						<div data-role="fieldcontain" class="formfield">
+							<label for="currentuse">Currently In Use?*</label>
+							<select id="currentuse" name ="currentuse" data-role="slider" data-theme="b">
+								<option value="false">No</option>
+								<option value="true">Yes</option>
+							</select>
+						</div>
+						<div data-role="fieldcontain" class="formfield">
+							<label for="cardtype">Card Type*</label>
+							<select id="cardtype" name="cardtype" class="required">
+								<optgroup label="Please choose a cardtype">
+								<option value="Artifact">Artifact</option>
+								<option value="Creature" selected>Creature</option>
+								<option value="Enchantment-Buff">Enchantment - Buff</option>
+								<option value="Enchantment-Curse">Enchantment - Curse</option>
+								<option value="Instant">Instant</option>
+								<option value="Land">Land</option>
+								<option value="Planeswalker">Planeswalker</option>
+								<option value="Sorcery">Sorcery</option>
+							</select>
+						</div>
+						<div data-role="fieldcontain" class="formfield">
+							<label for="manacost">Mana Cost*</label>
+							<input type="range" name="manacost" id="manacost" value="3" min="0" max="20" />
+						</div>
+						<div data-role="fieldcontain" class="formfield">
+							<fieldset data-role="controlgroup">
+	  							<label for="cardcolor">Card Color(s)*</label>
+	  							<p>Please select all of the colors that are associated with this card.</p>
+								<input type="checkbox" name="cardcolor" id="white" class="required"/>
+								<label for="white">White</label>
+								<input type="checkbox" name="cardcolor" id="black" />
+								<label for="black">Black</label>
+								<input type="checkbox" name="cardcolor" id="blue" />
+								<label for="blue">Blue</label>
+								<input type="checkbox" name="cardcolor" id="red" />
+								<label for="red">Red</label>
+								<input type="checkbox" name="cardcolor" id="green" />
+								<label for="green">Green</label>
+								<input type="checkbox" name="cardcolor" id="colorless" />
+								<label for="colorless">Colorless</label>
+							</fieldset>
+						</div>
+					</div>
+					<div data-role="fieldcontain" class="infoclasses">
+						<h3>Secondary Details</h3>
+						<div data-role="fieldcontain" class="formfield">
+							<label for="comments">Additional Notes</label>
+							<textarea id="comments" placeholder="Comments about this card."></textarea>
+						</div>
+						<div data-role="fieldcontain" class="formfield">
+							<label for="numberowned">Number Owned</label>
+							<input type="number" name="numberowned" id="numberowned" placeholder="Please enter a number" min="1" class="required" />
+						</div>
+					</div>
+					<div class="ui-grid-a">
+						<div class="ui-block-a">
+							<input type="submit" id="submit" value="Submit" data-theme="b" />
+						</div>
+						<div class="ui-block-b">
+							<input type="reset" value="Reset" id="reset" data-theme="c" />
+						</div>
+					</div>
+				</form>
+			</div>
+			<div data-role="footer" data-id="mainnav" data-theme="b">
+				<div data-role="navbar">
+					<uL>
+						<li><a href="index.html">Home</a></li>
+						<li><a href="#about">About/Links</a></li>
+					</ul>
+				</div>
+			</div>
+		</div> <!-- Add Card Page -->
+
+		<script src="js/homepage.js" type="text/javascript"></script>
+		<script src="js/json.js" type="text/javascript"></script>
+	</body>
+</html>

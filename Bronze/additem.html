@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<!--Scott Caruso-->
+<!--MiU 1206-->
+<!--Project 3-->
+
+<html>
+	<head>
+		<title>Add Card to Personal Magic the Gathering Database</title>
+		<meta name="description" content="The page on which the user adds a card to his database." />
+		<meta name="keywords" content="magic, trading card game, database, magic the gathering" />
+		<meta name="robots" content="index, follow" />
+		<meta name="author" content="Scott Caruso" />
+		<meta name="viewport" content="user-scalable=no, width=device-width" />
+		<meta name="viewport" content="target-densitydpi=device-dpi" />
+		<meta charset="utf-8" />
+        <link href="css/styles.css" rel="stylesheet" />
+	</head>
+	<body>
+		<header>
+			<img src="img/minilogo.png" alt="Planeswalker's Binder">
+			<h1 id="addcardtitle">Add Card</h1>
+				<nav>
+					<small>
+						<a href="#" id="eraseData">Clear Stored Data</a>
+						<span class="addCard">
+							<a href="additem.html" id="addCard" style="display:none">Add New Card</a>
+						</span>
+						<span class="displayData">
+							<a href="#" id="displayData">Display Data</a>
+						</span>
+					</small>
+				</nav>
+		</header>
+		<form action="" method="post" id="form">
+			<fieldset>
+                <legend>Primary Details - <b>Required</b></legend>
+				<div class="errors" id="errors">
+				</div>
+				<div class="formelement">
+					<label for="cardname">Card Name </label>
+					<input type="text" id="cardname" placeholder="Please enter a name." />
+				</div>
+				<div class="formelement">
+					<label for="currentuse">Currently In Use? </label>
+					<select id="currentuse">
+						<option value="true">Yes</option>
+						<option value="false" selected>No</option>
+					</select>
+				</div>
+				<dl>
+					<dt>Card Type</dt>
+						<dd>
+							<input type="radio" checked value="Creature" id="creature" name="type" />
+							<label for="creature">Creature</label>	
+						</dd>
+						<dd>
+							<input type="radio" value="Planeswalker" id="planeswalker" name="type" />
+							<label for="planeswalker">Planeswalker</label>	
+						</dd>
+						
+						<dd>
+							<input type="radio" value="Instant" id="instant" name="type" />
+							<label for="instant">Instant</label>	
+						</dd>
+						<dd>
+							<input type="radio" value="Sorcery" id="Sorcery" name="type" />
+							<label for="sorcery">Sorcery</label>	
+						</dd>
+						<dd>
+							<input type="radio" value="Enchantment-Buff" id="buff" name="type" />
+							<label for="buff">Enchantment - Buff</label>	
+						</dd>
+						<dd>
+							<input type="radio" value="Enchantment-Curse" id="curse" name="type" />
+							<label for="curse">Enchantment - Curse</label>	
+						</dd>
+						<dd>
+							<input type="radio" value="Artifact" id="artifact" name="type" />
+							<label for="artifact">Artifact</label>	
+						</dd>
+						<dd>
+							<input type="radio" value="Land" id="land" name="type" />
+							<label for="land">Land</label>	
+						</dd>
+						<dd>
+						<!-- The label below is HIDDEN until this awesome new card type is released! -->
+							<input type="hidden" value="Super Awesome New Type" id="newtype" name="type" />
+							<label for="land" hidden>Super Awesome New Type</label>	
+						</dd>
+				</dl>
+				<label for="manacosts">Mana Cost </label>
+				<select id="manacosts">
+					<option value="0">0</option>
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3" selected>3</option>
+					<option value="4">4</option>
+					<option value="5">5</option>
+					<option value="6">6</option>
+					<option value="7">7</option>
+					<option value="8">8</option>
+					<option value="9">9</option>
+					<option value="10">10+</option>
+				</select>
+				<dl>
+					<dt id = "cardcolors">Card Color(s)</dt>
+						<dd class="white">
+							<input type="checkbox" value="White" id="white" />
+							<label for="white">White</label>
+						</dd>
+						<dd>
+							<input type="checkbox" value="Black" id="black" />
+							<label for="black">Black</label>	
+						</dd>
+						<dd class="blue">
+							<input type="checkbox" value="Blue" id="blue" />
+							<label for="blue">Blue</label>	
+						</dd>
+						<dd class="red">
+							<input type="checkbox" value="Red" id="red" />
+							<label for="red">Red</label>	
+						</dd>
+						<dd class="green">
+							<input type="checkbox" checked value="Green" id="green" />
+							<label for="green">Green</label>	
+						</dd>
+						<dd class="gray">
+							<input type="checkbox" value="Colorless" id="colorless" />
+							<label for="colorless">Colorless</label>	
+						</dd>
+				</dl>
+			</fieldset>			
+			<fieldset class="secondary">
+				<legend>Secondary Details - Optional</legend>
+				<div class="formelement">
+					<label class="notes" for="comments">Additional Notes </label>
+					<textarea id="comments"></textarea>
+				</div>
+				<div class="formelement">
+					<label for="dateacquired">Date Acquired </label>
+					<input type="date" id="dateacquired" placeholder="YYYY/MM/DD" />
+				</div>
+				<div class="formelement">
+					<label for="preference">How Much I Love This Card </label>
+					<input type="range" id="preference" min="1" max="10" value="5" />
+                    <input id="preferenceDisplay" type="text" size="2" disabled />
+				</div>
+			</fieldset>			
+				<input type="button" value="Submit Card Info" id="submit" />
+		</form>
+		<script src="js/json.js" type="text/javascript"></script>
+		<script src="js/main.js" type="text/javascript"></script>
+	</body>	
+</html>

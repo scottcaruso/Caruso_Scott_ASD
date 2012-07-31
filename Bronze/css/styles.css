@@ -1,0 +1,129 @@
+/*
+ Scott Caruso
+ MiU 1206
+ Project 3 CSS
+ 
+ Use at least 12 css properties AND style at least 8 HTML tags.
+ Your CSS must not cause display or interactivity errors. This means we don't want to see unnecessary horizontal scrolling where interface components are thrown off the screen, thrown out of proper alignment, or buttons become unclickable, etc. Make sure your CSS works properly.
+
+ */
+
+html{
+    font-family: Tahoma, Geneva, sans-serif;
+}
+
+body{
+    background-image:url("img/background.png");
+}
+
+div.ui-page{
+    background-image:url("img/background.png");
+}
+
+h1.intro {
+    font-size: 18px;
+    font-weight: bold;
+    color: blue;
+}
+
+div.cta {
+    text-align: center;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding: 0px;
+}
+
+div.search {
+    text-align: right;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding: 0px;
+}
+
+nav.buttons {
+    text-align: center;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding: 0px;
+}
+
+span.magic {
+    font-family: Tahoma, Geneva, sans-serif;
+    color: #191970;
+    font-weight: bold;
+}
+
+nav.addcard {
+    border: 1px solid black;
+    width: 145px;
+    position: absolute;
+    right: 5px;
+    background: white;
+}
+
+/*The following 4 will chane the colors in the card listsfor each card.*/
+dd.white {
+    color: white;
+    text-shadow: 1px 0 black
+}
+
+dd.blue {
+    color: blue;
+}
+
+dd.red {
+    color: red;
+}
+
+dd.green {
+    color: green;
+}
+
+dd.gray {
+    color: gray;
+}
+
+fieldset {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+label.notes{
+    vertical-align: top;
+}
+/* If I ever bring the footer back
+footer {
+    margin-top: 20px;
+    word-spacing: 1px;
+}
+*/
+div.formelement{
+    padding-bottom: 15px;
+}
+
+dt.cardtitle{
+	font-weight: bold;
+}
+
+dd{
+	font-weight: normal;
+}
+
+span.displayData{
+    position: absolute;
+    right: 15px;
+}
+
+span.addCard{
+    position: absolute;
+    right: 15px;
+}
+
+div.errors{
+	font-weight: bold;
+	text-align: center;
+}
+
+a.deletecard{
+	padding-left: 35px;
+}

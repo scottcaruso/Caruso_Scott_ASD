@@ -1,0 +1,167 @@
+/*
+ Scott Caruso
+ MiU 1206
+ Project 3 CSS - master
+ 
+ Use at least 12 css properties AND style at least 8 HTML tags.
+ Your CSS must not cause display or interactivity errors. This means we don't want to see unnecessary horizontal scrolling where interface components are thrown off the screen, thrown out of proper alignment, or buttons become unclickable, etc. Make sure your CSS works properly.
+*/
+
+div.ui-page{
+    background-image: linear-gradient(bottom, rgb(237,242,252) 10%, rgb(89,119,179) 100%);
+    background-image: -o-linear-gradient(bottom, rgb(237,242,252) 10%, rgb(89,119,179) 100%);
+    background-image: -moz-linear-gradient(bottom, rgb(237,242,252) 10%, rgb(89,119,179) 100%);
+    background-image: -webkit-linear-gradient(bottom, rgb(237,242,252) 10%, rgb(89,119,179) 100%);
+    background-image: -ms-linear-gradient(bottom, rgb(237,242,252) 10%, rgb(89,119,179) 100%);
+
+    background-image: -webkit-gradient(
+        linear,
+        left bottom,
+        left top,
+        color-stop(0.1, rgb(237,242,252)),
+        color-stop(1, rgb(89,119,179))
+    );
+}
+
+label.error{
+    display: block;
+    margin: 10px 0;
+    color: red;
+    font-weight: bold;
+}
+
+p{
+    font-size: 11px;
+    color: black;
+    text-shadow: none;
+}
+
+h2.formtext {
+    font-size: 16px;
+}
+
+h2 {
+    color: black;
+    text-shadow: none;  
+}
+
+h3 {
+    color: black;
+    text-shadow: none;
+}
+
+label{
+    color: black;
+    text-shadow: none;
+}
+
+dt {
+    color: black;
+    text-shadow: none;
+}
+
+dd.testclass{
+    color: black;
+    text-shadow: none;
+}
+
+div.cta {
+    text-align: center;
+}
+
+div.infoclasses {
+    padding-top: 2px;
+}
+
+div.formfield {
+    border: 0px;
+}
+
+div.search {
+    padding-top: 15px;
+}
+
+form.search {
+    margin-bottom: 25px;
+}
+
+span.magic {
+    font-family: Tahoma, Geneva, sans-serif;
+    color: #191970;
+    font-weight: bold;
+}
+
+nav.addcard {
+    border: 1px solid black;
+    width: 145px;
+    position: absolute;
+    right: 5px;
+    background: white;
+}
+
+/*The following 4 will chane the colors in the card listsfor each card.*/
+dd.white {
+    color: white;
+    text-shadow: 1px 0 black
+}
+
+dd.blue {
+    color: blue;
+}
+
+dd.red {
+    color: red;
+}
+
+dd.green {
+    color: green;
+}
+
+dd.gray {
+    color: gray;
+}
+
+/*fieldset {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}*/
+
+label.notes{
+    vertical-align: top;
+}
+/* If I ever bring the footer back
+footer {
+    margin-top: 20px;
+    word-spacing: 1px;
+}
+*/
+div.formelement{
+    padding-bottom: 15px;
+}
+
+dt.cardtitle{
+	font-weight: bold;
+}
+
+dd{
+	font-weight: normal;
+}
+
+span.displayData{
+    position: absolute;
+    right: 15px;
+}
+
+span.addCard{
+    position: absolute;
+    right: 15px;
+}
+
+div.errors{
+	font-weight: bold;
+	text-align: center;
+}
+
+a.deletecard{
+	padding-left: 35px;
+}

@@ -113,10 +113,12 @@ function keywordRead(){
    };
 };
 
+//The below function empties the search page every time new results are populated.
 function clearSearchPage(){
    $(".displaybucket").empty();
 };
 
+//The below function adds the Edit and Delete links, and their associated binding functions, when search results are made.
 function addLinkClickEvents(cardTitleSelector, key){
    $(cardTitleSelector).append("<dd><a href='#addcard' class='editcard' id='editcard'>Edit Card</a><a href='#' class='deletecard' id='deletecard'>Delete Card</a></dd>");
    var editCardID = ("editcard" + key);
@@ -175,28 +177,6 @@ function newsFeed(){
       };
 };
 
-/*function makeEditDeleteLinks(key, editDeleteLinks){
-   //edit link
-   var editCardLink = document.createElement("a");
-   editCardLink.href = "#addcard";
-   editCardLink.key = key;
-   editCardLink.setAttribute("class","editcard");
-   var editCardGuts = "Edit Card";
-   editCardLink.addEventListener("click", editCard);
-   editCardLink.innerHTML = editCardGuts;
-   editDeleteLinks.appendChild(editCardLink);
-   //delete link
-   var deleteCardLink = document.createElement("a");
-   deleteCardLink.href = "#";
-   deleteCardLink.key = key;
-   deleteCardLink.setAttribute("class", "deletecard");
-   deleteCardLink.setAttribute("id", "deletecard");
-   var deleteCardGuts = "Delete Card";
-   deleteCardLink.addEventListener("click", eraseCard);
-   deleteCardLink.innerHTML = deleteCardGuts;
-   editDeleteLinks.appendChild(deleteCardLink);
-};*/
-
 //To get value from card type
 function getCardType(){
    var buttons = document.forms[0].cardtype;
@@ -208,25 +188,25 @@ function getCardType(){
    return typeValue
 };
 
-//To get colors
+//To get colors from a form when saving..
 function getCardColors(){
    var colors = [];
-   if(elementName("white").checked){
+   if($("#white").is(":checked")){
       colors.push("white");
    };
-   if(elementName("black").checked){
+   if($("#black").is(":checked")){
       colors.push("black");
    };
-   if(elementName("blue").checked){
+   if($("#blue").is(":checked")){
       colors.push("blue");
    };
-   if(elementName("red").checked){
+   if($("#red").is(":checked")){
       colors.push("red");
    };
-   if(elementName("green").checked){
+   if($("#green").is(":checked")){
       colors.push("green");
    };    
-   if(elementName("colorless").checked){
+   if($("#colorless").is(":checked")){
       colors.push("colorless");
    };
    return colors  

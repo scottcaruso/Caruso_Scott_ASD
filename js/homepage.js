@@ -111,22 +111,18 @@ function keywordRead(){
          $("#displaybucket").find("dt :last").append("<a href='#addcard' class='editcard' id='editcard'>Edit Card</a>");
          $("#displaybucket").find("dt :last").append("<a href='#' class='deletecard' id='deletecard'>Delete Card</a>");
       };
-      $("#editcard").bind("click",editCard(key));
-      $("#deletecard").bind("click",eraseCard(key));
       window.location="#display";
+      addLinkClickEvents(key);
    };
 };
 
-/*function makeCardTypeImage(cardTypeName,makedt){
-   var makeImageLine = document.createElement("dd");
-   makedt.appendChild(makeImageLine);
-   var makeImage = document.createElement("img");
-   var imageSource = makeImage.setAttribute("src","img/" + cardTypeName + ".png");
-   makeImageLine.appendChild(makeImage);
-};  -- Deprecating this function, as the images in the display don't look good. These images are in use in the interface.*/
-
 function clearSearchPage(){
-   $('.displaybucket').empty();
+   $(".displaybucket").empty();
+};
+
+function addLinkClickEvents(key){
+   $("#editcard").bind("click",function(){editCard(key)});
+   $("#deletecard").bind("click",function(){eraseCard(key)});
 };
 
 function newsFeed(){
@@ -339,26 +335,22 @@ function addCardReload(){
    window.location.reload();
 };
 
-function deleteLink(){
+/*function deleteLink(){
    var deleteCardClick = elementName("deletecard");
    deleteCardClick.addEventListener("click", eraseCard);
-};
+};*/
 
 //Make things happen when the links are clicked.
-console.log($("#erasedata"));
-$("#erasedata").click(function(){
-   eraseCardData();
-});
 //var clearCardData = elementName("eraseData");
 //clearCardData.addEventListener("click", eraseCardData);
-var fillData = elementName("fillJsonData");
-fillData.addEventListener("click", fillWithJsonData);
+//var fillData = elementName("fillJsonData");
+//fillData.addEventListener("click", fillWithJsonData);
 var searchButtonClick = elementName("searchbutton");
 searchButtonClick.addEventListener("click", keywordRead);
-var recentClick = elementName("recentcards");
-recentClick.addEventListener("click", newsFeed);
-var addCardClick = elementName("addcard");
-addCardClick.addEventListener("click", addCardReload);
+//var recentClick = elementName("recentcards");
+//recentClick.addEventListener("click", newsFeed);
+//var addCardClick = elementName("addcard");
+//addCardClick.addEventListener("click", addCardReload);
 //var saveCardData = elementName("submit");
 //saveCardData.addEventListener("click", saveCard);
 

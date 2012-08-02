@@ -107,12 +107,9 @@ function keywordRead(){
             var cardText = (obj[n][0] + " " + obj[n][1]);
             $(countIDSelector).append("<dd id='individualdetail'>" + cardText + "</dd>");
          };
-         /*$("#displaybucket").find("dt").append("<dd></dd>");
-         $("#displaybucket").find("dt :last").append("<a href='#addcard' class='editcard' id='editcard'>Edit Card</a>");
-         $("#displaybucket").find("dt :last").append("<a href='#' class='deletecard' id='deletecard'>Delete Card</a>");
-      */};
+      addLinkClickEvents(cardTitleSelector, key);
+      };
       window.location="#display";
-      //addLinkClickEvents(key);
    };
 };
 
@@ -120,9 +117,16 @@ function clearSearchPage(){
    $(".displaybucket").empty();
 };
 
-function addLinkClickEvents(key){
-   $("#editcard").bind("click",function(){editCard(key)});
-   $("#deletecard").bind("click",function(){eraseCard(key)});
+function addLinkClickEvents(cardTitleSelector, key){
+   $(cardTitleSelector).append("<dd><a href='#addcard' class='editcard' id='editcard'>Edit Card</a><a href='#' class='deletecard' id='deletecard'>Delete Card</a></dd>");
+   var editCardID = ("editcard" + key);
+   var editCardIDSelector = ("#" + editCardID);
+   $("#editcard").attr("id",editCardID).attr("key",key);
+   var deleteCardID = ("deletecard"+key);
+   var deleteCardIDSelector = ("#" + deleteCardID);
+   $("#deletecard").attr("id",deleteCardID).attr("key",key);
+   $(editCardIDSelector).bind("click",function(){editCard(key)});
+   $(deleteCardIDSelector).bind("click",function(){eraseCard(key)});
 };
 
 function newsFeed(){

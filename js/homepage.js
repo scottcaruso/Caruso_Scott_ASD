@@ -325,7 +325,7 @@ function eraseCard(key){
    var cardName = cardNameArray[1];
    var ask = confirm("Are you sure you want to delete this card?");
    if(ask){
-      localStorage.removeItem(this.key);
+      localStorage.removeItem(key);
       alert(cardName + " was successfully removed.");
       rekeyCards();
       window.location="#home";

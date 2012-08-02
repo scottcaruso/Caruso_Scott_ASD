@@ -1,6 +1,6 @@
 //Scott Caruso
-//MiU 1206
-//Project 3 - JSON file
+//AFW 1208
+//JSON file
 
 var json = {
 	"card1": {

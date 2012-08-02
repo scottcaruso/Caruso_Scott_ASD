@@ -84,6 +84,7 @@ function keywordRead(){
    var getKeywords = keywordSearch();
    if (getKeywords[0] === undefined){
       alert("There are no matches for this keyword.");
+      return
    } else {
       alert("We have found " + getKeywords.length + " matches for that keyword.");
       $("#displaybucket").append("<dl></dl>");
@@ -136,45 +137,31 @@ function newsFeed(){
    if (localStorage.length === 0){
       alert("There are no cards saved in this binder to view.");
    } else {
-      var findDisplayDiv = elementName("displaybucket");
-      var listCardsDL = document.createElement("dl");
-      listCardsDL.setAttribute("id", "listcards");
-      findDisplayDiv.appendChild(listCardsDL);
+      $("#displaybucket").append("<dl id='listcards'></dl>")
       for(var y=localStorage.length; y>0; y--){
-         var makedt = document.createElement("dt");
-         makedt.setAttribute("id", "makedt");
-         var editDeleteLinks = document.createElement("dd");
-         listCardsDL.appendChild(makedt);
-         var key = y;
-         var value = localStorage.getItem(key);
+         var value = localStorage.getItem(y);
          var obj = JSON.parse(value);
+         var cardTitle = (obj.name[0] + " " + obj.name[1]);
+         var cardTitleID = ("title" + y);
+         var cardTitleSelector = ("#" + cardTitleID); 
+         $("#displaybucket").find("dl").append("<dt id='cardtitle'></dt>");
          if(obj !==null){
-            var cardTitle = (obj.name[0] + " " + obj.name[1]);
-            makedt.innerHTML = cardTitle;
-            makedt.setAttribute("class", "cardtitle");
-            var makeid = document.createElement("dd");
+            $("#cardtitle").attr("class","cardtitle").attr("id",cardTitleID).html(cardTitle);
             var makeCount = ("Card " + y + " of " + localStorage.length);
-            makeid.innerHTML = makeCount;
-            makeid.setAttribute("class", "cardid");
-            makedt.appendChild(makeid);
-            //makeCardTypeImage(obj.type[1],makedt); - Depricated and removing from results.
-            var makeCardDetails = document.createElement("dd");
-            makedt.appendChild(makeCardDetails);
+            var countID = ("count" + y);
+            var countIDSelector = ("#" + countID);
+            $(cardTitleSelector).append("<dd id='cardID'></dd>");
+            $("#cardID").attr("class","cardID").attr("id",countID).html(makeCount);
             delete obj.name;
             for(var n in obj){
-               var makeCardDetailItem = document.createElement("dd");
-               makeCardDetailItem.setAttribute("class", "testclass");
-               makeCardDetails.appendChild(makeCardDetailItem);
                var cardText = (obj[n][0] + " " + obj[n][1]);
-               makeCardDetailItem.innerHTML = cardText;
-               };
-            makeEditDeleteLinks(key, editDeleteLinks);
-            makedt.appendChild(editDeleteLinks);
-         };
+               $(countIDSelector).append("<dd id='individualdetail'>" + cardText + "</dd>");
+            };
+         addLinkClickEvents(cardTitleSelector, y);
       };
       window.location="#display";
-      deleteLink();
       };
+   };
 };
 
 //To get value from card type
@@ -304,24 +291,9 @@ function addCardReload(){
 
 //Make things happen when the links are clicked.
 $("#eraseData").bind("click",function(){eraseCardData()});
-//var clearCardData = elementName("eraseData");
-//clearCardData.addEventListener("click", eraseCardData);
-var fillData = elementName("fillJsonData");
-fillData.addEventListener("click", fillWithJsonData);
-var searchButtonClick = elementName("searchbutton");
-searchButtonClick.addEventListener("click", keywordRead);
-//var recentClick = elementName("recentcards");
-//recentClick.addEventListener("click", newsFeed);
-//var addCardClick = elementName("addcard");
-//addCardClick.addEventListener("click", addCardReload);
-//var saveCardData = elementName("submit");
-//saveCardData.addEventListener("click", saveCard);
-
-
-//The below is a test function to use to verify that JS is working right in specific locations.
-function testFunction(){
-   alert("JS is working!")
-};
+$("#fillJsonData").bind("click",function(){fillWithJsonData()});
+$("#searchbutton").bind("click",function(){keywordRead()});
+$("#recentcards").bind("click",function(){newsFeed()});
+$("#addcard").bind("click",function(){addCardReload()});
 
 });
-

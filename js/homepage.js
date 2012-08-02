@@ -1,9 +1,8 @@
 //Scott Caruso
-//MiU 1206
-//Project 3 - Homepage JS file
+//ASDI 1208
+//Project 1 - Refactoring
 
-//The below function gets the name of elements from the form.
-
+//Ensure dom is loaded before doing anything else.
 $(document).bind("pageinit", function(){
    var form = $("#addcardform");
    form.validate({
@@ -12,8 +11,6 @@ $(document).bind("pageinit", function(){
          saveCard();
       }
    });
-});
-
 
 function elementName(x){
    var elementName = document.getElementById(x);
@@ -34,6 +31,7 @@ function eraseCardData(){
 	};
 };
 
+//When the Debug fill option is clicked, this fills local storage with JSON data.
 function fillWithJsonData(){
    if(localStorage.length === 0){
       var y = 1;
@@ -53,18 +51,12 @@ function fillWithJsonData(){
    };
 };
 
-//The below is a test function to use to verify that JS is working right in specific locations.
-function testFunction(){
-   alert("JS is working!")
-};
-
 //Turn what's in the search field into a string
 function searchString(){
    if(localStorage.length === 0){
       alert("There is no data in Local Storage to search!");
    } else {
-      var entry = elementName("searchbox");
-      var searchText = entry.value;
+      var searchText = $("#searchbox").attr("value");
       return searchText;
    };
 };
@@ -92,58 +84,52 @@ function keywordRead(){
    var getKeywords = keywordSearch();
    if (getKeywords[0] === undefined){
       alert("There are no matches for this keyword.");
+      return
    } else {
       alert("We have found " + getKeywords.length + " matches for that keyword.");
-      //var makeDiv = document.createElement("div");
-      //makeDiv.setAttribute("id", "cards");
-      var listCardsDL = document.createElement("dl");
-      //makeDiv.appendChild(listCardsDL);
-      var findDisplayDiv = elementName("displaybucket");
-      findDisplayDiv.appendChild(listCardsDL);
+      $("#displaybucket").append("<dl></dl>");
       for(var i=0, y=getKeywords.length; i<y; i++){
          var cardValues = getKeywords;
-         var makedt = document.createElement("dt");
-         var editDeleteLinks = document.createElement("dd");
-         listCardsDL.appendChild(makedt);
          var key = getKeywords[i];
          var value = localStorage.getItem(key);
          var obj = JSON.parse(value);
          var cardTitle = (obj.name[0] + " " + obj.name[1]);
-         makedt.innerHTML = cardTitle;
-         makedt.setAttribute("class", "cardtitle");
-         var makeid = document.createElement("dd");
+         var cardTitleID = ("title" + key);
+         var cardTitleSelector = ("#" + cardTitleID); 
+         $("#displaybucket").find("dl").append("<dt id='cardtitle'></dt>");
+         $("#cardtitle").attr("class","cardtitle").attr("id",cardTitleID).html(cardTitle);
          var makeCount = ("Card " + key + " of " + localStorage.length);
-         makeid.innerHTML = makeCount;
-         makeid.setAttribute("class", "cardid");
-         makedt.appendChild(makeid);
-         //makeCardTypeImage(obj.type[1],makedt);
-         var makeCardDetails = document.createElement("dd");
-         makedt.appendChild(makeCardDetails);
+         var countID = ("count" + key);
+         var countIDSelector = ("#" + countID);
+         $(cardTitleSelector).append("<dd id='cardID'></dd>");
+         $("#cardID").attr("class","cardID").attr("id",countID).html(makeCount);
          delete obj.name;
          for(var n in obj){
-            var makeCardDetailItem = document.createElement("dd");
-            makeCardDetails.appendChild(makeCardDetailItem);
             var cardText = (obj[n][0] + " " + obj[n][1]);
-            makeCardDetailItem.innerHTML = cardText;
-            };
-         makeEditDeleteLinks(key, editDeleteLinks);
-         makedt.appendChild(editDeleteLinks);
+            $(countIDSelector).append("<dd id='individualdetail'>" + cardText + "</dd>");
          };
-      window.location="#display";
-      deleteLink();
+      addLinkClickEvents(cardTitleSelector, key);
       };
+      window.location="#display";
+   };
 };
 
-/*function makeCardTypeImage(cardTypeName,makedt){
-   var makeImageLine = document.createElement("dd");
-   makedt.appendChild(makeImageLine);
-   var makeImage = document.createElement("img");
-   var imageSource = makeImage.setAttribute("src","img/" + cardTypeName + ".png");
-   makeImageLine.appendChild(makeImage);
-};  -- Deprecating this function, as the images in the display don't look good. These images are in use in the interface.*/
-
+//The below function empties the search page every time new results are populated.
 function clearSearchPage(){
-   $('.displaybucket').empty();
+   $(".displaybucket").empty();
+};
+
+//The below function adds the Edit and Delete links, and their associated binding functions, when search results are made.
+function addLinkClickEvents(cardTitleSelector, key){
+   $(cardTitleSelector).append("<dd><a href='#addcard' class='editcard' id='editcard'>Edit Card</a><a href='#' class='deletecard' id='deletecard'>Delete Card</a></dd>");
+   var editCardID = ("editcard" + key);
+   var editCardIDSelector = ("#" + editCardID);
+   $("#editcard").attr("id",editCardID).attr("key",key);
+   var deleteCardID = ("deletecard"+key);
+   var deleteCardIDSelector = ("#" + deleteCardID);
+   $("#deletecard").attr("id",deleteCardID).attr("key",key);
+   $(editCardIDSelector).bind("click",function(){editCard(key)});//need to remember to ask why return false breaks this
+   $(deleteCardIDSelector).bind("click",function(){eraseCard(key)});//need to remember to ask why return false breaks this
 };
 
 function newsFeed(){
@@ -151,67 +137,31 @@ function newsFeed(){
    if (localStorage.length === 0){
       alert("There are no cards saved in this binder to view.");
    } else {
-      var findDisplayDiv = elementName("displaybucket");
-      var listCardsDL = document.createElement("dl");
-      listCardsDL.setAttribute("id", "listcards");
-      findDisplayDiv.appendChild(listCardsDL);
+      $("#displaybucket").append("<dl id='listcards'></dl>")
       for(var y=localStorage.length; y>0; y--){
-         var makedt = document.createElement("dt");
-         makedt.setAttribute("id", "makedt");
-         var editDeleteLinks = document.createElement("dd");
-         listCardsDL.appendChild(makedt);
-         var key = y;
-         var value = localStorage.getItem(key);
+         var value = localStorage.getItem(y);
          var obj = JSON.parse(value);
+         var cardTitle = (obj.name[0] + " " + obj.name[1]);
+         var cardTitleID = ("title" + y);
+         var cardTitleSelector = ("#" + cardTitleID); 
+         $("#displaybucket").find("dl").append("<dt id='cardtitle'></dt>");
          if(obj !==null){
-            var cardTitle = (obj.name[0] + " " + obj.name[1]);
-            makedt.innerHTML = cardTitle;
-            makedt.setAttribute("class", "cardtitle");
-            var makeid = document.createElement("dd");
+            $("#cardtitle").attr("class","cardtitle").attr("id",cardTitleID).html(cardTitle);
             var makeCount = ("Card " + y + " of " + localStorage.length);
-            makeid.innerHTML = makeCount;
-            makeid.setAttribute("class", "cardid");
-            makedt.appendChild(makeid);
-            //makeCardTypeImage(obj.type[1],makedt); - Depricated and removing from results.
-            var makeCardDetails = document.createElement("dd");
-            makedt.appendChild(makeCardDetails);
+            var countID = ("count" + y);
+            var countIDSelector = ("#" + countID);
+            $(cardTitleSelector).append("<dd id='cardID'></dd>");
+            $("#cardID").attr("class","cardID").attr("id",countID).html(makeCount);
             delete obj.name;
             for(var n in obj){
-               var makeCardDetailItem = document.createElement("dd");
-               makeCardDetailItem.setAttribute("class", "testclass");
-               makeCardDetails.appendChild(makeCardDetailItem);
                var cardText = (obj[n][0] + " " + obj[n][1]);
-               makeCardDetailItem.innerHTML = cardText;
-               };
-            makeEditDeleteLinks(key, editDeleteLinks);
-            makedt.appendChild(editDeleteLinks);
-         };
+               $(countIDSelector).append("<dd id='individualdetail'>" + cardText + "</dd>");
+            };
+         addLinkClickEvents(cardTitleSelector, y);
       };
       window.location="#display";
-      deleteLink();
       };
-};
-
-function makeEditDeleteLinks(key, editDeleteLinks){
-   //edit link
-   var editCardLink = document.createElement("a");
-   editCardLink.href = "#addcard";
-   editCardLink.key = key;
-   editCardLink.setAttribute("class","editcard");
-   var editCardGuts = "Edit Card";
-   editCardLink.addEventListener("click", editCard);
-   editCardLink.innerHTML = editCardGuts;
-   editDeleteLinks.appendChild(editCardLink);
-   //delete link
-   var deleteCardLink = document.createElement("a");
-   deleteCardLink.href = "#";
-   deleteCardLink.key = key;
-   deleteCardLink.setAttribute("class", "deletecard");
-   deleteCardLink.setAttribute("id", "deletecard");
-   var deleteCardGuts = "Delete Card";
-   deleteCardLink.addEventListener("click", eraseCard);
-   deleteCardLink.innerHTML = deleteCardGuts;
-   editDeleteLinks.appendChild(deleteCardLink);
+   };
 };
 
 //To get value from card type
@@ -225,98 +175,79 @@ function getCardType(){
    return typeValue
 };
 
-//To get colors
+//To get colors from a form when saving..
 function getCardColors(){
    var colors = [];
-   if(elementName("white").checked){
+   if($("#white").is(":checked")){
       colors.push("white");
    };
-   if(elementName("black").checked){
+   if($("#black").is(":checked")){
       colors.push("black");
    };
-   if(elementName("blue").checked){
+   if($("#blue").is(":checked")){
       colors.push("blue");
    };
-   if(elementName("red").checked){
+   if($("#red").is(":checked")){
       colors.push("red");
    };
-   if(elementName("green").checked){
+   if($("#green").is(":checked")){
       colors.push("green");
    };    
-   if(elementName("colorless").checked){
+   if($("#colorless").is(":checked")){
       colors.push("colorless");
    };
    return colors  
 };
 
+//As it says, this function Saves a card.
 function saveCard() {
-   if(elementName("submit").value != "Edit Card"){
+   if($("#submit").val() === "Edit Card"){
+      var id = $("#submit").attr("key");
+   } else {
       var y = localStorage.length;
       var id = y+1;
-   } else {
-      var id = elementName("submit").key;
-      };
-   var cardColors = getCardColors();
-   var cardType = getCardType();
-   var card = {};
-      card.name = ["Card Name:", elementName("cardname").value];
-      card.usage = ["Currently In Use?", elementName("currentuse").value];
-      card.type = ["Card Type:", cardType];
-      card.mana = ["Mana Cost:", elementName("manacost").value];
-      card.colors = ["Colors:", cardColors];
-      card.notes = ["Notes:", elementName("comments").value];
-      card.number = ["Number Owned:", elementName("numberowned").value];
-   localStorage.setItem(id, JSON.stringify(card));
-   alert(elementName("cardname").value + " has been added!");
-   window.location="#home";
-   window.location.reload();
+      console.log(id);
+   };
+      var cardColors = getCardColors();
+      var cardType = getCardType();
+      var card = {};
+         card.name = ["Card Name:", $("#cardname").val()];
+         card.usage = ["Currently In Use?", $("#currentuse").val()];
+         card.type = ["Card Type:", cardType];
+         card.mana = ["Mana Cost:", $("#manacost").val()];
+         card.colors = ["Colors:", cardColors];
+         card.notes = ["Notes:", $("#comments").val()];
+         card.number = ["Number Owned:", $("#numberowned").val()];
+      localStorage.setItem(id, JSON.stringify(card));
+      alert($("#cardname").val() + " has been added!");
+      window.location="#home";
+      window.location.reload();     
 };
 
-function editCard(){
-   var card = localStorage.getItem(this.key);
+//As it says, this function activates the Edit Card functionality
+function editCard(key){
+   var card = localStorage.getItem(key);
    var cardUnstring = JSON.parse(card);
-   elementName("cardname").value = cardUnstring.name[1];
-   elementName("currentuse").value = cardUnstring.usage[1];
+   $("#cardname").val(cardUnstring.name[1]);
+   $("#currentuse").val(cardUnstring.usage[1]);
    var type = document.forms[0].cardtype;
-   /*for(var i=0; i<type.length; i++){
-      if(type[i].value == "Creature" && cardUnstring.type[1] == "Creature"){
-         type[i].setAttribute("checked", "checked");
-      } else if(type[i].value == "Planeswalker" && cardUnstring.type[1] == "Planeswalker"){
-         type[i].setAttribute("checked", "checked");
-      } else if(type[i].value == "Instant" && cardUnstring.type[1] == "Instant"){
-         type[i].setAttribute("checked", "checked");
-      } else if(type[i].value == "Sorcery" && cardUnstring.type[1] == "Sorcery"){
-         type[i].setAttribute("checked", "checked");
-      } else if(type[i].value == "Enchantment-Buff" && cardUnstring.type[1] == "Enchantment-Buff"){
-         type[i].setAttribute("checked", "checked");
-      } else if(type[i].value == "Enchantment-Curse" && cardUnstring.type[1] == "Enchantment-Curse"){
-         type[i].setAttribute("checked", "checked");
-      } else if(type[i].value == "Artifact" && cardUnstring.type[1] == "Artifact"){
-         type[i].setAttribute("checked", "checked");
-      } else if(type[i].value == "Land" && cardUnstring.type[1] == "Land"){
-         type[i].setAttribute("checked", "checked");
-      }; 
-   };*/
-   elementName("cardtype").value = cardUnstring.type[1]; 
-   //elementName("manacost").value = cardUnstring.mana[1];
+   $("#cardtype").val(cardUnstring.type[1]); 
    $("#manacost").attr("value",cardUnstring.mana[1]);
    var colors = cardUnstring.colors;
    var namesOfColors = colors[1];
    for(var i=0; i < namesOfColors.length; i++){
       var colorName = namesOfColors[i];
-      $(colorName).reset;
-      elementName(colorName).setAttribute("checked", "checked");
+      var colorNameSelector = ("#" + colorName);
+      $(colorNameSelector).attr("checked", "checked");
    };
-   elementName("comments").value = cardUnstring.notes[1];
-   elementName("numberowned").value = cardUnstring.number[1];
-   //saveCardData.removeEventListener("click", saveCard);
-   elementName("submit").value = "Edit Card";
-   var hideClearButton = elementName("reset");
-   hideClearButton.setAttribute("disabled");
-   var newButton = elementName("submit");
-   newButton.key = this.key;
+   $("#comments").val(cardUnstring.notes[1]);
+   $("#numberowned").val(cardUnstring.number[1]);
+   var key = key;
+   $("#submit").val("Edit Card").attr("key",key);
+   $("#reset").attr("disabled","disabled");
 };
 
+//This function rekeys cards in local storage when one is deleted.
 function rekeyCards(){
    var numberOfCards = localStorage.length;
    var largestID = numberOfCards + 1;
@@ -335,14 +266,15 @@ function rekeyCards(){
    localStorage.removeItem(originalLargestID);
 };
 
-function eraseCard(){
-   var cardID = localStorage.getItem(this.key);
+//This function erases an individual card from local storage.
+function eraseCard(key){
+   var cardID = localStorage.getItem(key);
    var cardUnstring = JSON.parse(cardID);
    var cardNameArray = cardUnstring.name;
    var cardName = cardNameArray[1];
    var ask = confirm("Are you sure you want to delete this card?");
    if(ask){
-      localStorage.removeItem(this.key);
+      localStorage.removeItem(key);
       alert(cardName + " was successfully removed.");
       rekeyCards();
       window.location="#home";
@@ -351,26 +283,17 @@ function eraseCard(){
    };
 };
 
+//This function reloads the screen when a card has been added.
 function addCardReload(){
    window.location="#addcard";
    window.location.reload();
 };
 
-function deleteLink(){
-   var deleteCardClick = elementName("deletecard");
-   deleteCardClick.addEventListener("click", eraseCard);
-};
-
 //Make things happen when the links are clicked.
-var clearCardData = elementName("eraseData");
-clearCardData.addEventListener("click", eraseCardData);
-var fillData = elementName("fillJsonData");
-fillData.addEventListener("click", fillWithJsonData);
-var searchButtonClick = elementName("searchbutton");
-searchButtonClick.addEventListener("click", keywordRead);
-var recentClick = elementName("recentcards");
-recentClick.addEventListener("click", newsFeed);
-var addCardClick = elementName("addcard");
-addCardClick.addEventListener("click", addCardReload);
-//var saveCardData = elementName("submit");
-//saveCardData.addEventListener("click", saveCard);
+$("#eraseData").bind("click",function(){eraseCardData(); return false});
+$("#fillJsonData").bind("click",function(){fillWithJsonData(); return false});
+$("#searchbutton").bind("click",function(){keywordRead(); return false});
+$("#recentcards").bind("click",function(){newsFeed(); return false});
+$("#addcard").bind("click",function(){addCardReload(); return false});
+
+});

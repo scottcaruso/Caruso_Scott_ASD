@@ -87,32 +87,32 @@ function keywordRead(){
    } else {
       alert("We have found " + getKeywords.length + " matches for that keyword.");
       $("#displaybucket").append("<dl></dl>");
-      var listCardsDL = document.createElement("dl");
       for(var i=0, y=getKeywords.length; i<y; i++){
          var cardValues = getKeywords;
-         $("#displaybucket").find("dl").append("<dt></dt>");
          var key = getKeywords[i];
          var value = localStorage.getItem(key);
          var obj = JSON.parse(value);
          var cardTitle = (obj.name[0] + " " + obj.name[1]);
-         $("#displaybucket").find("dt").attr("class","cardtitle").html(cardTitle);
-         $("#displaybucket").find("dt").append("<dd></dd>");
+         var cardTitleID = ("title" + key);
+         var cardTitleSelector = ("#" + cardTitleID); 
+         $("#displaybucket").find("dl").append("<dt id='cardtitle'></dt>");
+         $("#cardtitle").attr("class","cardtitle").attr("id",cardTitleID).html(cardTitle);
          var makeCount = ("Card " + key + " of " + localStorage.length);
-         $("#displaybucket").find("dd").attr("class","cardid").html(makeCount);
+         var countID = ("count" + key);
+         var countIDSelector = ("#" + countID);
+         $(cardTitleSelector).append("<dd id='cardID'></dd>");
+         $("#cardID").attr("class","cardID").attr("id",countID).html(makeCount);
          delete obj.name;
-         $("#displaybucket").find("dt").append("<dd></dd>");
-         $("#displaybucket").find("dt :last").attr("id","carddetails");
          for(var n in obj){
-            $("#carddetails").append("<dd></dd>");
             var cardText = (obj[n][0] + " " + obj[n][1]);
-            $("#carddetails").find(":last-child").html(cardText);
+            $(countIDSelector).append("<dd id='individualdetail'>" + cardText + "</dd>");
          };
-         $("#displaybucket").find("dt").append("<dd></dd>");
+         /*$("#displaybucket").find("dt").append("<dd></dd>");
          $("#displaybucket").find("dt :last").append("<a href='#addcard' class='editcard' id='editcard'>Edit Card</a>");
          $("#displaybucket").find("dt :last").append("<a href='#' class='deletecard' id='deletecard'>Delete Card</a>");
-      };
+      */};
       window.location="#display";
-      addLinkClickEvents(key);
+      //addLinkClickEvents(key);
    };
 };
 

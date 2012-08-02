@@ -106,15 +106,15 @@ function keywordRead(){
             $("#carddetails").append("<dd></dd>");
             var cardText = (obj[n][0] + " " + obj[n][1]);
             $("#carddetails").find(":last-child").html(cardText);
-            };
-         var editDeleteLinks = document.createElement("dd");  
-         //makeEditDeleteLinks(key, editDeleteLinks);
-         //$("#displaybucket").find("dt").append("<dd></dd>");
-         //$("#displaybucket").find("dd :last").html(makeEditDeleteLinks);
          };
-      window.location="#display";
-      deleteLink();
+         $("#displaybucket").find("dt").append("<dd></dd>");
+         $("#displaybucket").find("dt :last").append("<a href='#addcard' class='editcard' id='editcard'>Edit Card</a>");
+         $("#displaybucket").find("dt :last").append("<a href='#' class='deletecard' id='deletecard'>Delete Card</a>");
       };
+      $("#editcard").bind("click",editCard(key));
+      $("#deletecard").bind("click",eraseCard(key));
+      window.location="#display";
+   };
 };
 
 /*function makeCardTypeImage(cardTypeName,makedt){
@@ -175,7 +175,7 @@ function newsFeed(){
       };
 };
 
-function makeEditDeleteLinks(key, editDeleteLinks){
+/*function makeEditDeleteLinks(key, editDeleteLinks){
    //edit link
    var editCardLink = document.createElement("a");
    editCardLink.href = "#addcard";
@@ -195,7 +195,7 @@ function makeEditDeleteLinks(key, editDeleteLinks){
    deleteCardLink.addEventListener("click", eraseCard);
    deleteCardLink.innerHTML = deleteCardGuts;
    editDeleteLinks.appendChild(deleteCardLink);
-};
+};*/
 
 //To get value from card type
 function getCardType(){
@@ -255,8 +255,8 @@ function saveCard() {
    window.location.reload();
 };
 
-function editCard(){
-   var card = localStorage.getItem(this.key);
+function editCard(key){
+   var card = localStorage.getItem(key);
    var cardUnstring = JSON.parse(card);
    elementName("cardname").value = cardUnstring.name[1];
    elementName("currentuse").value = cardUnstring.usage[1];
@@ -318,8 +318,8 @@ function rekeyCards(){
    localStorage.removeItem(originalLargestID);
 };
 
-function eraseCard(){
-   var cardID = localStorage.getItem(this.key);
+function eraseCard(key){
+   var cardID = localStorage.getItem(key);
    var cardUnstring = JSON.parse(cardID);
    var cardNameArray = cardUnstring.name;
    var cardName = cardNameArray[1];

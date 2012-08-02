@@ -212,74 +212,55 @@ function getCardColors(){
    return colors  
 };
 
+//As it says, this function Saves a card.
 function saveCard() {
-   if(elementName("submit").value != "Edit Card"){
+   if($("#submit").val() === "Edit Card"){
+      var id = $("#submit").attr("key");
+   } else {
       var y = localStorage.length;
       var id = y+1;
-   } else {
-      var id = elementName("submit").key;
-      };
-   var cardColors = getCardColors();
-   var cardType = getCardType();
-   var card = {};
-      card.name = ["Card Name:", elementName("cardname").value];
-      card.usage = ["Currently In Use?", elementName("currentuse").value];
-      card.type = ["Card Type:", cardType];
-      card.mana = ["Mana Cost:", elementName("manacost").value];
-      card.colors = ["Colors:", cardColors];
-      card.notes = ["Notes:", elementName("comments").value];
-      card.number = ["Number Owned:", elementName("numberowned").value];
-   localStorage.setItem(id, JSON.stringify(card));
-   alert(elementName("cardname").value + " has been added!");
-   window.location="#home";
-   window.location.reload();
+      console.log(id);
+   };
+      var cardColors = getCardColors();
+      var cardType = getCardType();
+      var card = {};
+         card.name = ["Card Name:", $("#cardname").val()];
+         card.usage = ["Currently In Use?", $("#currentuse").val()];
+         card.type = ["Card Type:", cardType];
+         card.mana = ["Mana Cost:", $("#manacost").val()];
+         card.colors = ["Colors:", cardColors];
+         card.notes = ["Notes:", $("#comments").val()];
+         card.number = ["Number Owned:", $("#numberowned").val()];
+      localStorage.setItem(id, JSON.stringify(card));
+      alert($("#cardname").val() + " has been added!");
+      window.location="#home";
+      window.location.reload();     
 };
 
+//As it says, this function activates the Edit Card functionality
 function editCard(key){
    var card = localStorage.getItem(key);
    var cardUnstring = JSON.parse(card);
-   elementName("cardname").value = cardUnstring.name[1];
-   elementName("currentuse").value = cardUnstring.usage[1];
+   $("#cardname").val(cardUnstring.name[1]);
+   $("#currentuse").val(cardUnstring.usage[1]);
    var type = document.forms[0].cardtype;
-   /*for(var i=0; i<type.length; i++){
-      if(type[i].value == "Creature" && cardUnstring.type[1] == "Creature"){
-         type[i].setAttribute("checked", "checked");
-      } else if(type[i].value == "Planeswalker" && cardUnstring.type[1] == "Planeswalker"){
-         type[i].setAttribute("checked", "checked");
-      } else if(type[i].value == "Instant" && cardUnstring.type[1] == "Instant"){
-         type[i].setAttribute("checked", "checked");
-      } else if(type[i].value == "Sorcery" && cardUnstring.type[1] == "Sorcery"){
-         type[i].setAttribute("checked", "checked");
-      } else if(type[i].value == "Enchantment-Buff" && cardUnstring.type[1] == "Enchantment-Buff"){
-         type[i].setAttribute("checked", "checked");
-      } else if(type[i].value == "Enchantment-Curse" && cardUnstring.type[1] == "Enchantment-Curse"){
-         type[i].setAttribute("checked", "checked");
-      } else if(type[i].value == "Artifact" && cardUnstring.type[1] == "Artifact"){
-         type[i].setAttribute("checked", "checked");
-      } else if(type[i].value == "Land" && cardUnstring.type[1] == "Land"){
-         type[i].setAttribute("checked", "checked");
-      }; 
-   };*/
-   elementName("cardtype").value = cardUnstring.type[1]; 
-   //elementName("manacost").value = cardUnstring.mana[1];
+   $("#cardtype").val(cardUnstring.type[1]); 
    $("#manacost").attr("value",cardUnstring.mana[1]);
    var colors = cardUnstring.colors;
    var namesOfColors = colors[1];
    for(var i=0; i < namesOfColors.length; i++){
       var colorName = namesOfColors[i];
-      $(colorName).reset;
-      elementName(colorName).setAttribute("checked", "checked");
+      var colorNameSelector = ("#" + colorName);
+      $(colorNameSelector).attr("checked", "checked");
    };
-   elementName("comments").value = cardUnstring.notes[1];
-   elementName("numberowned").value = cardUnstring.number[1];
-   //saveCardData.removeEventListener("click", saveCard);
-   elementName("submit").value = "Edit Card";
-   var hideClearButton = elementName("reset");
-   hideClearButton.setAttribute("disabled");
-   var newButton = elementName("submit");
-   newButton.key = this.key;
+   $("#comments").val(cardUnstring.notes[1]);
+   $("#numberowned").val(cardUnstring.number[1]);
+   var key = key;
+   $("#submit").val("Edit Card").attr("key",key);
+   $("#reset").attr("disabled","disabled");
 };
 
+//This function rekeys cards in local storage when one is deleted.
 function rekeyCards(){
    var numberOfCards = localStorage.length;
    var largestID = numberOfCards + 1;
@@ -298,6 +279,7 @@ function rekeyCards(){
    localStorage.removeItem(originalLargestID);
 };
 
+//This function erases an individual card from local storage.
 function eraseCard(key){
    var cardID = localStorage.getItem(key);
    var cardUnstring = JSON.parse(cardID);
@@ -314,21 +296,18 @@ function eraseCard(key){
    };
 };
 
+//This function reloads the screen when a card has been added.
 function addCardReload(){
    window.location="#addcard";
    window.location.reload();
 };
 
-/*function deleteLink(){
-   var deleteCardClick = elementName("deletecard");
-   deleteCardClick.addEventListener("click", eraseCard);
-};*/
-
 //Make things happen when the links are clicked.
+$("#eraseData").bind("click",function(){eraseCardData()});
 //var clearCardData = elementName("eraseData");
 //clearCardData.addEventListener("click", eraseCardData);
-//var fillData = elementName("fillJsonData");
-//fillData.addEventListener("click", fillWithJsonData);
+var fillData = elementName("fillJsonData");
+fillData.addEventListener("click", fillWithJsonData);
 var searchButtonClick = elementName("searchbutton");
 searchButtonClick.addEventListener("click", keywordRead);
 //var recentClick = elementName("recentcards");

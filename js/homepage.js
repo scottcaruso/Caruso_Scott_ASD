@@ -86,31 +86,32 @@ function keywordRead(){
       alert("There are no matches for this keyword.");
    } else {
       alert("We have found " + getKeywords.length + " matches for that keyword.");
-      //var makeDiv = document.createElement("div");
-      //makeDiv.setAttribute("id", "cards");
+      $("#displaybucket").append("<dl></dl>");
       var listCardsDL = document.createElement("dl");
-      //makeDiv.appendChild(listCardsDL);
-      var findDisplayDiv = elementName("displaybucket");
-      findDisplayDiv.appendChild(listCardsDL);
+      //var findDisplayDiv = elementName("displaybucket");
+      //findDisplayDiv.appendChild(listCardsDL);
       for(var i=0, y=getKeywords.length; i<y; i++){
          var cardValues = getKeywords;
-         var makedt = document.createElement("dt");
-         var editDeleteLinks = document.createElement("dd");
-         listCardsDL.appendChild(makedt);
+         $("#displaybucket").find("dl").append("<dt></dt>");
+         $("displaybucket").find("dt").append("<dd></dd>");
+         //var makedt = document.createElement("dt");
+         //var editDeleteLinks = document.createElement("dd");
+         //listCardsDL.appendChild(makedt);
          var key = getKeywords[i];
          var value = localStorage.getItem(key);
          var obj = JSON.parse(value);
          var cardTitle = (obj.name[0] + " " + obj.name[1]);
-         makedt.innerHTML = cardTitle;
-         makedt.setAttribute("class", "cardtitle");
+         $("#displaybucket").find("dt").attr("class","cardtitle").html(cardTitle);
+         //makedt.innerHTML = cardTitle;
+         //makedt.setAttribute("class", "cardtitle");
          var makeid = document.createElement("dd");
          var makeCount = ("Card " + key + " of " + localStorage.length);
          makeid.innerHTML = makeCount;
          makeid.setAttribute("class", "cardid");
-         makedt.appendChild(makeid);
+         //makedt.appendChild(makeid);
          //makeCardTypeImage(obj.type[1],makedt);
          var makeCardDetails = document.createElement("dd");
-         makedt.appendChild(makeCardDetails);
+         //makedt.appendChild(makeCardDetails);
          delete obj.name;
          for(var n in obj){
             var makeCardDetailItem = document.createElement("dd");
@@ -118,8 +119,8 @@ function keywordRead(){
             var cardText = (obj[n][0] + " " + obj[n][1]);
             makeCardDetailItem.innerHTML = cardText;
             };
-         makeEditDeleteLinks(key, editDeleteLinks);
-         makedt.appendChild(editDeleteLinks);
+         //makeEditDeleteLinks(key, editDeleteLinks);
+         //makedt.appendChild(editDeleteLinks);
          };
       window.location="#display";
       deleteLink();

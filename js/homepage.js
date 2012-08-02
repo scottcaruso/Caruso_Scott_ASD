@@ -1,9 +1,8 @@
 //Scott Caruso
-//MiU 1206
-//Project 3 - Homepage JS file
+//AFW 1208
+//Project 1 - Refactoring
 
-//The below function gets the name of elements from the form.
-
+//Ensure dom is loaded before doing anything else.
 $(document).bind("pageinit", function(){
    var form = $("#addcardform");
    form.validate({
@@ -12,8 +11,6 @@ $(document).bind("pageinit", function(){
          saveCard();
       }
    });
-});
-
 
 function elementName(x){
    var elementName = document.getElementById(x);
@@ -34,6 +31,7 @@ function eraseCardData(){
 	};
 };
 
+//When the Debug fill option is clicked, this fills local storage with JSON data.
 function fillWithJsonData(){
    if(localStorage.length === 0){
       var y = 1;
@@ -53,18 +51,12 @@ function fillWithJsonData(){
    };
 };
 
-//The below is a test function to use to verify that JS is working right in specific locations.
-function testFunction(){
-   alert("JS is working!")
-};
-
 //Turn what's in the search field into a string
 function searchString(){
    if(localStorage.length === 0){
       alert("There is no data in Local Storage to search!");
    } else {
-      var entry = elementName("searchbox");
-      var searchText = entry.value;
+      var searchText = $("#searchbox").attr("value");
       return searchText;
    };
 };
@@ -362,8 +354,12 @@ function deleteLink(){
 };
 
 //Make things happen when the links are clicked.
-var clearCardData = elementName("eraseData");
-clearCardData.addEventListener("click", eraseCardData);
+console.log($("#erasedata"));
+$("#erasedata").click(function(){
+   eraseCardData();
+});
+//var clearCardData = elementName("eraseData");
+//clearCardData.addEventListener("click", eraseCardData);
 var fillData = elementName("fillJsonData");
 fillData.addEventListener("click", fillWithJsonData);
 var searchButtonClick = elementName("searchbutton");
@@ -374,3 +370,12 @@ var addCardClick = elementName("addcard");
 addCardClick.addEventListener("click", addCardReload);
 //var saveCardData = elementName("submit");
 //saveCardData.addEventListener("click", saveCard);
+
+
+//The below is a test function to use to verify that JS is working right in specific locations.
+function testFunction(){
+   alert("JS is working!")
+};
+
+});
+

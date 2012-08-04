@@ -128,8 +128,8 @@ function addLinkClickEvents(cardTitleSelector, key){
    var deleteCardID = ("deletecard"+key);
    var deleteCardIDSelector = ("#" + deleteCardID);
    $("#deletecard").attr("id",deleteCardID).attr("key",key);
-   $(editCardIDSelector).bind("click",function(){editCard(key)});//need to remember to ask why return false breaks this
-   $(deleteCardIDSelector).bind("click",function(){eraseCard(key)});//need to remember to ask why return false breaks this
+   $(editCardIDSelector).on("click",function(){editCard(key)});//need to remember to ask why return false breaks this
+   $(deleteCardIDSelector).on("click",function(){eraseCard(key)});//need to remember to ask why return false breaks this
 };
 
 function newsFeed(){
@@ -290,10 +290,10 @@ function addCardReload(){
 };
 
 //Make things happen when the links are clicked.
-$("#eraseData").bind("click",function(){eraseCardData(); return false});
-$("#fillJsonData").bind("click",function(){fillWithJsonData(); return false});
-$("#searchbutton").bind("click",function(){keywordRead(); return false});
-$("#recentcards").bind("click",function(){newsFeed(); return false});
-$("#addcard").bind("click",function(){addCardReload(); return false});
+$("#eraseData").on("click",function(){eraseCardData(); return false});
+$("#fillJsonData").on("click",function(){fillWithJsonData(); return false});
+$("#searchbutton").on("click",function(){keywordRead(); return false});
+$("#recentcards").on("click",function(){newsFeed(); return false});
+$("#addcard").on("click",function(){addCardReload(); return false});
 
 });

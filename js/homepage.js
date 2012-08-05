@@ -290,6 +290,12 @@ function addCardReload(){
 };
 
 //Make things happen when the links are clicked.
+//The "unbind" events exist to prevent a bug where double pop-ups were occurring as if there were two clicks being registered.
+$("#eraseData").unbind("click");
+$("#fillJsonData").unbind("click");
+$("#searchbutton").unbind("click");
+$("#recentcards").unbind("click");
+$("#addcard").unbind("click");
 $("#eraseData").on("click",function(){eraseCardData(); return false});
 $("#fillJsonData").on("click",function(){fillWithJsonData(); return false});
 $("#searchbutton").on("click",function(){keywordRead(); return false});

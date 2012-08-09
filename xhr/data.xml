@@ -73,7 +73,7 @@
 		<number>17</number>
 	</card>
 	<card>
-		<name>Awesome Bomb</name>
+		<name>Awesome Bomb (XML)</name>
 		<usage>false</usage>
 		<type>Sorcery</type>
 		<mana>4</mana>
@@ -82,7 +82,7 @@
 		<number>1</number>
 	</card>
 	<card>
-		<name>Burn the Earth</name>
+		<name>Burn the Earth (XML)</name>
 		<usage>false</usage>
 		<type>Sorcery</type>
 		<mana>5</mana>

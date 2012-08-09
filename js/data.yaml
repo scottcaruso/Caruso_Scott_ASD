@@ -1,0 +1,79 @@
+Flying Warbler (YAML):
+	Usage: true
+	Type: Creature
+	Mana Cost: 3
+	Colors: white,blue
+	Notes: 1/1, flying
+	Number: 1
+
+Scour (YAML):
+	Usage: false
+	Type: Sorcery
+	Mana Cost: 2
+	Colors: blue
+	Notes:
+	Number: 1
+
+Liliana (YAML):
+	Usage: true
+	Type: Planeswalker
+	Mana Cost: 6
+	Colors: red
+	Notes: so awesome
+	Number: 1
+
+Crackle (YAML):
+	Usage: false
+	Type: Instant
+	Mana Cost: 1
+	Colors: red
+	Notes: does 1 damage instantly
+	Number: 1
+
+Strength of Men (YAML):
+	Usage: true
+	Type: Enchantment-Buff
+	Mana Cost: 4
+	Colors: white
+	Notes: +3/+3
+	Number: 1
+
+Vampire's Bite (YAML):
+	Usage: false
+	Type: Enchantment-Curse
+	Mana Cost: 3
+	Colors: black
+	Notes: 1 damage each turn
+	Number: 1
+
+Boots of Steel (YAML):
+	Usage: true
+	Type: Artifact
+	Mana Cost: 1
+	Colors: colorless
+	Notes: +0/+1
+	Number: 1
+
+Planes (YAML):
+	Usage: true
+	Type: Land
+	Mana Cost: 0
+	Colors: white
+	Notes: Basic land
+	Number: 17
+
+Awesome Bomb (YAML):
+	Usage: false
+	Type: Sorcery
+	Mana Cost: 4
+	Colors: red
+	Notes: Does 6 damage
+	Number: 1
+
+Burn the Earth (YAML):
+	Usage: false
+	Type: Sorcery
+	Mana Cost: 5
+	Colors: black,red
+	Notes: Does 6 damage
+	Number: 1

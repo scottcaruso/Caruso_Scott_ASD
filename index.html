@@ -28,6 +28,8 @@
 		<script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
 		<script src="js/libs/jquery.validate.min.js" type="text/javascript"></script>
 		<script src="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.js"></script>
+		<!-- This is here so that search and other features aren't broken during conversion to parser.-->
+		<script src="xhr/olddata.json" type="text/javascript"></script>
 	</head>
 	
 	<body>
@@ -155,6 +157,9 @@
 						<li>
 						<a href="#addcard" id="addcard">Add a Card</a>
 						</li>
+						<li data-icon="false"><a href="#" id="ajax-json">Parse JSON Data</a></li>
+						<li data-icon="false"><a href="#" id="ajax-xml">Parse XML Data</a></li>
+						<li data-icon="false"><a href="#" id="ajax-csv">Parse CSV Data</a></li>
 						<li data-icon="false"><a href="#" id="eraseData">Clear Binder</a></li>
 						<li data-icon="false"><a href="#" id="fillJsonData">[DEBUG] Fill Binder</a></li>
 					</ul>
@@ -312,6 +317,11 @@
 				<h1>Display Cards</h1>
 				<a href="index.html" data-icon="back">Back</a>
 			</div>
+			<div data-role="listview">
+				<li data-icon="false"><a href="#" id="ajax-json-alt">DEBUG Parse JSON Data</a></li>
+				<li data-icon="false"><a href="#" id="ajax-xml-alt">DEBUG Parse XML Data</a></li>
+				<li data-icon="false"><a href="#" id="ajax-csv-alt">DEBUG Parse CSV Data</a></li>
+			</div>
 			<div data-role="content">
 				<div id="displaybucket" class="displaybucket">
 				</div>
@@ -374,10 +384,6 @@
 				<div data-role="collapsible" data-theme="b">
 					<h1>Edit/Delete Links</h1>
 					<p>Sometimes, the Edit and Delete links on the Display Cards page blend in to the gradient background. Sometimes they look fine. I can't figure out why it happens. Need to investigate.</p>
-				</div></a>
-				<div data-role="collapsible" data-theme="b">
-					<h1>Alert Pop-ups</h1>
-					<p>Sometimes, the same alert pop-up will appear twice in a row.</p>
 				</div></a>
 			</div>
 			<div data-role="footer" data-id="mainnav" data-theme="b">
@@ -482,7 +488,6 @@
 			</div>
 		</div> <!-- Add Card Page -->
 
-		<script src="js/homepage.js" type="text/javascript"></script>
-		<script src="js/json.js" type="text/javascript"></script>
+		<script src="js/main.js" type="text/javascript"></script>
 	</body>
 </html>

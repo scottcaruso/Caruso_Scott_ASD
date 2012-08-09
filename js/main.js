@@ -296,10 +296,27 @@ $("#fillJsonData").unbind("click");
 $("#searchbutton").unbind("click");
 $("#recentcards").unbind("click");
 $("#addcard").unbind("click");
+$("#ajax-json").unbind("click");
+$("#ajax-xml").unbind("click");
+$("#ajax-yaml").unbind("click");
 $("#eraseData").on("click",function(){eraseCardData(); return false});
 $("#fillJsonData").on("click",function(){fillWithJsonData(); return false});
 $("#searchbutton").on("click",function(){keywordRead(); return false});
 $("#recentcards").on("click",function(){newsFeed(); return false});
 $("#addcard").on("click",function(){addCardReload(); return false});
-
+$("#ajax-json")
+   .on("click",
+      function(){
+         alert("Json link clicked!");
+      });
+$("#ajax-xml")   
+   .on("click",
+      function(){
+         alert("xml link clicked!");
+      });
+$("#ajax-yaml")
+   .on("click",
+      function(){
+         alert("yaml link clicked!");
+      });
 });

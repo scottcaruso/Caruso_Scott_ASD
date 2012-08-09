@@ -1,8 +1,4 @@
-<!-- Scott Caruso -->
-<!-- XML Data Source -->
-<!-- ASD 1208 -->
-
-<?xmlversion="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <cards>
 	<card>
 		<name>Flying Warbler (XML)</name>
@@ -61,7 +57,7 @@
 	<card>
 		<name>Boots of Steel (XML)</name>
 		<usage>true</usage>
-		<type>Artifact/type>
+		<type>Artifact</type>
 		<mana>1</mana>
 		<colors>colorless</colors>
 		<notes>+0/+1</notes>
@@ -70,7 +66,7 @@
 	<card>
 		<name>Plains (XML)</name>
 		<usage>true</usage>
-		<type>Land/type>
+		<type>Land</type>
 		<mana>0</mana>
 		<colors>white</colors>
 		<notes>Basic land</notes>
@@ -79,7 +75,7 @@
 	<card>
 		<name>Awesome Bomb</name>
 		<usage>false</usage>
-		<type>Sorcery/type>
+		<type>Sorcery</type>
 		<mana>4</mana>
 		<colors>red</colors>
 		<notes>Does 6 damage</notes>
@@ -88,7 +84,7 @@
 	<card>
 		<name>Burn the Earth</name>
 		<usage>false</usage>
-		<type>Sorcery/type>
+		<type>Sorcery</type>
 		<mana>5</mana>
 		<colors>black,red</colors>
 		<notes>Sac a land</notes>

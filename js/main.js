@@ -293,20 +293,78 @@ function addCardReload(){
 
 
 //Function to get json data with Ajax. Makes the .on functions cleaner.
-
 function getJsonAjax(){
    $.ajax({
       url: "xhr/data.json",
       type: "GET",
       dataType: "json",
       success: function(data){
-        console.log(data)
+         console.log(data);
+         makeJsonDataDisplay(data);
       },
       error: function(){
          console.log("There was an error.")
       }
    });
 };
+
+function getXmlAjax(){
+   $.ajax({
+      url: "xhr/data.xml",
+      type: "GET",
+      dataType: "xml",
+      success: function(xml){
+         doStuffAfterXml(xml);
+      },
+      error: function(){
+         console.log("There was an error.")
+      }     
+   });
+};
+
+function doStuffAfterXml(xml){
+   window.location="#display";
+   $("#displaybucket").empty();
+   var obj = $(xml);
+   obj.find("card").each(function(){
+      var card = $(this);
+      var name = $(card.find("name"));
+      var usage = $(card.find("usage"));
+      var type = $(card.find("type"));
+      var mana = $(card.find("mana"));
+      var colors = $(card.find("colors"));
+      var notes = $(card.find("notes"));
+      var number = $(card.find("number"));
+      $('<div class="card">'+
+         '<h2>' + "Card Name: " + name.text() + '</h2>'+
+         '<p>' + "In Use? " + usage.text() + '</p>' +
+         '<p>' + "Card Type: " + type.text() + '</p>' +  
+         '<p>' + "Mana Cost: " + mana.text() + '</p>' +  
+         '<p>' + "Card Colors: " + colors.text() + '</p>' +  
+         '<p>' + "Additional Notes: " + notes.text() + '</p>' + 
+         '<p>' + "Number Owned: " + number.text() + '</p>' +
+      '</div>'
+      ).appendTo('#displaybucket')
+   });
+};
+
+function makeJsonDataDisplay(data){
+   window.location="#display";
+   $("#displaybucket").empty();
+   for(var i=0, j=data.cards.length; i<j; i++){
+      var card = data.cards[i];
+      $('<div class="card">'+
+            '<h2>' + card.name + '</h2>'+
+            '<p>' + card.usage + '</p>' +
+            '<p>' + card.type + '</p>' +  
+            '<p>' + card.mana + '</p>' +  
+            '<p>' + card.colors + '</p>' +  
+            '<p>' + card.notes + '</p>' + 
+            '<p>' + card.number + '</p>' +
+         '</div>'
+      ).appendTo('#displaybucket')
+   }
+}
 
 //Make things happen when the links are clicked.
 //The "unbind" events exist to prevent a bug where double pop-ups were occurring as if there were two clicks being registered.
@@ -326,13 +384,12 @@ $("#addcard").on("click",function(){addCardReload(); return false});
 $("#ajax-json")
    .on("click",
       function(){
-         alert("Json link clicked!");
          getJsonAjax();
       });
 $("#ajax-xml")   
    .on("click",
       function(){
-         alert("xml link clicked!");
+         getXmlAjax();
       });
 $("#ajax-yaml")
    .on("click",

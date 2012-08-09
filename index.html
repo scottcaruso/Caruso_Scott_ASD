@@ -29,7 +29,7 @@
 		<script src="js/libs/jquery.validate.min.js" type="text/javascript"></script>
 		<script src="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.js"></script>
 		<!-- This is here so that search and other features aren't broken during conversion to parser.-->
-		<!--<script src="xhr/olddata.json" type="tect/javascript"></script>-->
+		<script src="xhr/olddata.json" type="text/javascript"></script>
 	</head>
 	
 	<body>
@@ -316,6 +316,11 @@
 			<div data-role="header" data-theme="b">
 				<h1>Display Cards</h1>
 				<a href="index.html" data-icon="back">Back</a>
+			</div>
+			<div data-role="listview">
+				<li data-icon="false"><a href="#" id="ajax-json-alt">DEBUG Parse JSON Data</a></li>
+				<li data-icon="false"><a href="#" id="ajax-xml-alt">DEBUG Parse XML Data</a></li>
+				<li data-icon="false"><a href="#" id="ajax-csv-alt">DEBUG Parse CSV Data</a></li>
 			</div>
 			<div data-role="content">
 				<div id="displaybucket" class="displaybucket">

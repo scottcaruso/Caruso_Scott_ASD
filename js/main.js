@@ -3,7 +3,7 @@
 //Project 2 - Adding Remote Data
 
 //Ensure dom is loaded before doing anything else.
-$(document).bind("pageinit", function(){
+$(document).on("pageinit", function(){
    var form = $("#addcardform");
    form.validate({
       invalidHandler: function(form, validator){},
@@ -438,7 +438,7 @@ function makeCsvDataDisplay(csv){
       number.push(columns);
    };
    //create the page elements
-   for(var i=1, j=names.length; i<j; i++){
+   for(var i=0, j=names.length; i<j; i++){
       $('<div class="card">'+
             '<h2>' + "Card Name: " + names[i] + '</h2>'+
             '<li>' + "In Use? " + usage[i] + '</li>' +
@@ -459,9 +459,9 @@ $("#fillJsonData").unbind("click");
 $("#searchbutton").unbind("click");
 $("#recentcards").unbind("click");
 $("#addcard").unbind("click");
-$("#ajax-json").unbind("click");
-$("#ajax-xml").unbind("click");
-$("#ajax-csv").unbind("click");
+//$("#ajax-json").unbind("click");
+//$("#ajax-xml").unbind("click");
+//$("#ajax-csv").unbind("click");
 $("#eraseData").on("click",function(){eraseCardData(); return false});
 $("#fillJsonData").on("click",function(){fillWithJsonData(); return false});
 $("#searchbutton").on("click",function(){keywordRead(); return false});
@@ -470,17 +470,37 @@ $("#addcard").on("click",function(){addCardReload(); return false});
 $("#ajax-json")
    .on("click",
       function(){
-         alert("Does this work?");
          getJsonAjax();
+         return false
       });
 $("#ajax-xml")   
    .on("click",
       function(){
          getXmlAjax();
+         return false
       });
 $("#ajax-csv")
    .on("click",
       function(){
          getCsvAjax();
+         return false
+      });
+$("#ajax-json-alt")
+   .on("click",
+      function(){
+         getJsonAjax();
+         return false
+      });
+$("#ajax-xml-alt")   
+   .on("click",
+      function(){
+         getXmlAjax();
+         return false
+      });
+$("#ajax-csv-alt")
+   .on("click",
+      function(){
+         getCsvAjax();
+         return false
       });
 });

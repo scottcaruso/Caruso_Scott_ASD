@@ -4,7 +4,7 @@
 
 var json = {
 	"card1": {
-		"name": ["Card Name:","Flying Warbler"],
+		"name": ["Card Name:","Flying Warbler(JSON)"],
 		"usage": ["Currently In Use?", "true"],
 		"type": ["Card Type:", "Creature"],
 		"mana": ["Mana Cost:","3"],
@@ -13,7 +13,7 @@ var json = {
 		"number": ["Number Owned:", "1"]
 	},
 	"card2": {
-		"name": ["Card Name:","Scour"],
+		"name": ["Card Name:","Scour(JSON)"],
 		"usage": ["Currently In Use?", "false"],
 		"type": ["Card Type:", "Sorcery"],
 		"mana": ["Mana Cost:","2"],
@@ -22,7 +22,7 @@ var json = {
 		"number": ["Number Owned:", "1"]
 	},
 	"card3": {
-		"name": ["Card Name:","Liliana"],
+		"name": ["Card Name:","Liliana(JSON)"],
 		"usage": ["Currently In Use?", "true"],
 		"type": ["Card Type:", "Planeswalker"],
 		"mana": ["Mana Cost:","6"],
@@ -31,7 +31,7 @@ var json = {
 		"number": ["Number Owned:", "1"]
 	},
 	"card4": {
-		"name": ["Card Name:","Crackle"],
+		"name": ["Card Name:","Crackle(JSON)"],
 		"usage": ["Currently In Use?", "false"],
 		"type": ["Card Type:", "Instant"],
 		"mana": ["Mana Cost:","1"],
@@ -40,7 +40,7 @@ var json = {
 		"number": ["Number Owned:", "1"]
 	},
 	"card5": {
-		"name": ["Card Name:","Strength of Men"],
+		"name": ["Card Name:","Strength of Men(JSON)"],
 		"usage": ["Currently In Use?", "true"],
 		"type": ["Card Type:", "Enchantment-Buff"],
 		"mana": ["Mana Cost:","4"],
@@ -49,7 +49,7 @@ var json = {
 		"number": ["Number Owned:", "1"]
 	},
 	"card6": {
-		"name": ["Card Name:","Vampire's Bite"],
+		"name": ["Card Name:","Vampire's Bite(JSON)"],
 		"usage": ["Currently In Use?", "false"],
 		"type": ["Card Type:", "Enchantment-Curse"],
 		"mana": ["Mana Cost:","3"],
@@ -58,7 +58,7 @@ var json = {
 		"number": ["Number Owned:", "1"]
 	},
 	"card7": {
-		"name": ["Card Name:","Boots of Steel"],
+		"name": ["Card Name:","Boots of Steel(JSON)"],
 		"usage": ["Currently In Use?", "true"],
 		"type": ["Card Type:", "Artifact"],
 		"mana": ["Mana Cost:","1"],
@@ -67,7 +67,7 @@ var json = {
 		"number": ["Number Owned:", "1"]
 	},
 	"card8": {
-		"name": ["Card Name:","Plains"],
+		"name": ["Card Name:","Plains(JSON)"],
 		"usage": ["Currently In Use?", "true"],
 		"type": ["Card Type:", "Land"],
 		"mana": ["Mana Cost:","0"],
@@ -76,7 +76,7 @@ var json = {
 		"number": ["Number Owned:", "1"]
 	},
 	"card9": {
-		"name": ["Card Name:","Awesome Bomb"],
+		"name": ["Card Name:","Awesome Bomb(JSON)"],
 		"usage": ["Currently In Use?", "false"],
 		"type": ["Card Type:", "Sorcery"],
 		"mana": ["Mana Cost:","4"],
@@ -85,7 +85,7 @@ var json = {
 		"number": ["Number Owned:", "1"]
 	},
 	"card10": {
-		"name": ["Card Name:","Burn the Earth"],
+		"name": ["Card Name:","Burn the Earth(JSON)"],
 		"usage": ["Currently In Use?", "false"],
 		"type": ["Card Type:", "Sorcery"],
 		"mana": ["Mana Cost:","5"],
@@ -94,7 +94,7 @@ var json = {
 		"number": ["Number Owned:", "1"]
 	},
 	"card11": {
-		"name": ["Card Name:","Ball and Chain"],
+		"name": ["Card Name:","Ball and Chain(JSON)"],
 		"usage": ["Currently In Use?", "true"],
 		"type": ["Card Type:", "Enchantment-Curse"],
 		"mana": ["Mana Cost:","2"],
@@ -103,7 +103,7 @@ var json = {
 		"number": ["Number Owned:", "1"]
 	},
 	"card12": {
-		"name": ["Card Name:","Snap"],
+		"name": ["Card Name:","Snap(JSON)"],
 		"usage": ["Currently In Use?", "false"],
 		"type": ["Card Type:", "Instant"],
 		"mana": ["Mana Cost:","1"],
@@ -112,7 +112,7 @@ var json = {
 		"number": ["Number Owned:", "1"]
 	},
 	"card13": {
-		"name": ["Card Name:","Strength of Oaks"],
+		"name": ["Card Name:","Strength of Oaks(JSON)"],
 		"usage": ["Currently In Use?", "true"],
 		"type": ["Card Type:", "Enchantment-Buff"],
 		"mana": ["Mana Cost:","4"],
@@ -121,7 +121,7 @@ var json = {
 		"number": ["Number Owned:", "1"]
 	},
 	"card14": {
-		"name": ["Card Name:","Vanish"],
+		"name": ["Card Name:","Vanish(JSON)"],
 		"usage": ["Currently In Use?", "false"],
 		"type": ["Card Type:", "Enchantment-Curse"],
 		"mana": ["Mana Cost:","2"],
@@ -130,7 +130,7 @@ var json = {
 		"number": ["Number Owned:", "1"]
 	},
 	"card15": {
-		"name": ["Card Name:","Cairn of Invisibility"],
+		"name": ["Card Name:","Cairn of Invisibilit(JSON)"],
 		"usage": ["Currently In Use?", "true"],
 		"type": ["Card Type:", "Artifact"],
 		"mana": ["Mana Cost:","3"],
@@ -139,7 +139,7 @@ var json = {
 		"number": ["Number Owned:", "1"]
 	},
 	"card16": {
-		"name": ["Card Name:","Forest"],
+		"name": ["Card Name:","Forest(JSON)"],
 		"usage": ["Currently In Use?", "true"],
 		"type": ["Card Type:", "Land"],
 		"mana": ["Mana Cost:","0"],
@@ -148,7 +148,7 @@ var json = {
 		"number": ["Number Owned:", "1"]
 	},
 	"card17": {
-		"name": ["Card Name:","Mountain"],
+		"name": ["Card Name:","Mountain(JSON)"],
 		"usage": ["Currently In Use?", "true"],
 		"type": ["Card Type:", "Land"],
 		"mana": ["Mana Cost:","0"],
@@ -157,7 +157,7 @@ var json = {
 		"number": ["Number Owned:", "1"]
 	},
 	"card18": {
-		"name": ["Card Name:","Swamp"],
+		"name": ["Card Name:","Swamp(JSON)"],
 		"usage": ["Currently In Use?", "true"],
 		"type": ["Card Type:", "Land"],
 		"mana": ["Mana Cost:","0"],
@@ -166,7 +166,7 @@ var json = {
 		"number": ["Number Owned:", "1"]
 	},
 	"card19": {
-		"name": ["Card Name:","Island"],
+		"name": ["Card Name:","Island(JSON)"],
 		"usage": ["Currently In Use?", "true"],
 		"type": ["Card Type:", "Land"],
 		"mana": ["Mana Cost:","0"],
@@ -175,7 +175,7 @@ var json = {
 		"number": ["Number Owned:", "1"]
 	},
 	"card20": {
-		"name": ["Card Name:","Apex Hawks"],
+		"name": ["Card Name:","Apex Hawks(JSON)"],
 		"usage": ["Currently In Use?", "true"],
 		"type": ["Card Type:", "Creature"],
 		"mana": ["Mana Cost:","2"],

@@ -1,9 +1,9 @@
 //Scott Caruso
 //ASDI 1208
-//Project 1 - Refactoring
+//Project 2 - Adding Remote Data
 
 //Ensure dom is loaded before doing anything else.
-$(document).bind("pageinit", function(){
+$(document).on("pageinit", function(){
    var form = $("#addcardform");
    form.validate({
       invalidHandler: function(form, validator){},
@@ -11,11 +11,13 @@ $(document).bind("pageinit", function(){
          saveCard();
       }
    });
-
+/*
+Commenting out, since this shouldn't be needed anymore. Relic of pre-jquery days.
 function elementName(x){
    var elementName = document.getElementById(x);
    return elementName;              
 };
+*/
 
 function eraseCardData(){
 	if(localStorage.length === 0){
@@ -128,8 +130,8 @@ function addLinkClickEvents(cardTitleSelector, key){
    var deleteCardID = ("deletecard"+key);
    var deleteCardIDSelector = ("#" + deleteCardID);
    $("#deletecard").attr("id",deleteCardID).attr("key",key);
-   $(editCardIDSelector).bind("click",function(){editCard(key)});//need to remember to ask why return false breaks this
-   $(deleteCardIDSelector).bind("click",function(){eraseCard(key)});//need to remember to ask why return false breaks this
+   $(editCardIDSelector).on("click",function(){editCard(key)});//need to remember to ask why return false breaks this
+   $(deleteCardIDSelector).on("click",function(){eraseCard(key)});//need to remember to ask why return false breaks this
 };
 
 function newsFeed(){
@@ -289,11 +291,216 @@ function addCardReload(){
    window.location.reload();
 };
 
-//Make things happen when the links are clicked.
-$("#eraseData").bind("click",function(){eraseCardData(); return false});
-$("#fillJsonData").bind("click",function(){fillWithJsonData(); return false});
-$("#searchbutton").bind("click",function(){keywordRead(); return false});
-$("#recentcards").bind("click",function(){newsFeed(); return false});
-$("#addcard").bind("click",function(){addCardReload(); return false});
 
+//Function to get json data with Ajax. Makes the .on functions cleaner.
+function getJsonAjax(){
+   $.ajax({
+      url: "xhr/data.json",
+      type: "GET",
+      dataType: "json",
+      success: function(data){
+         makeJsonDataDisplay(data);
+      },
+      error: function(){
+         console.log("There was an error.")
+      }
+   });
+};
+
+//Function to get xml data with Ajax.
+function getXmlAjax(){
+   $.ajax({
+      url: "xhr/data.xml",
+      type: "GET",
+      dataType: "xml",
+      success: function(xml){
+         doStuffAfterXml(xml);
+      },
+      error: function(){
+         console.log("There was an error.")
+      }     
+   });
+};
+
+//Function to get csv data with Ajax.
+function getCsvAjax(){
+   $.ajax({
+      url: "xhr/data.csv",
+      type: "GET",
+      dataType: "text",
+      success: function(csv){
+         makeCsvDataDisplay(csv);
+      },
+      error: function(){
+         console.log("There was an error.")
+      }     
+   });
+};
+
+//This is the guts of the XML display; works in tandem with getXmlAjax
+function doStuffAfterXml(xml){
+   $("#displaybucket").empty();
+   window.location="#display";
+   var obj = $(xml);
+   obj.find("card").each(function(){
+      var card = $(this);
+      var name = $(card.find("name"));
+      var usage = $(card.find("usage"));
+      var type = $(card.find("type"));
+      var mana = $(card.find("mana"));
+      var colors = $(card.find("colors"));
+      var notes = $(card.find("notes"));
+      var number = $(card.find("number"));
+      $('<div class="card">'+
+         '<h2>' + "Card Name: " + name.text() + '</h2>'+
+         '<li>' + "In Use? " + usage.text() + '</li>' +
+         '<li>' + "Card Type: " + type.text() + '</li>' +  
+         '<li>' + "Mana Cost: " + mana.text() + '</li>' +  
+         '<li>' + "Card Colors: " + colors.text() + '</li>' +  
+         '<li>' + "Additional Notes: " + notes.text() + '</li>' + 
+         '<li>' + "Number Owned: " + number.text() + '</li>' +
+      '</div>'
+      ).appendTo('#displaybucket')
+   });
+};
+
+//This is the guts of the Json display; works in tandem with it.
+function makeJsonDataDisplay(data){
+   $("#displaybucket").empty();
+   window.location="#display";
+   for(var i=0, j=data.cards.length; i<j; i++){
+      var card = data.cards[i];
+      $('<div class="card">'+
+            '<h2>' + card.name + '</h2>'+
+            '<li>' + card.usage + '</li>' +
+            '<li>' + card.type + '</li>' +  
+            '<li>' + card.mana + '</li>' +  
+            '<li>' + card.colors + '</li>' +  
+            '<li>' + card.notes + '</li>' + 
+            '<li>' + card.number + '</li>' +
+         '</div>'
+      ).appendTo('#displaybucket')
+   }
+};
+
+//This is the guts of the Csv display; works in tandem with it
+function makeCsvDataDisplay(csv){
+   $("#displaybucket").empty();
+   window.location="#display";
+   var lines = csv.split("|");
+   var   names = [];
+         usage = [];
+         type = [];
+         mana = [];
+         colors = [];
+         notes = [];
+         number = []; 
+   //populate names array
+   for (var lineNum = 7; lineNum < lines.length; lineNum+=7) {
+      var row = lines[lineNum];
+      var columns = row.split(",");
+      names.push(columns);
+   };
+   //populate usage array
+   for (var lineNum = 8; lineNum < lines.length; lineNum+=7) {
+      var row = lines[lineNum];
+      var columns = row.split(",");
+      usage.push(columns);
+   };
+   //populate type array
+   for (var lineNum = 9; lineNum < lines.length; lineNum+=7) {
+      var row = lines[lineNum];
+      var columns = row.split(",");
+      type.push(columns);
+   };
+   //populate mana costs array
+   for (var lineNum = 10; lineNum < lines.length; lineNum+=7) {
+      var row = lines[lineNum];
+      var columns = row.split(",");
+      mana.push(columns);
+   };
+   //populate colors array
+   for (var lineNum = 11; lineNum < lines.length; lineNum+=7) {
+      var row = lines[lineNum];
+      var columns = row.split(",");
+      colors.push(columns);
+   };
+   //populate notes array
+   for (var lineNum = 12; lineNum < lines.length; lineNum+=7) {
+      var row = lines[lineNum];
+      var columns = row.split(",");
+      notes.push(columns);
+   };
+   //populate number array
+   for (var lineNum = 13; lineNum < lines.length; lineNum+=7) {
+      var row = lines[lineNum];
+      var columns = row.split(",");
+      number.push(columns);
+   };
+   //create the page elements
+   for(var i=0, j=names.length; i<j; i++){
+      $('<div class="card">'+
+            '<h2>' + "Card Name: " + names[i] + '</h2>'+
+            '<li>' + "In Use? " + usage[i] + '</li>' +
+            '<li>' + "Card Type: " + type[i] + '</li>' +  
+            '<li>' + "Mana Cost: " + mana[i] + '</li>' +  
+            '<li>' + "Card Colors: " + colors[i] + '</li>' +  
+            '<li>' + "Additional Notes: " + notes[i] + '</li>' + 
+            '<li>' + "Number Owned: " + number[i] + '</li>' +
+         '</div>'
+      ).appendTo('#displaybucket')
+   }
+};
+
+//Make things happen when the links are clicked.
+//The "unbind" events exist to prevent a bug where double pop-ups were occurring as if there were two clicks being registered.
+$("#eraseData").unbind("click");
+$("#fillJsonData").unbind("click");
+$("#searchbutton").unbind("click");
+$("#recentcards").unbind("click");
+$("#addcard").unbind("click");
+//$("#ajax-json").unbind("click");
+//$("#ajax-xml").unbind("click");
+//$("#ajax-csv").unbind("click");
+$("#eraseData").on("click",function(){eraseCardData(); return false});
+$("#fillJsonData").on("click",function(){fillWithJsonData(); return false});
+$("#searchbutton").on("click",function(){keywordRead(); return false});
+$("#recentcards").on("click",function(){newsFeed(); return false});
+$("#addcard").on("click",function(){addCardReload(); return false});
+$("#ajax-json")
+   .on("click",
+      function(){
+         getJsonAjax();
+         return false
+      });
+$("#ajax-xml")   
+   .on("click",
+      function(){
+         getXmlAjax();
+         return false
+      });
+$("#ajax-csv")
+   .on("click",
+      function(){
+         getCsvAjax();
+         return false
+      });
+$("#ajax-json-alt")
+   .on("click",
+      function(){
+         getJsonAjax();
+         return false
+      });
+$("#ajax-xml-alt")   
+   .on("click",
+      function(){
+         getXmlAjax();
+         return false
+      });
+$("#ajax-csv-alt")
+   .on("click",
+      function(){
+         getCsvAjax();
+         return false
+      });
 });

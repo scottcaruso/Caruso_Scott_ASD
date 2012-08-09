@@ -1,6 +1,6 @@
 //Scott Caruso
 //ASDI 1208
-//Project 1 - Refactoring
+//Project 2 - Adding Remote Data
 
 //Ensure dom is loaded before doing anything else.
 $(document).bind("pageinit", function(){
@@ -11,11 +11,13 @@ $(document).bind("pageinit", function(){
          saveCard();
       }
    });
-
+/*
+Commenting out, since this shouldn't be needed anymore. Relic of pre-jquery days.
 function elementName(x){
    var elementName = document.getElementById(x);
    return elementName;              
 };
+*/
 
 function eraseCardData(){
 	if(localStorage.length === 0){
@@ -289,6 +291,23 @@ function addCardReload(){
    window.location.reload();
 };
 
+
+//Function to get json data with Ajax. Makes the .on functions cleaner.
+
+function getJsonAjax(){
+   $.ajax({
+      url: "xhr/data.json",
+      type: "GET",
+      dataType: "json",
+      success: function(data){
+        console.log(data)
+      },
+      error: function(){
+         console.log("There was an error.")
+      }
+   });
+};
+
 //Make things happen when the links are clicked.
 //The "unbind" events exist to prevent a bug where double pop-ups were occurring as if there were two clicks being registered.
 $("#eraseData").unbind("click");
@@ -308,6 +327,7 @@ $("#ajax-json")
    .on("click",
       function(){
          alert("Json link clicked!");
+         getJsonAjax();
       });
 $("#ajax-xml")   
    .on("click",

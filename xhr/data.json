@@ -1,8 +1,4 @@
-//Scott Caruso
-//AFW 1208
-//JSON file
-
-var json = {
+{
 	"card1": {
 		"name": ["Card Name:","Flying Warbler(JSON)"],
 		"usage": ["Currently In Use?", "true"],
@@ -183,4 +179,4 @@ var json = {
 		"notes": ["Notes:", "1/1, flying"],
 		"number": ["Number Owned:", "1"]
 	}
-};
+}

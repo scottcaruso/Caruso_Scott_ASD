@@ -292,7 +292,7 @@ function addCardReload(){
 };
 
 
-//Function to get json data with Ajax. Makes the .on functions cleaner.
+//Function to get json data with Ajax. Makes the .on functions cleaner. THIS ONE IS FOR THE LOCALLY SAVED JSON.
 function getJsonAjax(){
    $.ajax({
       url: "xhr/data.json",
@@ -306,6 +306,24 @@ function getJsonAjax(){
       }
    });
 };
+
+
+/*Function to get json data with Ajax. Makes the .on functions cleaner. THIS ONE IS FOR COUCHBASE SAVED JSON.
+function getJsonAjax(){
+   $.ajax({
+      url: "_view/cards",
+      type: "GET",
+      dataType: "json",
+      success: function(data){
+         makeJsonDataDisplay(data);
+       console.log(data);
+      },
+      error: function(){
+         console.log("There was an error.")
+      }
+   });
+};
+*/
 
 //Function to get xml data with Ajax.
 function getXmlAjax(){
@@ -364,7 +382,7 @@ function doStuffAfterXml(xml){
    });
 };
 
-//This is the guts of the Json display; works in tandem with it.
+//This is the guts of the Json display; works in tandem with it. - FOR USE WITH LOCALLY-SAVED JSON!
 function makeJsonDataDisplay(data){
    $("#displaybucket").empty();
    window.location="#display";
@@ -382,6 +400,26 @@ function makeJsonDataDisplay(data){
       ).appendTo('#displaybucket')
    }
 };
+
+/*This is the guts of the Json display; works in tandem with it. - FOR USE WITH COUCHBASE ONLY!
+function makeJsonDataDisplay(data){
+   $("#displaybucket").empty();
+   window.location="#display";
+   for(var i=0, j=data.rows.length; i<j; i++){
+      var card = data.rows[i];
+      $('<div class="card">'+
+            '<h2>' + "Card Name: " + card.value.name + '</h2>'+
+            '<li>' + "Currently In Use? " + card.value.usage + '</li>' +
+            '<li>' + "Card Type: " + card.value.type + '</li>' +  
+            '<li>' + "Mana Cost: " + card.value.mana + '</li>' +  
+            '<li>' + "Colors: " + card.value.colors + '</li>' +  
+            '<li>' + "Notes: " + card.value.notes + '</li>' + 
+            '<li>' + "Number Owned: " + card.value.number + '</li>' +
+         '</div>'
+      ).appendTo('#displaybucket')
+   }
+};
+*/
 
 //This is the guts of the Csv display; works in tandem with it
 function makeCsvDataDisplay(csv){

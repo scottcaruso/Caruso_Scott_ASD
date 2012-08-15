@@ -388,14 +388,14 @@ function makeJsonDataDisplay(data){
    window.location="#display";
    for(var i=0, j=data.cards.length; i<j; i++){
       var card = data.cards[i];
-      $('<div class="card">'+
-            '<h2>' + card.name + '</h2>'+
-            '<li>' + card.usage + '</li>' +
-            '<li>' + card.type + '</li>' +  
-            '<li>' + card.mana + '</li>' +  
-            '<li>' + card.colors + '</li>' +  
-            '<li>' + card.notes + '</li>' + 
-            '<li>' + card.number + '</li>' +
+      $('<div data-role="collapsible" data-theme="b">' + 
+            '<h3>' + card.name + '</h3>'+
+            '<p>' + "Currently in use? " + card.usage + '</p>' +
+            '<p>' + "Card Type: " + card.type + '</p>' +  
+            '<p>' + "Mana Cost: " + card.mana + '</p>' +  
+            '<p>' + "Colors: " + card.colors + '</p>' +  
+            '<p>' + "Notes: " + card.notes + '</p>' + 
+            '<p>' + "Number Owned: " + card.number + '</p>' +
          '</div>'
       ).appendTo('#displaybucket')
    }
@@ -407,14 +407,14 @@ function makeJsonDataDisplay(data){
    window.location="#display";
    for(var i=0, j=data.rows.length; i<j; i++){
       var card = data.rows[i];
-      $('<div class="card">'+
-            '<h2>' + "Card Name: " + card.value.name + '</h2>'+
-            '<li>' + "Currently In Use? " + card.value.usage + '</li>' +
-            '<li>' + "Card Type: " + card.value.type + '</li>' +  
-            '<li>' + "Mana Cost: " + card.value.mana + '</li>' +  
-            '<li>' + "Colors: " + card.value.colors + '</li>' +  
-            '<li>' + "Notes: " + card.value.notes + '</li>' + 
-            '<li>' + "Number Owned: " + card.value.number + '</li>' +
+      $('<div data-role="collapsible" data-theme="b">'+
+            '<h3>' + "Card Name: " + card.value.name + '</h3>'+
+            '<p>' + "Currently In Use? " + card.value.usage + '</p>' +
+            '<p>' + "Card Type: " + card.value.type + '</p>' +  
+            '<p>' + "Mana Cost: " + card.value.mana + '</p>' +  
+            '<p>' + "Colors: " + card.value.colors + '</p>' +  
+            '<p>' + "Notes: " + card.value.notes + '</p>' + 
+            '<p>' + "Number Owned: " + card.value.number + '</p>' +
          '</div>'
       ).appendTo('#displaybucket')
    }

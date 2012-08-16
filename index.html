@@ -47,8 +47,10 @@
 
 			<div data-role="content" id="display">
 				<p>View and manage your Magic: The Gathering card data from anywhere. Get ready for your next battle in the Planesverse!</p>
+				<h3>DEBUG/WIP - COUCHAPP DATA LOADS THROUGH CTA IMAGE AND ALL CARDS LINKS ONLY FOR NOW.</h3>
+				<h3>DEBUG/WIP - USE RECENT LINK OR SEARCH TO VIEW CARDS ADDED VIA CRUD.</h3>
 				<div class="cta">
-					<a href="#display"><img src="img/cta_viewlibrary.png"></a>
+					<a href="#display" id="viewactive" data-prefetch><img src="img/cta_viewlibrary.png"></a>
 				</div>
 				<div class="search">
 					<input type="search" name="search" id="searchbox" placeholder="Enter Card Name" data-mini="true" />
@@ -59,7 +61,7 @@
 					<ul data-role="listview" data-inset="true" data-theme="d">
 						<li data-role="list-divider">Browse by...</li>
 						</li>
-						<li><a href="#display">All Cards</a></li>
+						<li><a href="#display" id="allcards">All Cards</a></li>
 						<li><a href="#" id="recentcards">Recent</a></li>
 						<li><a href="#colors">Color</a>
 							<!-- <ul>
@@ -157,9 +159,6 @@
 						<li>
 						<a href="#addcard" id="addcard">Add a Card</a>
 						</li>
-						<li data-icon="false"><a href="#" id="ajax-json">Parse JSON Data</a></li>
-						<li data-icon="false"><a href="#" id="ajax-xml">Parse XML Data</a></li>
-						<li data-icon="false"><a href="#" id="ajax-csv">Parse CSV Data</a></li>
 						<li data-icon="false"><a href="#" id="eraseData">Clear Binder</a></li>
 						<li data-icon="false"><a href="#" id="fillJsonData">[DEBUG] Fill Binder</a></li>
 					</ul>
@@ -317,13 +316,10 @@
 				<h1>Display Cards</h1>
 				<a href="index.html" data-icon="back">Back</a>
 			</div>
-			<div data-role="listview">
-				<li data-icon="false"><a href="#" id="ajax-json-alt">DEBUG Parse JSON Data</a></li>
-				<li data-icon="false"><a href="#" id="ajax-xml-alt">DEBUG Parse XML Data</a></li>
-				<li data-icon="false"><a href="#" id="ajax-csv-alt">DEBUG Parse CSV Data</a></li>
-			</div>
 			<div data-role="content">
 				<div id="displaybucket" class="displaybucket">
+				</div>
+				<div data-role="collapsible-set" class="displaybucketcollapse" id="displaybucketcollapse">
 				</div>
 				<h2>DEBUG: TODO - Display the correct cards with each link.</h2>
 				<p>This page is under construction. It will display the user's cards!</p>
@@ -382,8 +378,8 @@
 					<p>The Reset Form button only clears text fields for some reason. Need to investigate further to see if we can fix it.</p>
 				</div></a>
 				<div data-role="collapsible" data-theme="b">
-					<h1>Edit/Delete Links</h1>
-					<p>Sometimes, the Edit and Delete links on the Display Cards page blend in to the gradient background. Sometimes they look fine. I can't figure out why it happens. Need to investigate.</p>
+					<h1>Add Card Form - Firefox</h1>
+					<p>In Firefox only, the refresh function does not seem to be working on the Add Card page, so the last data is repopulating.</p>
 				</div></a>
 			</div>
 			<div data-role="footer" data-id="mainnav" data-theme="b">

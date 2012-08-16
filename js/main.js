@@ -1,6 +1,6 @@
 //Scott Caruso
 //ASDI 1208
-//Project 2 - Adding Remote Data
+//Project 3 - Adding Couchbase
 
 //Ensure dom is loaded before doing anything else.
 $(document).on("pageinit", function(){
@@ -292,7 +292,7 @@ function addCardReload(){
 };
 
 
-//Function to get json data with Ajax. Makes the .on functions cleaner.
+//Function to get json data with Ajax. Makes the .on functions cleaner. THIS ONE IS FOR THE LOCALLY SAVED JSON.
 function getJsonAjax(){
    $.ajax({
       url: "xhr/data.json",
@@ -307,6 +307,7 @@ function getJsonAjax(){
    });
 };
 
+/*
 //Function to get xml data with Ajax.
 function getXmlAjax(){
    $.ajax({
@@ -363,26 +364,28 @@ function doStuffAfterXml(xml){
       ).appendTo('#displaybucket')
    });
 };
+*/
 
-//This is the guts of the Json display; works in tandem with it.
+//This is the guts of the Json display; works in tandem with it. - FOR USE WITH LOCALLY-SAVED JSON!
 function makeJsonDataDisplay(data){
    $("#displaybucket").empty();
    window.location="#display";
    for(var i=0, j=data.cards.length; i<j; i++){
       var card = data.cards[i];
-      $('<div class="card">'+
-            '<h2>' + card.name + '</h2>'+
-            '<li>' + card.usage + '</li>' +
-            '<li>' + card.type + '</li>' +  
-            '<li>' + card.mana + '</li>' +  
-            '<li>' + card.colors + '</li>' +  
-            '<li>' + card.notes + '</li>' + 
-            '<li>' + card.number + '</li>' +
+      $('<div data-role="collapsible" data-theme="b">' + 
+            '<h3>' + card.name + '</h3>'+
+            '<p>' + "Currently in use? " + card.usage + '</p>' +
+            '<p>' + "Card Type: " + card.type + '</p>' +  
+            '<p>' + "Mana Cost: " + card.mana + '</p>' +  
+            '<p>' + "Colors: " + card.colors + '</p>' +  
+            '<p>' + "Notes: " + card.notes + '</p>' + 
+            '<p>' + "Number Owned: " + card.number + '</p>' +
          '</div>'
       ).appendTo('#displaybucket')
    }
 };
 
+/*
 //This is the guts of the Csv display; works in tandem with it
 function makeCsvDataDisplay(csv){
    $("#displaybucket").empty();
@@ -450,7 +453,7 @@ function makeCsvDataDisplay(csv){
          '</div>'
       ).appendTo('#displaybucket')
    }
-};
+};*/
 
 //Make things happen when the links are clicked.
 //The "unbind" events exist to prevent a bug where double pop-ups were occurring as if there were two clicks being registered.
@@ -459,48 +462,78 @@ $("#fillJsonData").unbind("click");
 $("#searchbutton").unbind("click");
 $("#recentcards").unbind("click");
 $("#addcard").unbind("click");
-//$("#ajax-json").unbind("click");
-//$("#ajax-xml").unbind("click");
-//$("#ajax-csv").unbind("click");
+$("#viewactive").unbind("click");
 $("#eraseData").on("click",function(){eraseCardData(); return false});
 $("#fillJsonData").on("click",function(){fillWithJsonData(); return false});
 $("#searchbutton").on("click",function(){keywordRead(); return false});
 $("#recentcards").on("click",function(){newsFeed(); return false});
-$("#addcard").on("click",function(){addCardReload(); return false});
-$("#ajax-json")
+$("#addcard").on("click",function(){addCardReload()});
+$("#allcards")
    .on("click",
       function(){
          getJsonAjax();
          return false
       });
-$("#ajax-xml")   
-   .on("click",
-      function(){
-         getXmlAjax();
-         return false
-      });
-$("#ajax-csv")
-   .on("click",
-      function(){
-         getCsvAjax();
-         return false
-      });
-$("#ajax-json-alt")
-   .on("click",
-      function(){
-         getJsonAjax();
-         return false
-      });
-$("#ajax-xml-alt")   
-   .on("click",
-      function(){
-         getXmlAjax();
-         return false
-      });
-$("#ajax-csv-alt")
-   .on("click",
-      function(){
-         getCsvAjax();
-         return false
-      });
+
+//All of the below are functions that are only for use with COUCHBASE data.
+
+/*Function to get json data with Ajax. Makes the .on functions cleaner. THIS ONE IS FOR COUCHBASE SAVED JSON.
+function getJsonAjax(){
+   $.ajax({
+      url: "_view/cards",
+      type: "GET",
+      dataType: "json",
+      success: function(data){
+         makeJsonDataDisplay(data);
+       console.log(data);
+      },
+      error: function(){
+         console.log("There was an error.")
+      }
+   });
+};
+*/
+
+/*Function to get ONLY currently in-use cards from CouchBase.
+function getJsonAjaxInUse(){
+   $.ajax({
+      url: "_view/inuse",
+      type: "GET",
+      dataType: "json",
+      success: function(data){
+         makeJsonDataDisplay(data);
+       console.log(data);
+      },
+      error: function(){
+         console.log("There was an error.")
+      }
+   });
+};
+*/
+
+
+/*This is the guts of the Json display; works in tandem with it. - FOR USE WITH COUCHBASE ONLY!
+function makeJsonDataDisplay(data){ 
+   window.location="#display";
+   $("#displaybucket").empty();
+   $("#displaybucketcollapse").empty();
+   for(var i=0, j=data.rows.length; i<j; i++){
+      var card = data.rows[i];
+      $('<div data-role="collapsible" data-theme="b" id="displaycollapse">'+
+            '<h3>' + "Card Name: " + card.value.name + '</h3>'+
+            '<p>' + "Currently In Use? " + card.value.usage + '</p>' +
+            '<p>' + "Card Type: " + card.value.type + '</p>' +  
+            '<p>' + "Mana Cost: " + card.value.mana + '</p>' +  
+            '<p>' + "Colors: " + card.value.colors + '</p>' +  
+            '<p>' + "Notes: " + card.value.notes + '</p>' + 
+            '<p>' + "Number Owned: " + card.value.number + '</p>' +
+         '</div>'
+      ).appendTo('#displaybucketcollapse');
+   };
+   $("#displaybucketcollapse").collapsibleset("refresh");
+};
+*/
+
+//$("#viewactive").on("click",function(){getJsonAjaxInUse(); return false});
+
 });

@@ -307,6 +307,7 @@ function getJsonAjax(){
    });
 };
 
+/*
 //Function to get xml data with Ajax.
 function getXmlAjax(){
    $.ajax({
@@ -363,6 +364,7 @@ function doStuffAfterXml(xml){
       ).appendTo('#displaybucket')
    });
 };
+*/
 
 //This is the guts of the Json display; works in tandem with it. - FOR USE WITH LOCALLY-SAVED JSON!
 function makeJsonDataDisplay(data){
@@ -383,6 +385,7 @@ function makeJsonDataDisplay(data){
    }
 };
 
+/*
 //This is the guts of the Csv display; works in tandem with it
 function makeCsvDataDisplay(csv){
    $("#displaybucket").empty();
@@ -450,7 +453,7 @@ function makeCsvDataDisplay(csv){
          '</div>'
       ).appendTo('#displaybucket')
    }
-};
+};*/
 
 //Make things happen when the links are clicked.
 //The "unbind" events exist to prevent a bug where double pop-ups were occurring as if there were two clicks being registered.
@@ -464,42 +467,11 @@ $("#eraseData").on("click",function(){eraseCardData(); return false});
 $("#fillJsonData").on("click",function(){fillWithJsonData(); return false});
 $("#searchbutton").on("click",function(){keywordRead(); return false});
 $("#recentcards").on("click",function(){newsFeed(); return false});
-$("#addcard").on("click",function(){addCardReload(); return false});
-
-$("#ajax-json")
+$("#addcard").on("click",function(){addCardReload()});
+$("#allcards")
    .on("click",
       function(){
          getJsonAjax();
-         return false
-      });
-$("#ajax-xml")   
-   .on("click",
-      function(){
-         getXmlAjax();
-         return false
-      });
-$("#ajax-csv")
-   .on("click",
-      function(){
-         getCsvAjax();
-         return false
-      });
-$("#ajax-json-alt")
-   .on("click",
-      function(){
-         getJsonAjax();
-         return false
-      });
-$("#ajax-xml-alt")   
-   .on("click",
-      function(){
-         getXmlAjax();
-         return false
-      });
-$("#ajax-csv-alt")
-   .on("click",
-      function(){
-         getCsvAjax();
          return false
       });
 
@@ -541,12 +513,13 @@ function getJsonAjaxInUse(){
 
 
 /*This is the guts of the Json display; works in tandem with it. - FOR USE WITH COUCHBASE ONLY!
-function makeJsonDataDisplay(data){
-   $("#displaybucket").empty();
+function makeJsonDataDisplay(data){ 
    window.location="#display";
+   $("#displaybucket").empty();
+   $("#displaybucketcollapse").empty();
    for(var i=0, j=data.rows.length; i<j; i++){
       var card = data.rows[i];
-      $('<div data-role="collapsible" data-theme="b">'+
+      $('<div data-role="collapsible" data-theme="b" id="displaycollapse">'+
             '<h3>' + "Card Name: " + card.value.name + '</h3>'+
             '<p>' + "Currently In Use? " + card.value.usage + '</p>' +
             '<p>' + "Card Type: " + card.value.type + '</p>' +  
@@ -555,8 +528,9 @@ function makeJsonDataDisplay(data){
             '<p>' + "Notes: " + card.value.notes + '</p>' + 
             '<p>' + "Number Owned: " + card.value.number + '</p>' +
          '</div>'
-      ).appendTo('#displaybucket')
-   }
+      ).appendTo('#displaybucketcollapse');
+   };
+   $("#displaybucketcollapse").collapsibleset("refresh");
 };
 */
 

@@ -1,6 +1,6 @@
 //Scott Caruso
 //ASDI 1208
-//Project 2 - Adding Remote Data
+//Project 3 - Adding Couchbase
 
 //Ensure dom is loaded before doing anything else.
 $(document).on("pageinit", function(){
@@ -307,24 +307,6 @@ function getJsonAjax(){
    });
 };
 
-
-/*Function to get json data with Ajax. Makes the .on functions cleaner. THIS ONE IS FOR COUCHBASE SAVED JSON.
-function getJsonAjax(){
-   $.ajax({
-      url: "_view/cards",
-      type: "GET",
-      dataType: "json",
-      success: function(data){
-         makeJsonDataDisplay(data);
-       console.log(data);
-      },
-      error: function(){
-         console.log("There was an error.")
-      }
-   });
-};
-*/
-
 //Function to get xml data with Ajax.
 function getXmlAjax(){
    $.ajax({
@@ -400,26 +382,6 @@ function makeJsonDataDisplay(data){
       ).appendTo('#displaybucket')
    }
 };
-
-/*This is the guts of the Json display; works in tandem with it. - FOR USE WITH COUCHBASE ONLY!
-function makeJsonDataDisplay(data){
-   $("#displaybucket").empty();
-   window.location="#display";
-   for(var i=0, j=data.rows.length; i<j; i++){
-      var card = data.rows[i];
-      $('<div data-role="collapsible" data-theme="b">'+
-            '<h3>' + "Card Name: " + card.value.name + '</h3>'+
-            '<p>' + "Currently In Use? " + card.value.usage + '</p>' +
-            '<p>' + "Card Type: " + card.value.type + '</p>' +  
-            '<p>' + "Mana Cost: " + card.value.mana + '</p>' +  
-            '<p>' + "Colors: " + card.value.colors + '</p>' +  
-            '<p>' + "Notes: " + card.value.notes + '</p>' + 
-            '<p>' + "Number Owned: " + card.value.number + '</p>' +
-         '</div>'
-      ).appendTo('#displaybucket')
-   }
-};
-*/
 
 //This is the guts of the Csv display; works in tandem with it
 function makeCsvDataDisplay(csv){
@@ -497,14 +459,13 @@ $("#fillJsonData").unbind("click");
 $("#searchbutton").unbind("click");
 $("#recentcards").unbind("click");
 $("#addcard").unbind("click");
-//$("#ajax-json").unbind("click");
-//$("#ajax-xml").unbind("click");
-//$("#ajax-csv").unbind("click");
+$("#viewactive").unbind("click");
 $("#eraseData").on("click",function(){eraseCardData(); return false});
 $("#fillJsonData").on("click",function(){fillWithJsonData(); return false});
 $("#searchbutton").on("click",function(){keywordRead(); return false});
 $("#recentcards").on("click",function(){newsFeed(); return false});
 $("#addcard").on("click",function(){addCardReload(); return false});
+
 $("#ajax-json")
    .on("click",
       function(){
@@ -541,4 +502,64 @@ $("#ajax-csv-alt")
          getCsvAjax();
          return false
       });
+
+//All of the below are functions that are only for use with COUCHBASE data.
+
+/*Function to get json data with Ajax. Makes the .on functions cleaner. THIS ONE IS FOR COUCHBASE SAVED JSON.
+function getJsonAjax(){
+   $.ajax({
+      url: "_view/cards",
+      type: "GET",
+      dataType: "json",
+      success: function(data){
+         makeJsonDataDisplay(data);
+       console.log(data);
+      },
+      error: function(){
+         console.log("There was an error.")
+      }
+   });
+};
+*/
+
+/*Function to get ONLY currently in-use cards from CouchBase.
+function getJsonAjaxInUse(){
+   $.ajax({
+      url: "_view/inuse",
+      type: "GET",
+      dataType: "json",
+      success: function(data){
+         makeJsonDataDisplay(data);
+       console.log(data);
+      },
+      error: function(){
+         console.log("There was an error.")
+      }
+   });
+};
+*/
+
+
+/*This is the guts of the Json display; works in tandem with it. - FOR USE WITH COUCHBASE ONLY!
+function makeJsonDataDisplay(data){
+   $("#displaybucket").empty();
+   window.location="#display";
+   for(var i=0, j=data.rows.length; i<j; i++){
+      var card = data.rows[i];
+      $('<div data-role="collapsible" data-theme="b">'+
+            '<h3>' + "Card Name: " + card.value.name + '</h3>'+
+            '<p>' + "Currently In Use? " + card.value.usage + '</p>' +
+            '<p>' + "Card Type: " + card.value.type + '</p>' +  
+            '<p>' + "Mana Cost: " + card.value.mana + '</p>' +  
+            '<p>' + "Colors: " + card.value.colors + '</p>' +  
+            '<p>' + "Notes: " + card.value.notes + '</p>' + 
+            '<p>' + "Number Owned: " + card.value.number + '</p>' +
+         '</div>'
+      ).appendTo('#displaybucket')
+   }
+};
+*/
+
+//$("#viewactive").on("click",function(){getJsonAjaxInUse(); return false});
+
 });

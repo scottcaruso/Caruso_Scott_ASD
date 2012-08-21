@@ -21,6 +21,45 @@ $(document).on("pageinit", function(){
    })
 })
 
+//Placeholder savedata function for now.
+$.couch.db("mtgbinder").saveDoc(doc, {
+    success: function(data) {
+        console.log(data);
+    },
+    error: function(status) {
+        console.log(status);
+    }
+});
+
+//Placeholder edit function for now.
+var doc = {
+    _id: "d12ee5ea1df6baa2b06451f44a019ab9",
+    _rev: "1-967a00dff5e02add41819138abb3284d",
+    foo: "bar"
+};
+$.couch.db("mydb").saveDoc(doc, {
+    success: function(data) {
+        console.log(data);
+    },
+    error: function(status) {
+        console.log(status);
+    }
+});
+
+//Placeholder delete function for now - use this in place of existing Delete!
+var doc = {
+    _id: "d12ee5ea1df6baa2b06451f44a019ab9",
+    _rev: "2-13839535feb250d3d8290998b8af17c3"
+};
+$.couch.db("mydb").removeDoc(doc, {
+     success: function(data) {
+         console.log(data);
+    },
+    error: function(status) {
+        console.log(status);
+    }
+});
+
 /*
 Commenting out, since this shouldn't be needed anymore. Relic of pre-jquery days.
 function elementName(x){

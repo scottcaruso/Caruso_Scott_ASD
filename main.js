@@ -1,6 +1,6 @@
 //Scott Caruso
 //ASDI 1208
-//Project 3 - Adding Couchbase
+//Project 4 - Cloudifying the CRUD
 
 //Ensure dom is loaded before doing anything else.
 $(document).on("pageinit", function(){
@@ -139,6 +139,7 @@ function newsFeed(){
    if (localStorage.length === 0){
       alert("There are no cards saved in this binder to view.");
    } else {
+	  $("#displaybucketcollapse").empty(); 
       $("#displaybucket").append("<dl id='listcards'></dl>")
       for(var y=localStorage.length; y>0; y--){
          var value = localStorage.getItem(y);
@@ -291,8 +292,8 @@ function addCardReload(){
    window.location.reload();
 };
 
-
-//Function to get json data with Ajax. Makes the .on functions cleaner. THIS ONE IS FOR THE LOCALLY SAVED JSON.
+//COMMENT OUT THE BELOW WHEN USING COUCHBASE JSON
+/*Function to get json data with Ajax. Makes the .on functions cleaner. THIS ONE IS FOR THE LOCALLY SAVED JSON.
 function getJsonAjax(){
    $.ajax({
       url: "xhr/data.json",
@@ -306,10 +307,10 @@ function getJsonAjax(){
       }
    });
 };
+*/
 
-/*
 //Function to get xml data with Ajax.
-function getXmlAjax(){
+/*function getXmlAjax(){
    $.ajax({
       url: "xhr/data.xml",
       type: "GET",
@@ -366,7 +367,8 @@ function doStuffAfterXml(xml){
 };
 */
 
-//This is the guts of the Json display; works in tandem with it. - FOR USE WITH LOCALLY-SAVED JSON!
+//COMMENT OUT THE BELOW WHEN USING COUCHBASE JSON
+/*This is the guts of the Json display; works in tandem with it. - FOR USE WITH LOCALLY-SAVED JSON!
 function makeJsonDataDisplay(data){
    $("#displaybucket").empty();
    window.location="#display";
@@ -384,8 +386,8 @@ function makeJsonDataDisplay(data){
       ).appendTo('#displaybucket')
    }
 };
+*/
 
-/*
 //This is the guts of the Csv display; works in tandem with it
 function makeCsvDataDisplay(csv){
    $("#displaybucket").empty();
@@ -453,7 +455,7 @@ function makeCsvDataDisplay(csv){
          '</div>'
       ).appendTo('#displaybucket')
    }
-};*/
+};
 
 //Make things happen when the links are clicked.
 //The "unbind" events exist to prevent a bug where double pop-ups were occurring as if there were two clicks being registered.
@@ -467,7 +469,7 @@ $("#eraseData").on("click",function(){eraseCardData(); return false});
 $("#fillJsonData").on("click",function(){fillWithJsonData(); return false});
 $("#searchbutton").on("click",function(){keywordRead(); return false});
 $("#recentcards").on("click",function(){newsFeed(); return false});
-$("#addcard").on("click",function(){addCardReload()});
+$("#addcard").on("click",function(){addCardReload(); return false});
 $("#allcards")
    .on("click",
       function(){
@@ -477,7 +479,7 @@ $("#allcards")
 
 //All of the below are functions that are only for use with COUCHBASE data.
 
-/*Function to get json data with Ajax. Makes the .on functions cleaner. THIS ONE IS FOR COUCHBASE SAVED JSON.
+//Function to get json data with Ajax. Makes the .on functions cleaner. THIS ONE IS FOR COUCHBASE SAVED JSON.
 function getJsonAjax(){
    $.ajax({
       url: "_view/cards",
@@ -485,16 +487,14 @@ function getJsonAjax(){
       dataType: "json",
       success: function(data){
          makeJsonDataDisplay(data);
-       console.log(data);
       },
       error: function(){
          console.log("There was an error.")
       }
    });
 };
-*/
 
-/*Function to get ONLY currently in-use cards from CouchBase.
+//Function to get ONLY currently in-use cards from CouchBase.
 function getJsonAjaxInUse(){
    $.ajax({
       url: "_view/inuse",
@@ -502,18 +502,15 @@ function getJsonAjaxInUse(){
       dataType: "json",
       success: function(data){
          makeJsonDataDisplay(data);
-       console.log(data);
       },
       error: function(){
          console.log("There was an error.")
       }
    });
 };
-*/
 
-
-/*This is the guts of the Json display; works in tandem with it. - FOR USE WITH COUCHBASE ONLY!
-function makeJsonDataDisplay(data){ 
+//This is the guts of the Json display; works in tandem with it. - FOR USE WITH COUCHBASE ONLY!
+function makeJsonDataDisplay(data){	
    window.location="#display";
    $("#displaybucket").empty();
    $("#displaybucketcollapse").empty();
@@ -532,8 +529,7 @@ function makeJsonDataDisplay(data){
    };
    $("#displaybucketcollapse").collapsibleset("refresh");
 };
-*/
 
-//$("#viewactive").on("click",function(){getJsonAjaxInUse(); return false});
+$("#viewactive").on("click",function(){getJsonAjaxInUse(); return false});
 
 });

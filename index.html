@@ -15,7 +15,7 @@
 		<meta name="HandheldFriendly" content="True">
 		<meta name="MobileOptimized" content="320"/>
 		<meta charset="utf-8" />
-        <link href="css/styles.css" rel="stylesheet" />	
+        <link href="styles.css" rel="stylesheet" />	
 
 		<!-- REMINDER FROM JQ Template: Mobile IE needs ClearType for smoothing fonts -->
 		<meta http-equiv="cleartype" content="on">
@@ -23,19 +23,20 @@
 		<!-- JQ TEMPLATE - StyleSheets under here -->
 		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.css" />
 		<!-- JQ TEMPLATE - JavaScript is normally at the end of the body, except for Modernizr which enables HTML5 elements & feature detects -->
-		<script src="js/libs/modernizr.custom.min.js"></script>
+		<script src="modernizr.custom.min.js"></script>
 		<!-- JQUuery Mobile Links -->
 		<script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
-		<script src="js/libs/jquery.validate.min.js" type="text/javascript"></script>
+		<script src="jquery.validate.min.js" type="text/javascript"></script>
 		<script src="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.js"></script>
+		<script src="jquery.couch.js"></script>
 		<!-- This is here so that search and other features aren't broken during conversion to parser.-->
-		<script src="xhr/olddata.json" type="text/javascript"></script>
+		<script src="olddata.json" type="text/javascript"></script>
 	</head>
 	
 	<body>
 		<div data-role="page" id="home" data-theme="d">
 	        <header>
-	            <img src="img/mainlogo.png" alt="Planeswalker's Binder">
+	            <img src="mainlogo.png" alt="Planeswalker's Binder">
 	        <!-- Commenting out Search Box 
 	            <div class="search">
 	        		<form action="" method="post" id="form">
@@ -47,15 +48,15 @@
 
 			<div data-role="content" id="display">
 				<p>View and manage your Magic: The Gathering card data from anywhere. Get ready for your next battle in the Planesverse!</p>
-				<h3>DEBUG/WIP - COUCHAPP DATA LOADS THROUGH CTA IMAGE AND ALL CARDS LINKS ONLY FOR NOW.</h3>
-				<h3>DEBUG/WIP - USE RECENT LINK OR SEARCH TO VIEW CARDS ADDED VIA CRUD.</h3>
 				<div class="cta">
-					<a href="#display" id="viewactive" data-prefetch><img src="img/cta_viewlibrary.png"></a>
+					<a href="#display" id="viewactive" data-prefetch><img src="cta_viewlibrary.png"></a>
 				</div>
 				<div class="search">
 					<input type="search" name="search" id="searchbox" placeholder="Enter Card Name" data-mini="true" />
 					<button type="submit" data-mini="true" id="searchbutton">Quick Search Binder</button>
 					<p>DEBUG: Search is currently CASE SENSITIVE</p>
+					<h3>DEBUG/WIP - COUCHAPP DATA LOADS THROUGH CTA IMAGE AND ALL CARDS LINKS ONLY FOR NOW.</h3>
+					<h3>DEBUG/WIP - USE RECENT LINK OR SEARCH TO VIEW CARDS ADDED VIA CRUD.</h3>
 				</div>
 				<nav>
 					<ul data-role="listview" data-inset="true" data-theme="d">
@@ -67,37 +68,37 @@
 							<!-- <ul>
 								<li>
 									<a href="#display" id="whitemenu">
-									<img src="img/white.png" />
+									<img src="white.png" />
 									<h2>White</h2>
 									<p>Browse all white cards.</p>
 									</a></li>
 								<li>
 									<a href="#display" id="blackmenu">
-									<img src="img/black.png" />
+									<img src="black.png" />
 									<h2>Black</h2>
 									<p>Browse all black cards.</p>
 								</a></li>
 								<li>
 									<a href="#display" id="bluemenu">
-									<img src="img/blue.png" />
+									<img src="blue.png" />
 									<h2>Blue</h2>
 									<p>Browse all blue cards.</p>
 								</a></li>
 								<li>
 									<a href="#display" id="redmenu">
-									<img src="img/red.png" />
+									<img src="red.png" />
 									<h2>Red</h2>
 									<p>Browse all red cards.</p>
 								</a></li>
 								<li>
 									<a href="#display" id="greenmenu">
-									<img src="img/green.png" />
+									<img src="green.png" />
 									<h2>Green</h2>
 									<p>Browse all Green cards.</p>
 								</a></li>
 								<li>
 									<a href="#display" id="colorlessmenu">
-									<img src="img/colorless.png" />
+									<img src="colorless.png" />
 									<h2>Colorless</h2>
 									<p>Browse all Colorless cards.</p>
 								</a></li>
@@ -107,49 +108,49 @@
 							<!--<ul>
 								<li>
 									<a href="#display" id="creature">
-									<img src="img/creature.png" />
+									<img src="creature.png" />
 									<h2>Creature</h2>
 									<p>Browse all creature cards.</p>
 								</a></li>
 								<li>
 									<a href="#display" id="planeswalker">
-									<img src="img/planeswalker.png" />
+									<img src="planeswalker.png" />
 									<h2>Planeswalker</h2>
 									<p>Browse all planeswalker cards.</p>
 								</a></li>
 								<li>
 									<a href="#display" id="instant">
-									<img src="img/instant.png" />
+									<img src="instant.png" />
 									<h2>Instant</h2>
 									<p>Browse all instant cards.</p>
 								</a></li>
 								<li>
 									<a href="#display" id="sorcery">
-									<img src="img/sorcery.png" />
+									<img src="sorcery.png" />
 									<h2>Sorcery</h2>
 									<p>Browse all sorcery cards.</p>
 								</a></li>
 								<li>
 									<a href="#display" id="buff">
-									<img src="img/enchantment-buff.png" />
+									<img src="enchantment-buff.png" />
 									<h2>Enchantment-Buff</h2>
 									<p>Browse all Buff cards.</p>
 								</a></li>
 								<li>
 									<a href="#display" id="curse">
-									<img src="img/enchantment-curse.png" />
+									<img src="enchantment-curse.png" />
 									<h2>Enchament-Curse</h2>
 									<p>Browse all Curse cards.</p>
 								</a></li>
 								<li>
 									<a href="#display" id="artifact">
-									<img src="img/Artifact.png" />
+									<img src="Artifact.png" />
 									<h2>Artifact</h2>
 									<p>Browse all Artifact cards.</p>
 								</a></li>
 								<li>
 									<a href="#display" id="land">
-									<img src="img/land.png" />
+									<img src="land.png" />
 									<h2>Land</h2>
 									<p>Browse all land cards.</p>
 								</a></li>
@@ -177,7 +178,7 @@
 
 		<div data-role="page" id="colors" data-theme="d">
 	        <header>
-	            <img src="img/mainlogo.png" alt="Planeswalker's Binder">
+	            <img src="mainlogo.png" alt="Planeswalker's Binder">
 	            <div data-role="header" data-theme="b">
 					<h1>Browse Colors</h1>
 					<a href="index.html" data-icon="back">Back</a>
@@ -189,37 +190,37 @@
 					<ul data-role="listview" data-inset="true" data-theme="d">
 						<li>
 							<a href="#display" id="whitemenu">
-							<img src="img/white.png" />
+							<img src="white.png" />
 							<h2>White</h2>
 							<p>Browse all white cards.</p>
 							</a></li>
 						<li>
 							<a href="#display" id="blackmenu">
-							<img src="img/black.png" />
+							<img src="black.png" />
 							<h2>Black</h2>
 							<p>Browse all black cards.</p>
 						</a></li>
 						<li>
 							<a href="#display" id="bluemenu">
-							<img src="img/blue.png" />
+							<img src="blue.png" />
 							<h2>Blue</h2>
 							<p>Browse all blue cards.</p>
 						</a></li>
 						<li>
 							<a href="#display" id="redmenu">
-							<img src="img/red.png" />
+							<img src="red.png" />
 							<h2>Red</h2>
 							<p>Browse all red cards.</p>
 						</a></li>
 						<li>
 							<a href="#display" id="greenmenu">
-							<img src="img/green.png" />
+							<img src="green.png" />
 							<h2>Green</h2>
 							<p>Browse all Green cards.</p>
 						</a></li>
 						<li>
 							<a href="#display" id="colorlessmenu">
-							<img src="img/colorless.png" />
+							<img src="colorless.png" />
 							<h2>Colorless</h2>
 							<p>Browse all Colorless cards.</p>
 						</a></li>
@@ -239,7 +240,7 @@
 
 		<div data-role="page" id="categories" data-theme="d">
 	        <header>
-	            <img src="img/mainlogo.png" alt="Planeswalker's Binder">
+	            <img src="mainlogo.png" alt="Planeswalker's Binder">
 	            <div data-role="header" data-theme="b">
 					<h1>Browse Categ.</h1>
 					<a href="index.html" data-icon="back">Back</a>
@@ -249,49 +250,49 @@
 					<ul data-role="listview" data-inset="true" data-theme="d">
 						<li>
 							<a href="#display" id="creature">
-							<img src="img/Creature.png" />
+							<img src="Creature.png" />
 							<h2>Creature</h2>
 							<p>Browse all creature cards.</p>
 						</a></li>
 						<li>
 							<a href="#display" id="planeswalker">
-							<img src="img/Planeswalker.png" />
+							<img src="Planeswalker.png" />
 							<h2>Planeswalker</h2>
 							<p>Browse all planeswalker cards.</p>
 						</a></li>
 						<li>
 							<a href="#display" id="instant">
-							<img src="img/Instant.png" />
+							<img src="Instant.png" />
 							<h2>Instant</h2>
 							<p>Browse all instant cards.</p>
 						</a></li>
 						<li>
 							<a href="#display" id="sorcery">
-							<img src="img/Sorcery.png" />
+							<img src="Sorcery.png" />
 							<h2>Sorcery</h2>
 							<p>Browse all sorcery cards.</p>
 						</a></li>
 						<li>
 							<a href="#display" id="buff">
-							<img src="img/Enchantment-Buff.png" />
+							<img src="Enchantment-Buff.png" />
 							<h2>Enchantment-Buff</h2>
 							<p>Browse all Buff cards.</p>
 						</a></li>
 						<li>
 							<a href="#display" id="curse">
-							<img src="img/Enchantment-Curse.png" />
+							<img src="Enchantment-Curse.png" />
 							<h2>Enchament-Curse</h2>
 							<p>Browse all Curse cards.</p>
 						</a></li>
 						<li>
 							<a href="#display" id="artifact">
-							<img src="img/Artifact.png" />
+							<img src="Artifact.png" />
 							<h2>Artifact</h2>
 							<p>Browse all Artifact cards.</p>
 						</a></li>
 						<li>
 							<a href="#display" id="land">
-							<img src="img/Land.png" />
+							<img src="Land.png" />
 							<h2>Land</h2>
 							<p>Browse all land cards.</p>
 						</a></li>
@@ -311,7 +312,7 @@
 
 		<div data-role="page" id="display" data-add-back-btn="true">
 
-			<img src="img/mainlogo.png" />
+			<img src="mainlogo.png" />
 			<div data-role="header" data-theme="b">
 				<h1>Display Cards</h1>
 				<a href="index.html" data-icon="back">Back</a>
@@ -335,7 +336,7 @@
 		</div> <!-- Display Page -->
 
 		<div data-role="page" id="about" data-add-back-btn="true">
-			<img src="img/mainlogo.png"  />
+			<img src="mainlogo.png"  />
 			<div data-role="header" data-theme="b">
 				<h1>About This App</h1>
 				<a href="index.html" data-icon="back">Back</a>
@@ -344,7 +345,6 @@
 				<ul data-role="listview" data-inset="true">
 					<li><a href="http://scottcaruso.github.com/caruso_scott_miu/Gold/index.html">gh-pages Link</a></li>
 					<li><a href="https://github.com/scottcaruso/caruso_scott_miu">Master Github Repository</a></li>
-					<li><a href="Bronze/index.html" data-ajax="false">Bronze App</a>
 					<li><a href="#knownissues">Known Bugs</a></li>
 				</ul>
 			</div>
@@ -359,7 +359,7 @@
 		</div> <!-- About Page -->
 
 		<div data-role="page" id="knownissues" data-add-back-btn="true">
-			<img src="img/mainlogo.png"  />
+			<img src="mainlogo.png"  />
 			<div data-role="header" data-theme="b">
 				<h1>Known Issues List</h1>
 				<a href="index.html" data-icon="back">Back</a>
@@ -394,7 +394,7 @@
 
 
 		<div data-role="page" id="addcard" data-add-back-btn="true">
-			<img src="img/mainlogo.png"  />
+			<img src="mainlogo.png"  />
 			<div data-role="header" data-theme="b">
 				<h1>Add New Card</h1>
 				<a href="index.html" data-icon="back">Back</a>
@@ -484,6 +484,6 @@
 			</div>
 		</div> <!-- Add Card Page -->
 
-		<script src="js/main.js" type="text/javascript"></script>
+		<script src="main.js" type="text/javascript"></script>
 	</body>
 </html>

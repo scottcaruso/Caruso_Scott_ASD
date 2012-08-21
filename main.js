@@ -11,6 +11,16 @@ $(document).on("pageinit", function(){
          saveCard();
       }
    });
+
+//On document load, fetch the data from couch.
+$(document).on("pageinit", function(){
+   $.couch.db("mtgbinder").view("planeswalkersbinder/cards", {
+      success: function(data){
+         console.log(data);
+      }
+   })
+})
+
 /*
 Commenting out, since this shouldn't be needed anymore. Relic of pre-jquery days.
 function elementName(x){

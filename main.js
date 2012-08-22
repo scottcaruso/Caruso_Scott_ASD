@@ -21,7 +21,7 @@ $(document).on("pageinit", function(){
    })
 })
 
-//Placeholder savedata function for now.
+/*Placeholder savedata function for now.
 $.couch.db("mtgbinder").saveDoc(doc, {
     success: function(data) {
         console.log(data);
@@ -59,6 +59,7 @@ $.couch.db("mydb").removeDoc(doc, {
         console.log(status);
     }
 });
+/*
 
 /*
 Commenting out, since this shouldn't be needed anymore. Relic of pre-jquery days.
@@ -258,20 +259,19 @@ function saveCard() {
    } else {
       var y = localStorage.length;
       var id = y+1;
-      console.log(id);
    };
       var cardColors = getCardColors();
       var cardType = getCardType();
       var card = {};
-         card.name = ["Card Name:", $("#cardname").val()];
-         card.usage = ["Currently In Use?", $("#currentuse").val()];
-         card.type = ["Card Type:", cardType];
-         card.mana = ["Mana Cost:", $("#manacost").val()];
-         card.colors = ["Colors:", cardColors];
-         card.notes = ["Notes:", $("#comments").val()];
-         card.number = ["Number Owned:", $("#numberowned").val()];
-      localStorage.setItem(id, JSON.stringify(card));
-      alert($("#cardname").val() + " has been added!");
+         card.name = $("#cardname").val();
+         card.usage = $("#currentuse").val();
+         card.type = cardType;
+         card.mana = $("#manacost").val();
+         card.colors = cardColors;
+         card.notes = $("#comments").val();
+         card.number = $("#numberowned").val();
+      //localStorage.setItem(id, JSON.stringify(card));
+      saveDataToCouch(card);
       window.location="#home";
       window.location.reload();     
 };
@@ -517,7 +517,7 @@ $("#viewactive").unbind("click");
 $("#eraseData").on("click",function(){eraseCardData(); return false});
 $("#fillJsonData").on("click",function(){fillWithJsonData(); return false});
 $("#searchbutton").on("click",function(){keywordRead(); return false});
-$("#recentcards").on("click",function(){newsFeed(); return false});
+$("#recentcards").on("click",function(){storeIdInLocalStorage(1,2); return false});
 $("#addcard").on("click",function(){addCardReload(); return false});
 $("#allcards")
    .on("click",
@@ -527,6 +527,25 @@ $("#allcards")
       });
 
 //All of the below are functions that are only for use with COUCHBASE data.
+
+//Manipulate local storage to temporarily pass _id and _rev around.
+function storeIdInLocalStorage(id,rev){
+   localStorage.clear();
+   localStorage.setItem("Card ID",id);
+   localStorage.setItem("Card Rev",rev);
+};
+
+//Saves data from form to couch
+function saveDataToCouch(card){
+   $.couch.db("mtgbinder").saveDoc(card, {
+       success: function() {
+         alert($("#cardname").val() + " has been added!");
+       },
+       error: function() {
+         alert("An error occurred while saving this card.");
+       }
+   });
+};
 
 //Function to get json data with Ajax. Makes the .on functions cleaner. THIS ONE IS FOR COUCHBASE SAVED JSON.
 function getJsonAjax(){

@@ -2,6 +2,8 @@ function(doc) {
 	for (i=0; i<doc.colors.length; i++){
 		if (doc.colors[i] === "black") {
 		    emit(doc.name, {
+		    	"id" : doc._id,
+		    	"rev" : doc._rev,
 		    	"name" : doc.name,
 		    	"colors" : doc.colors,
 		    	"mana" : doc.mana,

@@ -1,6 +1,8 @@
 function(doc) {
   if (doc.type != undefined	) {
     emit(doc.name, {
+    	"id" : doc._id,
+    	"rev" : doc._rev,
     	"name" : doc.name,
     	"colors" : doc.colors,
     	"mana" : doc.mana,

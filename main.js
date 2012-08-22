@@ -14,6 +14,7 @@ $(document).on("pageinit", function(){
 
 //On document load, fetch the data from couch.
 $(document).on("pageinit", function(){
+   localStorage.clear();//clears local storage on page init, just to be safe
    $.couch.db("mtgbinder").view("planeswalkersbinder/cards", {
       success: function(data){
          console.log(data);
@@ -21,30 +22,7 @@ $(document).on("pageinit", function(){
    })
 })
 
-/*Placeholder savedata function for now.
-$.couch.db("mtgbinder").saveDoc(doc, {
-    success: function(data) {
-        console.log(data);
-    },
-    error: function(status) {
-        console.log(status);
-    }
-});
-
-//Placeholder edit function for now.
-var doc = {
-    _id: "d12ee5ea1df6baa2b06451f44a019ab9",
-    _rev: "1-967a00dff5e02add41819138abb3284d",
-    foo: "bar"
-};
-$.couch.db("mydb").saveDoc(doc, {
-    success: function(data) {
-        console.log(data);
-    },
-    error: function(status) {
-        console.log(status);
-    }
-});
+/*
 
 //Placeholder delete function for now - use this in place of existing Delete!
 var doc = {
@@ -59,28 +37,21 @@ $.couch.db("mydb").removeDoc(doc, {
         console.log(status);
     }
 });
-/*
 
-/*
-Commenting out, since this shouldn't be needed anymore. Relic of pre-jquery days.
-function elementName(x){
-   var elementName = document.getElementById(x);
-   return elementName;              
-};
 */
 
 function eraseCardData(){
-	if(localStorage.length === 0){
-		alert("There are no cards in your binder to clear.");
-	} else {
-		 var ask = confirm("Are you sure you want to erase all card data?");
-			if(ask){
-			localStorage.clear();
-			alert("All cards have been removed from your binder.");
-			window.location.reload();
-			return false;
-		};
-	};
+   if(localStorage.length === 0){
+      alert("There are no cards in your binder to clear.");
+   } else {
+       var ask = confirm("Are you sure you want to erase all card data? THIS CANNOT BE UNDONE!");
+         if(ask){
+         localStorage.clear();
+         alert("All cards have been removed from your binder.");
+         window.location.reload();
+         return false;
+      };
+   };
 };
 
 //When the Debug fill option is clicked, this fills local storage with JSON data.
@@ -189,7 +160,7 @@ function newsFeed(){
    if (localStorage.length === 0){
       alert("There are no cards saved in this binder to view.");
    } else {
-	  $("#displaybucketcollapse").empty(); 
+     $("#displaybucketcollapse").empty(); 
       $("#displaybucket").append("<dl id='listcards'></dl>")
       for(var y=localStorage.length; y>0; y--){
          var value = localStorage.getItem(y);
@@ -255,11 +226,8 @@ function getCardColors(){
 //As it says, this function Saves a card.
 function saveCard() {
    if($("#submit").val() === "Edit Card"){
-      var id = $("#submit").attr("key");
+      //var id = $("#submit").attr("key");
    } else {
-      var y = localStorage.length;
-      var id = y+1;
-   };
       var cardColors = getCardColors();
       var cardType = getCardType();
       var card = {};
@@ -273,7 +241,8 @@ function saveCard() {
       //localStorage.setItem(id, JSON.stringify(card));
       saveDataToCouch(card);
       window.location="#home";
-      window.location.reload();     
+      window.location.reload();  
+   };   
 };
 
 //As it says, this function activates the Edit Card functionality
@@ -340,6 +309,130 @@ function addCardReload(){
    window.location="#addcard";
    window.location.reload();
 };
+
+//Make things happen when the links are clicked.
+//The "unbind" events exist to prevent a bug where double pop-ups were occurring as if there were two clicks being registered.
+$("#eraseData").unbind("click");
+$("#fillJsonData").unbind("click");
+$("#searchbutton").unbind("click");
+$("#recentcards").unbind("click");
+$("#addcard").unbind("click");
+$("#viewactive").unbind("click");
+$("#eraseData").on("click",function(){eraseCardData(); return false});
+$("#fillJsonData").on("click",function(){fillWithJsonData(); return false});
+$("#searchbutton").on("click",function(){keywordRead(); return false});
+$("#recentcards").on("click",function(){storeIdInLocalStorage(1,2); return false});
+$("#addcard").on("click",function(){addCardReload(); return false});
+$("#allcards")
+   .on("click",
+      function(){
+         getJsonAjax();
+         return false
+      });
+
+//All of the below are functions that are only for use with COUCHBASE data.
+
+//Manipulate local storage to temporarily pass _id and _rev around.
+function storeIdInLocalStorage(id,rev){
+   localStorage.setItem(id,rev);
+};
+
+//Saves data from form to couch
+function saveDataToCouch(card){
+   $.couch.db("mtgbinder").saveDoc(card, {
+       success: function() {
+         alert($("#cardname").val() + " has been added!");
+       },
+       error: function() {
+         alert("An error occurred while saving this card.");
+       }
+   });
+};
+
+//Function to get json data with Ajax. Makes the .on functions cleaner. THIS ONE IS FOR COUCHBASE SAVED JSON.
+function getJsonAjax(){
+   $.ajax({
+      url: "_view/cards",
+      type: "GET",
+      dataType: "json",
+      success: function(data){
+         makeJsonDataDisplay(data);
+      },
+      error: function(){
+         console.log("There was an error.")
+      }
+   });
+};
+
+//Function to get ONLY currently in-use cards from CouchBase.
+function getJsonAjaxInUse(){
+   $.ajax({
+      url: "_view/inuse",
+      type: "GET",
+      dataType: "json",
+      success: function(data){
+         makeJsonDataDisplay(data);
+      },
+      error: function(){
+         console.log("There was an error.")
+      }
+   });
+};
+
+//This is the guts of the Json display; works in tandem with it. - FOR USE WITH COUCHBASE ONLY!
+function makeJsonDataDisplay(data){ 
+   localStorage.clear(); //This ensures that Local Storage is clean every time the display is refereshed.
+   window.location="#display";
+   $("#displaybucket").empty();
+   $("#displaybucketcollapse").empty();
+   for(var i=0, j=data.rows.length; i<j; i++){
+      var card = data.rows[i];
+      $('<div data-role="collapsible" data-theme="b" id="displaycollapse">'+
+            '<h3>' + "Card Name: " + card.value.name + '</h3>'+
+            '<p>' + "Currently In Use? " + card.value.usage + '</p>' +
+            '<p>' + "Card Type: " + card.value.type + '</p>' +  
+            '<p>' + "Mana Cost: " + card.value.mana + '</p>' +  
+            '<p>' + "Colors: " + card.value.colors + '</p>' +  
+            '<p>' + "Notes: " + card.value.notes + '</p>' + 
+            '<p>' + "Number Owned: " + card.value.number + '</p>' +
+            '<p>' + 
+               '<a href="#addcard" class="editcard" id="editcard">' + "Edit Card" + '</a>' + 
+            '<a href="#" class="deletecard" id="deletecard">' + "Delete Card" + '</a>' + 
+         '</p>'+
+         '</div>'
+      ).appendTo('#displaybucketcollapse');
+      $("#editcard").attr("id",card.value.id);
+      $("#deletecard").attr("id",card.value.id);
+      storeIdInLocalStorage(card.value.id,card.value.rev);
+   };
+   $("#displaybucketcollapse").collapsibleset("refresh");
+};
+
+function addNewEditDeleteLinks(id,rev){
+      $(cardTitleSelector).append("<dd><a href='#addcard' class='editcard' id='editcard'>Edit Card</a><a href='#' class='deletecard' id='deletecard'>Delete Card</a></dd>");
+      var editCardID = ("editcard" + key);
+      var editCardIDSelector = ("#" + editCardID);
+      $("#editcard").attr("id",editCardID).attr("key",key);
+      var deleteCardID = ("deletecard"+key);
+      var deleteCardIDSelector = ("#" + deleteCardID);
+      $("#deletecard").attr("id",deleteCardID).attr("key",key);
+      $(editCardIDSelector).on("click",function(){editCard(key)});//need to remember to ask why return false breaks this
+      $(deleteCardIDSelector).on("click",function(){eraseCard(key)});//need to remember to ask why return false breaks this
+   };
+
+$("#viewactive").on("click",function(){getJsonAjaxInUse(); return false});
+
+});
+
+//NOTE - All of the below functions are deprecated in the current version. YOU MUST MOVE THEM BACK INTO THE PAGEINIT WRAPPER FOR THEM TO WORK!
+
+
+/*Commenting out, since this shouldn't be needed anymore. Relic of pre-jquery days.
+function elementName(x){
+   var elementName = document.getElementById(x);
+   return elementName;              
+};
+*/
 
 //COMMENT OUT THE BELOW WHEN USING COUCHBASE JSON
 /*Function to get json data with Ajax. Makes the .on functions cleaner. THIS ONE IS FOR THE LOCALLY SAVED JSON.
@@ -437,7 +530,7 @@ function makeJsonDataDisplay(data){
 };
 */
 
-//This is the guts of the Csv display; works in tandem with it
+/*This is the guts of the Csv display; works in tandem with it
 function makeCsvDataDisplay(csv){
    $("#displaybucket").empty();
    window.location="#display";
@@ -505,99 +598,4 @@ function makeCsvDataDisplay(csv){
       ).appendTo('#displaybucket')
    }
 };
-
-//Make things happen when the links are clicked.
-//The "unbind" events exist to prevent a bug where double pop-ups were occurring as if there were two clicks being registered.
-$("#eraseData").unbind("click");
-$("#fillJsonData").unbind("click");
-$("#searchbutton").unbind("click");
-$("#recentcards").unbind("click");
-$("#addcard").unbind("click");
-$("#viewactive").unbind("click");
-$("#eraseData").on("click",function(){eraseCardData(); return false});
-$("#fillJsonData").on("click",function(){fillWithJsonData(); return false});
-$("#searchbutton").on("click",function(){keywordRead(); return false});
-$("#recentcards").on("click",function(){storeIdInLocalStorage(1,2); return false});
-$("#addcard").on("click",function(){addCardReload(); return false});
-$("#allcards")
-   .on("click",
-      function(){
-         getJsonAjax();
-         return false
-      });
-
-//All of the below are functions that are only for use with COUCHBASE data.
-
-//Manipulate local storage to temporarily pass _id and _rev around.
-function storeIdInLocalStorage(id,rev){
-   localStorage.clear();
-   localStorage.setItem("Card ID",id);
-   localStorage.setItem("Card Rev",rev);
-};
-
-//Saves data from form to couch
-function saveDataToCouch(card){
-   $.couch.db("mtgbinder").saveDoc(card, {
-       success: function() {
-         alert($("#cardname").val() + " has been added!");
-       },
-       error: function() {
-         alert("An error occurred while saving this card.");
-       }
-   });
-};
-
-//Function to get json data with Ajax. Makes the .on functions cleaner. THIS ONE IS FOR COUCHBASE SAVED JSON.
-function getJsonAjax(){
-   $.ajax({
-      url: "_view/cards",
-      type: "GET",
-      dataType: "json",
-      success: function(data){
-         makeJsonDataDisplay(data);
-      },
-      error: function(){
-         console.log("There was an error.")
-      }
-   });
-};
-
-//Function to get ONLY currently in-use cards from CouchBase.
-function getJsonAjaxInUse(){
-   $.ajax({
-      url: "_view/inuse",
-      type: "GET",
-      dataType: "json",
-      success: function(data){
-         makeJsonDataDisplay(data);
-      },
-      error: function(){
-         console.log("There was an error.")
-      }
-   });
-};
-
-//This is the guts of the Json display; works in tandem with it. - FOR USE WITH COUCHBASE ONLY!
-function makeJsonDataDisplay(data){	
-   window.location="#display";
-   $("#displaybucket").empty();
-   $("#displaybucketcollapse").empty();
-   for(var i=0, j=data.rows.length; i<j; i++){
-      var card = data.rows[i];
-      $('<div data-role="collapsible" data-theme="b" id="displaycollapse">'+
-            '<h3>' + "Card Name: " + card.value.name + '</h3>'+
-            '<p>' + "Currently In Use? " + card.value.usage + '</p>' +
-            '<p>' + "Card Type: " + card.value.type + '</p>' +  
-            '<p>' + "Mana Cost: " + card.value.mana + '</p>' +  
-            '<p>' + "Colors: " + card.value.colors + '</p>' +  
-            '<p>' + "Notes: " + card.value.notes + '</p>' + 
-            '<p>' + "Number Owned: " + card.value.number + '</p>' +
-         '</div>'
-      ).appendTo('#displaybucketcollapse');
-   };
-   $("#displaybucketcollapse").collapsibleset("refresh");
-};
-
-$("#viewactive").on("click",function(){getJsonAjaxInUse(); return false});
-
-});
+*/

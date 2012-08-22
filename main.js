@@ -371,7 +371,7 @@ function makeJsonDataDisplay(data){
    $("#displaybucketcollapse").empty();
    for(var i=0, j=data.rows.length; i<j; i++){
       var card = data.rows[i];
-      $('<div data-role="collapsible" data-theme="b" id="displaycollapse">'+
+      $('<div data-role="collapsible" data-theme="b" id=' + card.value.id + '>' +
             '<h3>' + "Card Name: " + card.value.name + '</h3>'+
             '<p>' + "Currently In Use? " + card.value.usage + '</p>' +
             '<p>' + "Card Type: " + card.value.type + '</p>' +  
@@ -389,31 +389,41 @@ function makeJsonDataDisplay(data){
       var deleteID = ("delete"+card.value.id);
       $("#editcard").attr("id",editID);
       $("#deletecard").attr("id",deleteID);
-      bindEditDelete(editID,deleteID,card.value.name);
+      bindEditDelete(editID,deleteID,card.value.name,card.value.id);
       storeIdInLocalStorage(card.value.id,card.value.rev);
    };
    $("#displaybucketcollapse").collapsibleset("refresh");
 };
 
 //The below function binds the Edit/Delete links properly. It works with the function above.
-function bindEditDelete(editID,deleteID,cardName){
+function bindEditDelete(editID,deleteID,cardName,cardID){
    var editCardIDSelector = ("#" + editID);
    var deleteCardIDSelector = ("#" + deleteID);
    $(editCardIDSelector).on("click",function(){alert("Editing " + editID + " " + cardName)});//need to remember to ask why return false breaks this
-   $(deleteCardIDSelector).on("click",function(){alert("Deleting " + deleteID + " " + cardName)});//need to remember to ask why return false breaks this
+   $(deleteCardIDSelector).on("click",function(){deleteCardCouch(deleteID,cardName,cardID)});//need to remember to ask why return false breaks this
 };
 
 //Delete card function
-function deleteCardCouch(){
+function deleteCardCouch(deleteID,cardName,cardID){
+   var deleteArray = deleteID.split("delete");
+   var deleteIDValue = deleteArray[1];
+   var deleteRevValue = localStorage.getItem(deleteIDValue);
    var doc = {
-       _id: "d12ee5ea1df6baa2b06451f44a019ab9",
-       _rev: "2-13839535feb250d3d8290998b8af17c3"
+       _id: deleteIDValue,
+       _rev: deleteRevValue,
+       name: cardName,
+       id: cardID
    };
-   $.couch.db("mydb").removeDoc(doc, {
+   $.couch.db("mtgbinder").removeDoc(doc, {
         success: function(data) {
-            console.log(data);
+            alert(doc.name + " was successfully removed!");
+            //The below clears out the display bucket that this old card held
+            var displaybucket = "#" + doc.id;
+            $(displaybucket).empty();
+            $("#displaybucketcollapse").collapsibleset("refresh");
        },
        error: function(status) {
+         alert("There was an error removing " + doc.name + ". It was not removed.")
            console.log(status);
        }
    });

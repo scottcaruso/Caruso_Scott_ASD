@@ -22,24 +22,6 @@ $(document).on("pageinit", function(){
    })
 })
 
-/*
-
-//Placeholder delete function for now - use this in place of existing Delete!
-var doc = {
-    _id: "d12ee5ea1df6baa2b06451f44a019ab9",
-    _rev: "2-13839535feb250d3d8290998b8af17c3"
-};
-$.couch.db("mydb").removeDoc(doc, {
-     success: function(data) {
-         console.log(data);
-    },
-    error: function(status) {
-        console.log(status);
-    }
-});
-
-*/
-
 function eraseCardData(){
    if(localStorage.length === 0){
       alert("There are no cards in your binder to clear.");
@@ -142,6 +124,7 @@ function clearSearchPage(){
    $(".displaybucket").empty();
 };
 
+/*
 //The below function adds the Edit and Delete links, and their associated binding functions, when search results are made.
 function addLinkClickEvents(cardTitleSelector, key){
    $(cardTitleSelector).append("<dd><a href='#addcard' class='editcard' id='editcard'>Edit Card</a><a href='#' class='deletecard' id='deletecard'>Delete Card</a></dd>");
@@ -153,7 +136,7 @@ function addLinkClickEvents(cardTitleSelector, key){
    $("#deletecard").attr("id",deleteCardID).attr("key",key);
    $(editCardIDSelector).on("click",function(){editCard(key)});//need to remember to ask why return false breaks this
    $(deleteCardIDSelector).on("click",function(){eraseCard(key)});//need to remember to ask why return false breaks this
-};
+};*/
 
 function newsFeed(){
    clearSearchPage();
@@ -246,7 +229,7 @@ function saveCard() {
 };
 
 //As it says, this function activates the Edit Card functionality
-function editCard(key){
+/*function editCard(key){
    var card = localStorage.getItem(key);
    var cardUnstring = JSON.parse(card);
    $("#cardname").val(cardUnstring.name[1]);
@@ -267,6 +250,7 @@ function editCard(key){
    $("#submit").val("Edit Card").attr("key",key);
    $("#reset").attr("disabled","disabled");
 };
+*/
 
 //This function rekeys cards in local storage when one is deleted.
 function rekeyCards(){
@@ -322,7 +306,7 @@ $("#eraseData").on("click",function(){eraseCardData(); return false});
 $("#fillJsonData").on("click",function(){fillWithJsonData(); return false});
 $("#searchbutton").on("click",function(){keywordRead(); return false});
 $("#recentcards").on("click",function(){storeIdInLocalStorage(1,2); return false});
-$("#addcard").on("click",function(){addCardReload(); return false});
+//$("#addcard").on("click",function(){addCardReload(); return false});
 $("#allcards")
    .on("click",
       function(){
@@ -396,29 +380,44 @@ function makeJsonDataDisplay(data){
             '<p>' + "Notes: " + card.value.notes + '</p>' + 
             '<p>' + "Number Owned: " + card.value.number + '</p>' +
             '<p>' + 
-               '<a href="#addcard" class="editcard" id="editcard">' + "Edit Card" + '</a>' + 
+               '<a href="#" class="editcard" id="editcard">' + "Edit Card" + '</a>' + 
             '<a href="#" class="deletecard" id="deletecard">' + "Delete Card" + '</a>' + 
          '</p>'+
          '</div>'
       ).appendTo('#displaybucketcollapse');
-      $("#editcard").attr("id",card.value.id);
-      $("#deletecard").attr("id",card.value.id);
+      var editID = ("edit"+card.value.id);
+      var deleteID = ("delete"+card.value.id);
+      $("#editcard").attr("id",editID);
+      $("#deletecard").attr("id",deleteID);
+      bindEditDelete(editID,deleteID,card.value.name);
       storeIdInLocalStorage(card.value.id,card.value.rev);
    };
    $("#displaybucketcollapse").collapsibleset("refresh");
 };
 
-function addNewEditDeleteLinks(id,rev){
-      $(cardTitleSelector).append("<dd><a href='#addcard' class='editcard' id='editcard'>Edit Card</a><a href='#' class='deletecard' id='deletecard'>Delete Card</a></dd>");
-      var editCardID = ("editcard" + key);
-      var editCardIDSelector = ("#" + editCardID);
-      $("#editcard").attr("id",editCardID).attr("key",key);
-      var deleteCardID = ("deletecard"+key);
-      var deleteCardIDSelector = ("#" + deleteCardID);
-      $("#deletecard").attr("id",deleteCardID).attr("key",key);
-      $(editCardIDSelector).on("click",function(){editCard(key)});//need to remember to ask why return false breaks this
-      $(deleteCardIDSelector).on("click",function(){eraseCard(key)});//need to remember to ask why return false breaks this
+//The below function binds the Edit/Delete links properly. It works with the function above.
+function bindEditDelete(editID,deleteID,cardName){
+   var editCardIDSelector = ("#" + editID);
+   var deleteCardIDSelector = ("#" + deleteID);
+   $(editCardIDSelector).on("click",function(){alert("Editing " + editID + " " + cardName)});//need to remember to ask why return false breaks this
+   $(deleteCardIDSelector).on("click",function(){alert("Deleting " + deleteID + " " + cardName)});//need to remember to ask why return false breaks this
+};
+
+//Delete card function
+function deleteCardCouch(){
+   var doc = {
+       _id: "d12ee5ea1df6baa2b06451f44a019ab9",
+       _rev: "2-13839535feb250d3d8290998b8af17c3"
    };
+   $.couch.db("mydb").removeDoc(doc, {
+        success: function(data) {
+            console.log(data);
+       },
+       error: function(status) {
+           console.log(status);
+       }
+   });
+};
 
 $("#viewactive").on("click",function(){getJsonAjaxInUse(); return false});
 

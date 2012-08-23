@@ -14,14 +14,18 @@ $(document).on("pageinit", function(){
 
 //On document load, fetch the data from couch.
 $(document).on("pageinit", function(){
-   localStorage.clear();//clears local storage on page init, just to be safe
    $.couch.db("mtgbinder").view("planeswalkersbinder/cards", {
       success: function(data){
          console.log(data);
       }
    })
+});
+
+$("#home").on("pageinit",function(){
+   localStorage.clear();
 })
 
+/* This function is currently disabled, pending prioritization of making it work with the couch data.
 function eraseCardData(){
    if(localStorage.length === 0){
       alert("There are no cards in your binder to clear.");
@@ -35,55 +39,9 @@ function eraseCardData(){
       };
    };
 };
+*/
 
-//When the Debug fill option is clicked, this fills local storage with JSON data.
-function fillWithJsonData(){
-   if(localStorage.length === 0){
-      var y = 1;
-      for(var x in json){
-         var id = y;
-         localStorage.setItem(id, JSON.stringify(json[x]));
-         y++;
-      };
-      alert("Dummy data has been added to local storage!");
-   } else {
-      var ask = confirm("There is already data in local storage. Would you like to clear that data and then add new dummy data?");
-      if (ask){
-         eraseCardData();
-         fillWithJsonData();
-         return false
-      };
-   };
-};
-
-//Turn what's in the search field into a string
-function searchString(){
-   if(localStorage.length === 0){
-      alert("There is no data in Local Storage to search!");
-   } else {
-      var searchText = $("#searchbox").attr("value");
-      return searchText;
-   };
-};
-
-//Parse Local Storage for the Search Text
-function keywordSearch(){
-   var searchText = searchString();
-   var matches = [];
-   for(var i=0, y=localStorage.length; i<y; i++){
-      var key = localStorage.key(i);
-      var value = localStorage.getItem(key);
-      var obj = JSON.parse(value);
-      var cardNameArray = obj.name;
-      var cardName = cardNameArray[1];
-      var doesSearchTermExist = cardName.match(searchText);
-      if (doesSearchTermExist != null){
-         matches.push(key);
-      };
-   };
-   return matches;
-};
-
+/*Find matches to the search keyword
 function keywordRead(){
    clearSearchPage();
    var getKeywords = keywordSearch();
@@ -118,25 +76,82 @@ function keywordRead(){
       window.location="#display";
    };
 };
+*/
+
+//Parse Local Storage for the Search Text
+function keywordSearch(){
+   var searchText = searchString();
+   $.ajax({
+        url: "_view/cards",
+        type: "GET",
+        dataType: "json",
+        success: function(data){
+           var cards = data.rows;
+           var matches = [];
+           for (i=0; i < data.rows.length; i++){
+            var thisCard = data.rows[i];
+            var thisCardName = thisCard.value.name;
+            var doesSearchTermExist = thisCardName.match(searchText)
+            if (doesSearchTermExist != null){
+               matches.push(thisCard);
+            }
+           }           
+         window.location="#display";
+         $("#displaybucket").empty();
+         $("#displaybucketcollapse").empty();
+         console.log(matches);
+         for(var i=0, j=matches.length; i<j; i++){
+            var card = matches[i];
+            console.log(card);
+            $('<div data-role="collapsible" data-theme="b" id=' + card.value.id + '>' +
+                  '<h3>' + card.value.name + '</h3>'+
+                  '<p>' + "Currently In Use? " + card.value.usage + '</p>' +
+                  '<p>' + "Card Type: " + card.value.type + '</p>' +  
+                  '<p>' + "Mana Cost: " + card.value.mana + '</p>' +  
+                  '<p>' + "Colors: " + card.value.colors + '</p>' +  
+                  '<p>' + "Notes: " + card.value.notes + '</p>' + 
+                  '<p>' + "Number Owned: " + card.value.number + '</p>' +
+                  '<p>' + 
+                     '<a href="#" class="editcard" id="editcard">' + "Edit Card" + '</a>' + 
+                  '<a href="#" class="deletecard" id="deletecard">' + "Delete Card" + '</a>' + 
+               '</p>'+
+               '</div>'
+            ).appendTo('#displaybucketcollapse');
+            var editID = ("edit"+card.id);
+            var deleteID = ("delete"+card.id);
+            $("#editcard").attr("id",editID);
+            $("#deletecard").attr("id",deleteID);
+            bindEditDelete(editID,deleteID,card.name,card.id);
+            storeIdInLocalStorage(card.id,card.rev);
+         };
+         $("#displaybucketcollapse").collapsibleset("refresh");
+       }
+ });
+ };
+/*
+ for(var i=0, y=localStorage.length; i<y; i++){
+    var key = localStorage.key(i);
+    var value = localStorage.getItem(key);
+    var obj = JSON.parse(value);
+    var cardNameArray = obj.name;
+    var cardName = cardNameArray[1];
+    var doesSearchTermExist = cardName.match(searchText);
+    if (doesSearchTermExist != null){
+       matches.push(key);
+    };
+ };
+ return matches;*/
+
+//Turn what's in the search field into a string
+function searchString(){
+    var searchText = $("#searchbox").attr("value");
+    return searchText;
+ };
 
 //The below function empties the search page every time new results are populated.
 function clearSearchPage(){
    $(".displaybucket").empty();
 };
-
-/*
-//The below function adds the Edit and Delete links, and their associated binding functions, when search results are made.
-function addLinkClickEvents(cardTitleSelector, key){
-   $(cardTitleSelector).append("<dd><a href='#addcard' class='editcard' id='editcard'>Edit Card</a><a href='#' class='deletecard' id='deletecard'>Delete Card</a></dd>");
-   var editCardID = ("editcard" + key);
-   var editCardIDSelector = ("#" + editCardID);
-   $("#editcard").attr("id",editCardID).attr("key",key);
-   var deleteCardID = ("deletecard"+key);
-   var deleteCardIDSelector = ("#" + deleteCardID);
-   $("#deletecard").attr("id",deleteCardID).attr("key",key);
-   $(editCardIDSelector).on("click",function(){editCard(key)});//need to remember to ask why return false breaks this
-   $(deleteCardIDSelector).on("click",function(){eraseCard(key)});//need to remember to ask why return false breaks this
-};*/
 
 function newsFeed(){
    clearSearchPage();
@@ -208,8 +223,32 @@ function getCardColors(){
 
 //As it says, this function Saves a card.
 function saveCard() {
+   console.log
    if($("#submit").val() === "Edit Card"){
-      //var id = $("#submit").attr("key");
+      var id = ($("#submit").attr("key"));
+      var rev = localStorage.getItem(id);
+      var cardColors = getCardColors();
+      var cardType = getCardType();
+      var doc = {
+             _id: id,
+             _rev: rev,
+             name: $("#cardname").val(),
+             usage:  $("#currentuse").val(),
+             type: cardType,
+             mana: $("#manacost").val(),
+             colors: cardColors,
+             notes: $("#comments").val(),
+             number: $("#numberowned").val()
+         };
+         $.couch.db("mtgbinder").saveDoc(doc, {
+             success: function(data) {
+                 alert(doc.name + " has been successfully updated.");
+                 window.location="#home";
+             },
+             error: function(status) {
+                 console.log(status);
+             }
+         });
    } else {
       var cardColors = getCardColors();
       var cardType = getCardType();
@@ -304,7 +343,7 @@ $("#addcard").unbind("click");
 $("#viewactive").unbind("click");
 $("#eraseData").on("click",function(){eraseCardData(); return false});
 $("#fillJsonData").on("click",function(){fillWithJsonData(); return false});
-$("#searchbutton").on("click",function(){keywordRead(); return false});
+$("#searchbutton").on("click",function(){keywordSearch()});
 $("#recentcards").on("click",function(){storeIdInLocalStorage(1,2); return false});
 //$("#addcard").on("click",function(){addCardReload(); return false});
 $("#allcards")
@@ -372,7 +411,7 @@ function makeJsonDataDisplay(data){
    for(var i=0, j=data.rows.length; i<j; i++){
       var card = data.rows[i];
       $('<div data-role="collapsible" data-theme="b" id=' + card.value.id + '>' +
-            '<h3>' + "Card Name: " + card.value.name + '</h3>'+
+            '<h3>' + card.value.name + '</h3>'+
             '<p>' + "Currently In Use? " + card.value.usage + '</p>' +
             '<p>' + "Card Type: " + card.value.type + '</p>' +  
             '<p>' + "Mana Cost: " + card.value.mana + '</p>' +  
@@ -399,8 +438,12 @@ function makeJsonDataDisplay(data){
 function bindEditDelete(editID,deleteID,cardName,cardID){
    var editCardIDSelector = ("#" + editID);
    var deleteCardIDSelector = ("#" + deleteID);
-   $(editCardIDSelector).on("click",function(){alert("Editing " + editID + " " + cardName)});//need to remember to ask why return false breaks this
-   $(deleteCardIDSelector).on("click",function(){deleteCardCouch(deleteID,cardName,cardID)});//need to remember to ask why return false breaks this
+   $(editCardIDSelector).on("click",function(){
+      getCardToEdit(editID);
+   });
+   $(deleteCardIDSelector).on("click",function(){
+      deleteCardCouch(deleteID,cardName,cardID)
+   });
 };
 
 //Delete card function
@@ -428,6 +471,53 @@ function deleteCardCouch(deleteID,cardName,cardID){
        }
    });
 };
+
+function getCardToEdit(editID){
+   var editArray = editID.split("edit");
+   var editIDValue = editArray[1];
+   var editRevValue = localStorage.getItem(editIDValue);
+   var doc = {
+         _id: editIDValue,
+         _rev: editRevValue
+   };
+   $.couch.db("mtgbinder").openDoc(doc._id, {
+       success: function(data) {
+           console.log(data,data.mana)
+           populateFormWithData(data);
+       },
+       error: function(status) {
+           console.log(status);
+       }
+   });
+};
+
+function populateFormWithData(data){
+      $("input[type='checkbox']").attr("checked",false)
+      $("#cardname").val(data.name);
+      $("#currentuse").val(data.usage);
+      $("#creature").attr("selected",false);
+      $("#cardtype").val(data.type); 
+      $("#manacost").attr("value",data.mana);
+      //clearColors();
+      var colors = data.colors;
+      for(var i=0; i < colors.length; i++){
+         var colorName = colors[i];
+         var colorNameSelector = ("#" + colorName);
+         console.log(colorNameSelector);
+         $(colorNameSelector).attr("checked", "checked");
+      };
+      $("#comments").val(data.notes);
+      $("#numberowned").val(data.number);
+      //var key = key;
+      $("#submit").val("Edit Card").attr("key",data._id);
+      $("#reset").attr("disabled","disabled");
+      window.location="#addcard";
+      //the below functions all update the jqm formatting upon form load
+      $("input[type='checkbox']").checkboxradio("refresh");
+      $("#cardtype").selectmenu("refresh");
+      $("#manacost").slider("refresh");
+};
+
 
 $("#viewactive").on("click",function(){getJsonAjaxInUse(); return false});
 
@@ -607,4 +697,40 @@ function makeCsvDataDisplay(csv){
       ).appendTo('#displaybucket')
    }
 };
+
+
+//When the Debug fill option is clicked, this fills local storage with JSON data.
+function fillWithJsonData(){
+   if(localStorage.length === 0){
+      var y = 1;
+      for(var x in json){
+         var id = y;
+         localStorage.setItem(id, JSON.stringify(json[x]));
+         y++;
+      };
+      alert("Dummy data has been added to local storage!");
+   } else {
+      var ask = confirm("There is already data in local storage. Would you like to clear that data and then add new dummy data?");
+      if (ask){
+         eraseCardData();
+         fillWithJsonData();
+         return false
+      };
+   };
+};
+
+
+//The below function adds the Edit and Delete links, and their associated binding functions, when search results are made.
+function addLinkClickEvents(cardTitleSelector, key){
+   $(cardTitleSelector).append("<dd><a href='#addcard' class='editcard' id='editcard'>Edit Card</a><a href='#' class='deletecard' id='deletecard'>Delete Card</a></dd>");
+   var editCardID = ("editcard" + key);
+   var editCardIDSelector = ("#" + editCardID);
+   $("#editcard").attr("id",editCardID).attr("key",key);
+   var deleteCardID = ("deletecard"+key);
+   var deleteCardIDSelector = ("#" + deleteCardID);
+   $("#deletecard").attr("id",deleteCardID).attr("key",key);
+   $(editCardIDSelector).on("click",function(){editCard(key)});//need to remember to ask why return false breaks this
+   $(deleteCardIDSelector).on("click",function(){eraseCard(key)});//need to remember to ask why return false breaks this
+};
+
 */

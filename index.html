@@ -29,8 +29,6 @@
 		<script src="jquery.validate.min.js" type="text/javascript"></script>
 		<script src="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.js"></script>
 		<script src="jquery.couch.js"></script>
-		<!-- This is here so that search and other features aren't broken during conversion to parser.-->
-		<script src="olddata.json" type="text/javascript"></script>
 	</head>
 	
 	<body>
@@ -160,8 +158,7 @@
 						<li>
 						<a href="#addcard" id="addcard">Add a Card</a>
 						</li>
-						<li data-icon="false"><a href="#" id="eraseData">Clear Binder</a></li>
-						<li data-icon="false"><a href="#" id="fillJsonData">[DEBUG] Fill Binder</a></li>
+						<li data-icon="false" class="ui-disabled"><a href="#" id="eraseData">COMING SOON! Clear Binder</a></li>
 					</ul>
 				</nav>
 			</div>
@@ -169,7 +166,7 @@
 			<div data-role="footer" data-id="mainnav" data-theme="b">
 				<div data-role="navbar">
 					<uL>
-						<li><a href="index.html">Home</a></li>
+						<li><a href="#home">Home</a></li>
 						<li><a href="#about">About/Links</a></li>
 					</ul>
 				</div>
@@ -181,7 +178,7 @@
 	            <img src="mainlogo.png" alt="Planeswalker's Binder">
 	            <div data-role="header" data-theme="b">
 					<h1>Browse Colors</h1>
-					<a href="index.html" data-icon="back">Back</a>
+					<a href="#home" data-icon="back">Back</a>
 				</div>
 			</header>
 
@@ -231,7 +228,7 @@
 			<div data-role="footer" data-id="mainnav" data-theme="b">
 				<div data-role="navbar">
 					<uL>
-						<li><a href="index.html">Home</a></li>
+						<li><a href="#home">Home</a></li>
 						<li><a href="#about">About/Links</a></li>
 					</ul>
 				</div>
@@ -243,7 +240,7 @@
 	            <img src="mainlogo.png" alt="Planeswalker's Binder">
 	            <div data-role="header" data-theme="b">
 					<h1>Browse Categ.</h1>
-					<a href="index.html" data-icon="back">Back</a>
+					<a href="#home" data-icon="back">Back</a>
 				</div>
 			</header>
 				<nav>
@@ -303,7 +300,7 @@
 			<div data-role="footer" data-id="mainnav" data-theme="b">
 				<div data-role="navbar">
 					<uL>
-						<li><a href="index.html">Home</a></li>
+						<li><a href="#home">Home</a></li>
 						<li><a href="#about">About/Links</a></li>
 					</ul>
 				</div>
@@ -315,20 +312,18 @@
 			<img src="mainlogo.png" />
 			<div data-role="header" data-theme="b">
 				<h1>Display Cards</h1>
-				<a href="index.html" data-icon="back">Back</a>
+				<a href="#home" data-icon="back">Back</a>
 			</div>
 			<div data-role="content">
 				<div id="displaybucket" class="displaybucket">
 				</div>
 				<div data-role="collapsible-set" class="displaybucketcollapse" id="displaybucketcollapse">
 				</div>
-				<h2>DEBUG: TODO - Display the correct cards with each link.</h2>
-				<p>This page is under construction. It will display the user's cards!</p>
 			</div>
 			<div data-role="footer" data-id="mainnav" data-theme="b">
 				<div data-role="navbar">
 					<uL>
-						<li><a href="index.html">Home</a></li>
+						<li><a href="#home">Home</a></li>
 						<li><a href="#about">About/Links</a></li>
 					</ul>
 				</div>
@@ -339,7 +334,7 @@
 			<img src="mainlogo.png"  />
 			<div data-role="header" data-theme="b">
 				<h1>About This App</h1>
-				<a href="index.html" data-icon="back">Back</a>
+				<a href="#home" data-icon="back">Back</a>
 			</div>
 			<div data-role="content">
 				<ul data-role="listview" data-inset="true">
@@ -351,7 +346,7 @@
 			<div data-role="footer" data-id="mainnav" data-theme="b">
 				<div data-role="navbar">
 					<uL>
-						<li><a href="index.html">Home</a></li>
+						<li><a href="#home">Home</a></li>
 						<li><a href="#about">About/Links</a></li>
 					</ul>
 				</div>
@@ -362,7 +357,7 @@
 			<img src="mainlogo.png"  />
 			<div data-role="header" data-theme="b">
 				<h1>Known Issues List</h1>
-				<a href="index.html" data-icon="back">Back</a>
+				<a href="#home" data-icon="back">Back</a>
 			</div>
 			<div data-role="content">
 				<div data-role="collapsible" data-theme="b">
@@ -385,7 +380,7 @@
 			<div data-role="footer" data-id="mainnav" data-theme="b">
 				<div data-role="navbar">
 					<uL>
-						<li><a href="index.html">Home</a></li>
+						<li><a href="#home">Home</a></li>
 						<li><a href="#about">About/Links</a></li>
 					</ul>
 				</div>
@@ -397,7 +392,7 @@
 			<img src="mainlogo.png"  />
 			<div data-role="header" data-theme="b">
 				<h1>Add New Card</h1>
-				<a href="index.html" data-icon="back">Back</a>
+				<a href="#home" data-icon="back">Back</a>
 			</div>
 			<div data-role="content">
 				<h2 class="formtext">Quickly add a new card to your binder with this form.</h2>
@@ -477,7 +472,7 @@
 			<div data-role="footer" data-id="mainnav" data-theme="b">
 				<div data-role="navbar">
 					<uL>
-						<li><a href="index.html">Home</a></li>
+						<li><a href="#home">Home</a></li>
 						<li><a href="#about">About/Links</a></li>
 					</ul>
 				</div>

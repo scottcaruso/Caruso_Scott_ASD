@@ -13,80 +13,43 @@ $(document).on("pageinit", function(){
    });
 
 $("#home").on("pageinit",function(){
-   localStorage.clear();
+  localStorage.clear();
 })
 
 /* This function is currently disabled, pending prioritization of making it work with the couch data.
 function eraseCardData(){
-   if(localStorage.length === 0){
-      alert("There are no cards in your binder to clear.");
-   } else {
-       var ask = confirm("Are you sure you want to erase all card data? THIS CANNOT BE UNDONE!");
-         if(ask){
-         localStorage.clear();
-         alert("All cards have been removed from your binder.");
-         window.location.reload();
-         return false;
-      };
-   };
-};
-*/
-
-/*Find matches to the search keyword
-function keywordRead(){
-   clearSearchPage();
-   var getKeywords = keywordSearch();
-   if (getKeywords[0] === undefined){
-      alert("There are no matches for this keyword.");
-      return
-   } else {
-      alert("We have found " + getKeywords.length + " matches for that keyword.");
-      $("#displaybucket").append("<dl></dl>");
-      for(var i=0, y=getKeywords.length; i<y; i++){
-         var cardValues = getKeywords;
-         var key = getKeywords[i];
-         var value = localStorage.getItem(key);
-         var obj = JSON.parse(value);
-         var cardTitle = (obj.name[0] + " " + obj.name[1]);
-         var cardTitleID = ("title" + key);
-         var cardTitleSelector = ("#" + cardTitleID); 
-         $("#displaybucket").find("dl").append("<dt id='cardtitle'></dt>");
-         $("#cardtitle").attr("class","cardtitle").attr("id",cardTitleID).html(cardTitle);
-         var makeCount = ("Card " + key + " of " + localStorage.length);
-         var countID = ("count" + key);
-         var countIDSelector = ("#" + countID);
-         $(cardTitleSelector).append("<dd id='cardID'></dd>");
-         $("#cardID").attr("class","cardID").attr("id",countID).html(makeCount);
-         delete obj.name;
-         for(var n in obj){
-            var cardText = (obj[n][0] + " " + obj[n][1]);
-            $(countIDSelector).append("<dd id='individualdetail'>" + cardText + "</dd>");
-         };
-      addLinkClickEvents(cardTitleSelector, key);
-      };
-      window.location="#display";
-   };
+  if(localStorage.length === 0){
+    alert("There are no cards in your binder to clear.");
+  } else {
+     var ask = confirm("Are you sure you want to erase all card data? THIS CANNOT BE UNDONE!");
+      if(ask){
+      localStorage.clear();
+      alert("All cards have been removed from your binder.");
+      window.location.reload();
+      return false;
+    };
+  };
 };
 */
 
 //Parse Local Storage for the Search Text
 function keywordSearch(){
-   var searchText = searchString();
-   $.ajax({
-        url: "_view/cards",
-        type: "GET",
-        dataType: "json",
-        success: function(data){
-           var cards = data.rows;
-           var matches = [];
-           for (i=0; i < data.rows.length; i++){
+  var searchText = searchString();
+  $.ajax({
+       url: "_view/cards",
+       type: "GET",
+       dataType: "json",
+       success: function(data){
+          var cards = data.rows;
+          var matches = [];
+          for (i=0; i < data.rows.length; i++){
             var thisCard = data.rows[i];
             var thisCardName = thisCard.value.name;
             var doesSearchTermExist = thisCardName.match(searchText)
             if (doesSearchTermExist != null){
-               matches.push(thisCard);
+              matches.push(thisCard);
             }
-           }           
+          }         
          window.location="#display";
          $("#displaybucket").empty();
          $("#displaybucketcollapse").empty();
@@ -103,9 +66,9 @@ function keywordSearch(){
                   '<p>' + "Notes: " + card.value.notes + '</p>' + 
                   '<p>' + "Number Owned: " + card.value.number + '</p>' +
                   '<p>' + 
-                     '<a href="#" class="editcard" id="editcard">' + "Edit Card" + '</a>' + 
+                    '<a href="#" class="editcard" id="editcard">' + "Edit Card" + '</a>' + 
                   '<a href="#" class="deletecard" id="deletecard">' + "Delete Card" + '</a>' + 
-               '</p>'+
+                '</p>'+
                '</div>'
             ).appendTo('#displaybucketcollapse');
             var editID = ("edit"+card.id);
@@ -116,22 +79,9 @@ function keywordSearch(){
             storeIdInLocalStorage(card.id,card.rev);
          };
          $("#displaybucketcollapse").collapsibleset("refresh");
-       }
+      }
  });
  };
-/*
- for(var i=0, y=localStorage.length; i<y; i++){
-    var key = localStorage.key(i);
-    var value = localStorage.getItem(key);
-    var obj = JSON.parse(value);
-    var cardNameArray = obj.name;
-    var cardName = cardNameArray[1];
-    var doesSearchTermExist = cardName.match(searchText);
-    if (doesSearchTermExist != null){
-       matches.push(key);
-    };
- };
- return matches;*/
 
 //Turn what's in the search field into a string
 function searchString(){
@@ -144,12 +94,13 @@ function clearSearchPage(){
    $(".displaybucket").empty();
 };
 
+/*This feature is currently disabled until work to get it up and running again is prioritized.
 function newsFeed(){
    clearSearchPage();
    if (localStorage.length === 0){
       alert("There are no cards saved in this binder to view.");
    } else {
-     $("#displaybucketcollapse").empty(); 
+    $("#displaybucketcollapse").empty(); 
       $("#displaybucket").append("<dl id='listcards'></dl>")
       for(var y=localStorage.length; y>0; y--){
          var value = localStorage.getItem(y);
@@ -176,6 +127,7 @@ function newsFeed(){
       };
    };
 };
+*/
 
 //To get value from card type
 function getCardType(){
@@ -214,32 +166,32 @@ function getCardColors(){
 
 //As it says, this function Saves a card.
 function saveCard() {
-   console.log
+  console.log
    if($("#submit").val() === "Edit Card"){
       var id = ($("#submit").attr("key"));
       var rev = localStorage.getItem(id);
       var cardColors = getCardColors();
       var cardType = getCardType();
       var doc = {
-             _id: id,
-             _rev: rev,
-             name: $("#cardname").val(),
-             usage:  $("#currentuse").val(),
-             type: cardType,
-             mana: $("#manacost").val(),
-             colors: cardColors,
-             notes: $("#comments").val(),
-             number: $("#numberowned").val()
-         };
-         $.couch.db("mtgbinder").saveDoc(doc, {
-             success: function(data) {
-                 alert(doc.name + " has been successfully updated.");
-                 window.location="#home";
-             },
-             error: function(status) {
-                 console.log(status);
-             }
-         });
+            _id: id,
+            _rev: rev,
+            name: $("#cardname").val(),
+            usage:  $("#currentuse").val(),
+            type: cardType,
+            mana: $("#manacost").val(),
+            colors: cardColors,
+            notes: $("#comments").val(),
+            number: $("#numberowned").val()
+        };
+        $.couch.db("mtgbinder").saveDoc(doc, {
+            success: function(data) {
+                alert(doc.name + " has been successfully updated.");
+                window.location="#home";
+            },
+            error: function(status) {
+                console.log(status);
+            }
+        });
    } else {
       var cardColors = getCardColors();
       var cardType = getCardType();
@@ -259,30 +211,7 @@ function saveCard() {
    };   
 };
 
-//As it says, this function activates the Edit Card functionality
-/*function editCard(key){
-   var card = localStorage.getItem(key);
-   var cardUnstring = JSON.parse(card);
-   $("#cardname").val(cardUnstring.name[1]);
-   $("#currentuse").val(cardUnstring.usage[1]);
-   var type = document.forms[0].cardtype;
-   $("#cardtype").val(cardUnstring.type[1]); 
-   $("#manacost").attr("value",cardUnstring.mana[1]);
-   var colors = cardUnstring.colors;
-   var namesOfColors = colors[1];
-   for(var i=0; i < namesOfColors.length; i++){
-      var colorName = namesOfColors[i];
-      var colorNameSelector = ("#" + colorName);
-      $(colorNameSelector).attr("checked", "checked");
-   };
-   $("#comments").val(cardUnstring.notes[1]);
-   $("#numberowned").val(cardUnstring.number[1]);
-   var key = key;
-   $("#submit").val("Edit Card").attr("key",key);
-   $("#reset").attr("disabled","disabled");
-};
-*/
-
+/*Something like this may need to come back when the NewsFeed comes back, Disabling for now.
 //This function rekeys cards in local storage when one is deleted.
 function rekeyCards(){
    var numberOfCards = localStorage.length;
@@ -301,67 +230,13 @@ function rekeyCards(){
    };
    localStorage.removeItem(originalLargestID);
 };
-
-//This function erases an individual card from local storage.
-function eraseCard(key){
-   var cardID = localStorage.getItem(key);
-   var cardUnstring = JSON.parse(cardID);
-   var cardNameArray = cardUnstring.name;
-   var cardName = cardNameArray[1];
-   var ask = confirm("Are you sure you want to delete this card?");
-   if(ask){
-      localStorage.removeItem(key);
-      alert(cardName + " was successfully removed.");
-      rekeyCards();
-      window.location="#home";
-   } else {
-      alert("Don't worry! " + cardName + " was not removed.");
-   };
-};
+*/
 
 //This function reloads the screen when a card has been added.
 function addCardReload(){
    window.location="#addcard";
    window.location.reload();
 };
-
-//Make things happen when the links are clicked.
-//The "unbind" events exist to prevent a bug where double pop-ups were occurring as if there were two clicks being registered.
-$("#eraseData").unbind("click");
-$("#fillJsonData").unbind("click");
-$("#searchbutton").unbind("click");
-$("#recentcards").unbind("click");
-$("#addcard").unbind("click");
-$("#viewactive").unbind("click");
-//$("#eraseData").on("click",function(){eraseCardData(); return false});
-//$("#fillJsonData").on("click",function(){fillWithJsonData(); return false});
-$("#searchbutton").on("click",function(){keywordSearch()});
-$("#recentcards").on("click",function(){storeIdInLocalStorage(1,2); return false});
-
-//Links for each of the specific card queries,
-$("#allcards")
-.on("click",
-   function(){
-      getJsonAjax();
-      return false
-   });
-$("#creature").on("click",function(){getJsonAjaxCreature(); return false});
-$("#planeswalker").on("click",function(){getJsonAjaxPlaneswalker(); return false});
-$("#instant").on("click",function(){getJsonAjaxInstant(); return false});
-$("#sorcery").on("click",function(){getJsonAjaxSorcery(); return false});
-$("#buff").on("click",function(){getJsonAjaxBuff(); return false});
-$("#curse").on("click",function(){getJsonAjaxCurse(); return false});
-$("#artifact").on("click",function(){getJsonAjaxArtifact(); return false});
-$("#land").on("click",function(){getJsonAjaxLand(); return false});
-$("#whitemenu").on("click",function(){getJsonAjaxWhite(); return false});
-$("#blackmenu").on("click",function(){getJsonAjaxBlack(); return false});
-$("#redmenu").on("click",function(){getJsonAjaxRed(); return false});
-$("#bluemenu").on("click",function(){getJsonAjaxBlue(); return false});
-$("#greenmenu").on("click",function(){getJsonAjaxGreen(); return false});
-$("#colorlessmenu").on("click",function(){getJsonAjaxColorless(); return false});
-$("#viewactive").on("click",function(){getJsonAjaxInUse(); return false});
-
-//All of the below are functions that are only for use with COUCHBASE data.
 
 //Manipulate local storage to temporarily pass _id and _rev around.
 function storeIdInLocalStorage(id,rev){
@@ -454,159 +329,159 @@ function getJsonAjaxGreen(){
 };
 
 function getJsonAjaxRed(){
-      $.ajax({
-         url: "_view/color-red",
-         type: "GET",
-         dataType: "json",
-         success: function(data){
-            makeJsonDataDisplay(data);
-         },
-         error: function(){
-            console.log("There was an error.")
-         }
-      });
-   };
-   
+     $.ajax({
+        url: "_view/color-red",
+        type: "GET",
+        dataType: "json",
+        success: function(data){
+           makeJsonDataDisplay(data);
+        },
+        error: function(){
+           console.log("There was an error.")
+        }
+     });
+  };
+  
 function getJsonAjaxBlue(){
-      $.ajax({
-         url: "_view/color-blue",
-         type: "GET",
-         dataType: "json",
-         success: function(data){
-            makeJsonDataDisplay(data);
-         },
-         error: function(){
-            console.log("There was an error.")
-         }
-      });
-   };
-   
+     $.ajax({
+        url: "_view/color-blue",
+        type: "GET",
+        dataType: "json",
+        success: function(data){
+           makeJsonDataDisplay(data);
+        },
+        error: function(){
+           console.log("There was an error.")
+        }
+     });
+  };
+  
 function getJsonAjaxColorless(){
-      $.ajax({
-         url: "_view/color-colorless",
-         type: "GET",
-         dataType: "json",
-         success: function(data){
-            makeJsonDataDisplay(data);
-         },
-         error: function(){
-            console.log("There was an error.")
-         }
-      });
-   };
-   
+     $.ajax({
+        url: "_view/color-colorless",
+        type: "GET",
+        dataType: "json",
+        success: function(data){
+           makeJsonDataDisplay(data);
+        },
+        error: function(){
+           console.log("There was an error.")
+        }
+     });
+  };
+  
 //Functions to only get specific card types.
 function getJsonAjaxCreature(){
-      $.ajax({
-         url: "_view/type-creature",
-         type: "GET",
-         dataType: "json",
-         success: function(data){
-            makeJsonDataDisplay(data);
-         },
-         error: function(){
-            console.log("There was an error.")
-         }
-      });
-   };
-   
+     $.ajax({
+        url: "_view/type-creature",
+        type: "GET",
+        dataType: "json",
+        success: function(data){
+           makeJsonDataDisplay(data);
+        },
+        error: function(){
+           console.log("There was an error.")
+        }
+     });
+  };
+  
 function getJsonAjaxInstant(){
-      $.ajax({
-         url: "_view/type-instant",
-         type: "GET",
-         dataType: "json",
-         success: function(data){
-            makeJsonDataDisplay(data);
-         },
-         error: function(){
-            console.log("There was an error.")
-         }
-      });
-   };
+     $.ajax({
+        url: "_view/type-instant",
+        type: "GET",
+        dataType: "json",
+        success: function(data){
+           makeJsonDataDisplay(data);
+        },
+        error: function(){
+           console.log("There was an error.")
+        }
+     });
+  };
 
 function getJsonAjaxPlaneswalker(){
-      $.ajax({
-         url: "_view/type-planeswalker",
-         type: "GET",
-         dataType: "json",
-         success: function(data){
-            makeJsonDataDisplay(data);
-         },
-         error: function(){
-            console.log("There was an error.")
-         }
-      });
-   };
-      
+     $.ajax({
+        url: "_view/type-planeswalker",
+        type: "GET",
+        dataType: "json",
+        success: function(data){
+           makeJsonDataDisplay(data);
+        },
+        error: function(){
+           console.log("There was an error.")
+        }
+     });
+  };
+    
 function getJsonAjaxSorcery(){
-      $.ajax({
-         url: "_view/type-sorcery",
-         type: "GET",
-         dataType: "json",
-         success: function(data){
-            makeJsonDataDisplay(data);
-         },
-         error: function(){
-            console.log("There was an error.")
-         }
-      });
-   };
+     $.ajax({
+        url: "_view/type-sorcery",
+        type: "GET",
+        dataType: "json",
+        success: function(data){
+           makeJsonDataDisplay(data);
+        },
+        error: function(){
+           console.log("There was an error.")
+        }
+     });
+  };
 
 function getJsonAjaxBuff(){
-      $.ajax({
-         url: "_view/type-buff",
-         type: "GET",
-         dataType: "json",
-         success: function(data){
-            makeJsonDataDisplay(data);
-         },
-         error: function(){
-            console.log("There was an error.")
-         }
-      });
-   };
-   
+     $.ajax({
+        url: "_view/type-buff",
+        type: "GET",
+        dataType: "json",
+        success: function(data){
+           makeJsonDataDisplay(data);
+        },
+        error: function(){
+           console.log("There was an error.")
+        }
+     });
+  };
+  
 function getJsonAjaxCurse(){
-      $.ajax({
-         url: "_view/type-curse",
-         type: "GET",
-         dataType: "json",
-         success: function(data){
-            makeJsonDataDisplay(data);
-         },
-         error: function(){
-            console.log("There was an error.")
-         }
-      });
-   };
-   
+     $.ajax({
+        url: "_view/type-curse",
+        type: "GET",
+        dataType: "json",
+        success: function(data){
+           makeJsonDataDisplay(data);
+        },
+        error: function(){
+           console.log("There was an error.")
+        }
+     });
+  };
+  
 function getJsonAjaxArtifact(){
-      $.ajax({
-         url: "_view/type-artifact",
-         type: "GET",
-         dataType: "json",
-         success: function(data){
-            makeJsonDataDisplay(data);
-         },
-         error: function(){
-            console.log("There was an error.")
-         }
-      });
-   };
+     $.ajax({
+        url: "_view/type-artifact",
+        type: "GET",
+        dataType: "json",
+        success: function(data){
+           makeJsonDataDisplay(data);
+        },
+        error: function(){
+           console.log("There was an error.")
+        }
+     });
+  };
 
 function getJsonAjaxLand(){
-      $.ajax({
-         url: "_view/type-land",
-         type: "GET",
-         dataType: "json",
-         success: function(data){
-            makeJsonDataDisplay(data);
-         },
-         error: function(){
-            console.log("There was an error.")
-         }
-      });
-   };
+     $.ajax({
+        url: "_view/type-land",
+        type: "GET",
+        dataType: "json",
+        success: function(data){
+           makeJsonDataDisplay(data);
+        },
+        error: function(){
+           console.log("There was an error.")
+        }
+     });
+  };
 
 //This is the guts of the Json display; works in tandem with it. - FOR USE WITH COUCHBASE ONLY!
 function makeJsonDataDisplay(data){ 
@@ -625,9 +500,9 @@ function makeJsonDataDisplay(data){
             '<p>' + "Notes: " + card.value.notes + '</p>' + 
             '<p>' + "Number Owned: " + card.value.number + '</p>' +
             '<p>' + 
-               '<a href="#" class="editcard" id="editcard">' + "Edit Card" + '</a>' + 
+              '<a href="#" class="editcard" id="editcard">' + "Edit Card" + '</a>' + 
             '<a href="#" class="deletecard" id="deletecard">' + "Delete Card" + '</a>' + 
-         '</p>'+
+          '</p>'+
          '</div>'
       ).appendTo('#displaybucketcollapse');
       var editID = ("edit"+card.value.id);
@@ -642,97 +517,134 @@ function makeJsonDataDisplay(data){
 
 //The below function binds the Edit/Delete links properly. It works with the function above.
 function bindEditDelete(editID,deleteID,cardName,cardID){
-   var editCardIDSelector = ("#" + editID);
-   var deleteCardIDSelector = ("#" + deleteID);
-   $(editCardIDSelector).on("click",function(){
-      getCardToEdit(editID);
-   });
-   $(deleteCardIDSelector).on("click",function(){
-      deleteCardCouch(deleteID,cardName,cardID)
-   });
+  var editCardIDSelector = ("#" + editID);
+  var deleteCardIDSelector = ("#" + deleteID);
+  $(editCardIDSelector).on("click",function(){
+    getCardToEdit(editID);
+  });
+  $(deleteCardIDSelector).on("click",function(){
+    deleteCardCouch(deleteID,cardName,cardID)
+  });
 };
 
 //Delete card function
 function deleteCardCouch(deleteID,cardName,cardID){
-   var deleteArray = deleteID.split("delete");
-   var deleteIDValue = deleteArray[1];
-   var deleteRevValue = localStorage.getItem(deleteIDValue);
-   var doc = {
-       _id: deleteIDValue,
-       _rev: deleteRevValue,
-       name: cardName,
-       id: cardID
-   };
-   var ask = confirm("Are you sure you want to delete this card?");
-      if(ask){
-         $.couch.db("mtgbinder").removeDoc(doc, {
-              success: function(data) {
-                  alert(doc.name + " was successfully removed!");
-                  //The below clears out the display bucket that this old card held
-                  var displaybucket = "#" + doc.id;
-                  $(displaybucket).empty();
-                  $("#displaybucketcollapse").collapsibleset("refresh");
-             },
-             error: function(status) {
-               alert("There was an error removing " + doc.name + ". It was not removed.")
-                 console.log(status);
-             }
-         });
-      } else {
-         alert("Don't worry! " + cardName + " was not removed.");
-      };
+  var deleteArray = deleteID.split("delete");
+  var deleteIDValue = deleteArray[1];
+  var deleteRevValue = localStorage.getItem(deleteIDValue);
+  var doc = {
+      _id: deleteIDValue,
+      _rev: deleteRevValue,
+      name: cardName,
+      id: cardID
+  };
+  var ask = confirm("Are you sure you want to delete this card?");
+     if(ask){
+       $.couch.db("mtgbinder").removeDoc(doc, {
+           success: function(data) {
+               alert(doc.name + " was successfully removed!");
+               //The below clears out the display bucket that this old card held
+               var displaybucket = "#" + doc.id;
+               $(displaybucket).empty();
+               $("#displaybucketcollapse").collapsibleset("refresh");
+          },
+          error: function(status) {
+            alert("There was an error removing " + doc.name + ". It was not removed.")
+              console.log(status);
+          }
+       });
+     } else {
+        alert("Don't worry! " + cardName + " was not removed.");
+     };
 };
 
 function getCardToEdit(editID){
-   var editArray = editID.split("edit");
-   var editIDValue = editArray[1];
-   var editRevValue = localStorage.getItem(editIDValue);
-   var doc = {
-         _id: editIDValue,
-         _rev: editRevValue
-   };
-   $.couch.db("mtgbinder").openDoc(doc._id, {
-       success: function(data) {
-           console.log(data,data.mana)
-           populateFormWithData(data);
-       },
-       error: function(status) {
-           console.log(status);
-       }
-   });
+  var editArray = editID.split("edit");
+  var editIDValue = editArray[1];
+  var editRevValue = localStorage.getItem(editIDValue);
+  var doc = {
+      _id: editIDValue,
+      _rev: editRevValue
+  };
+  $.couch.db("mtgbinder").openDoc(doc._id, {
+      success: function(data) {
+          console.log(data,data.mana)
+          populateFormWithData(data);
+      },
+      error: function(status) {
+          console.log(status);
+      }
+  });
 };
 
 function populateFormWithData(data){
-      $("input[type='checkbox']").attr("checked",false)
-      $("#cardname").val(data.name);
-      $("#currentuse").val(data.usage);
-      $("#creature").attr("selected",false);
-      $("#cardtype").val(data.type); 
-      $("#manacost").attr("value",data.mana);
-      //clearColors();
-      var colors = data.colors;
-      for(var i=0; i < colors.length; i++){
-         var colorName = colors[i];
-         var colorNameSelector = ("#" + colorName);
-         console.log(colorNameSelector);
-         $(colorNameSelector).attr("checked", "checked");
-      };
-      $("#comments").val(data.notes);
-      $("#numberowned").val(data.number);
-      //var key = key;
-      $("#submit").val("Edit Card").attr("key",data._id);
-      $("#reset").attr("disabled","disabled");
-      window.location="#addcard";
-      //the below functions all update the jqm formatting upon form load
-      $("input[type='checkbox']").checkboxradio("refresh");
-      $("#cardtype").selectmenu("refresh");
-      $("#manacost").slider("refresh");
+     $("input[type='checkbox']").attr("checked",false)
+     $("#cardname").val(data.name);
+     $("#currentuse").val(data.usage);
+     $("#creature").attr("selected",false);
+     $("#cardtype").val(data.type); 
+     $("#manacost").attr("value",data.mana);
+     //clearColors();
+     var colors = data.colors;
+     for(var i=0; i < colors.length; i++){
+        var colorName = colors[i];
+        var colorNameSelector = ("#" + colorName);
+        console.log(colorNameSelector);
+        $(colorNameSelector).attr("checked", "checked");
+     };
+     $("#comments").val(data.notes);
+     $("#numberowned").val(data.number);
+     //var key = key;
+     $("#submit").val("Edit Card").attr("key",data._id);
+     $("#reset").attr("disabled","disabled");
+     window.location="#addcard";
+     //the below functions all update the jqm formatting upon form load
+     $("input[type='checkbox']").checkboxradio("refresh");
+     $("#cardtype").selectmenu("refresh");
+     $("#manacost").slider("refresh");
 };
+
+
+//Make things happen when the links are clicked.
+//The "unbind" events exist to prevent a bug where double pop-ups were occurring as if there were two clicks being registered.
+$("#eraseData").unbind("click");
+$("#fillJsonData").unbind("click");
+$("#searchbutton").unbind("click");
+$("#recentcards").unbind("click");
+$("#addcard").unbind("click");
+$("#viewactive").unbind("click");
+//-- Temporarily disabled. $("#eraseData").on("click",function(){eraseCardData(); return false});
+$("#searchbutton").on("click",function(){keywordSearch()});
+$("#recentcards").on("click",function(){storeIdInLocalStorage(1,2); return false});
+
+//Links for each of the specific card queries,
+$("#allcards")
+.on("click",
+ function(){
+    getJsonAjax();
+    return false
+ });
+$("#creature").on("click",function(){getJsonAjaxCreature(); return false});
+$("#planeswalker").on("click",function(){getJsonAjaxPlaneswalker(); return false});
+$("#instant").on("click",function(){getJsonAjaxInstant(); return false});
+$("#sorcery").on("click",function(){getJsonAjaxSorcery(); return false});
+$("#buff").on("click",function(){getJsonAjaxBuff(); return false});
+$("#curse").on("click",function(){getJsonAjaxCurse(); return false});
+$("#artifact").on("click",function(){getJsonAjaxArtifact(); return false});
+$("#land").on("click",function(){getJsonAjaxLand(); return false});
+$("#whitemenu").on("click",function(){getJsonAjaxWhite(); return false});
+$("#blackmenu").on("click",function(){getJsonAjaxBlack(); return false});
+$("#redmenu").on("click",function(){getJsonAjaxRed(); return false});
+$("#bluemenu").on("click",function(){getJsonAjaxBlue(); return false});
+$("#greenmenu").on("click",function(){getJsonAjaxGreen(); return false});
+$("#colorlessmenu").on("click",function(){getJsonAjaxColorless(); return false});
+$("#viewactive").on("click",function(){getJsonAjaxInUse(); return false});
 
 });
 
 //NOTE - All of the below functions are deprecated in the current version. YOU MUST MOVE THEM BACK INTO THE PAGEINIT WRAPPER FOR THEM TO WORK!
 
+//$("#fillJsonData").on("click",function(){fillWithJsonData(); return false});
 
 /*Commenting out, since this shouldn't be needed anymore. Relic of pre-jquery days.
 function elementName(x){
@@ -941,4 +853,19 @@ function addLinkClickEvents(cardTitleSelector, key){
    $(deleteCardIDSelector).on("click",function(){eraseCard(key)});//need to remember to ask why return false breaks this
 };
 
-*/
+//This function erases an individual card from local storage.
+function eraseCard(key){
+   var cardID = localStorage.getItem(key);
+   var cardUnstring = JSON.parse(cardID);
+   var cardNameArray = cardUnstring.name;
+   var cardName = cardNameArray[1];
+   var ask = confirm("Are you sure you want to delete this card?");
+   if(ask){
+      localStorage.removeItem(key);
+      alert(cardName + " was successfully removed.");
+      rekeyCards();
+      window.location="#home";
+   } else {
+      alert("Don't worry! " + cardName + " was not removed.");
+   };
+};

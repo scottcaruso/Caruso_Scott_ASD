@@ -262,6 +262,7 @@ function saveCard() {
          card.number = $("#numberowned").val();
       //localStorage.setItem(id, JSON.stringify(card));
       saveDataToCouch(card);
+      alert(card.name + " has been successfully saved.")
       window.location="#home";
       window.location.reload();  
    };   
@@ -341,17 +342,33 @@ $("#searchbutton").unbind("click");
 $("#recentcards").unbind("click");
 $("#addcard").unbind("click");
 $("#viewactive").unbind("click");
-$("#eraseData").on("click",function(){eraseCardData(); return false});
-$("#fillJsonData").on("click",function(){fillWithJsonData(); return false});
+//$("#eraseData").on("click",function(){eraseCardData(); return false});
+//$("#fillJsonData").on("click",function(){fillWithJsonData(); return false});
 $("#searchbutton").on("click",function(){keywordSearch()});
 $("#recentcards").on("click",function(){storeIdInLocalStorage(1,2); return false});
-//$("#addcard").on("click",function(){addCardReload(); return false});
+
+//Links for each of the specific card queries,
 $("#allcards")
-   .on("click",
-      function(){
-         getJsonAjax();
-         return false
-      });
+.on("click",
+   function(){
+      getJsonAjax();
+      return false
+   });
+$("#creature").on("click",function(){getJsonAjaxCreature(); return false});
+$("#planeswalker").on("click",function(){getJsonAjaxPlaneswalker(); return false});
+$("#instant").on("click",function(){getJsonAjaxInstant(); return false});
+$("#sorcery").on("click",function(){getJsonAjaxSorcery(); return false});
+$("#buff").on("click",function(){getJsonAjaxBuff(); return false});
+$("#curse").on("click",function(){getJsonAjaxCurse(); return false});
+$("#artifact").on("click",function(){getJsonAjaxArtifact(); return false});
+$("#land").on("click",function(){getJsonAjaxLand(); return false});
+$("#whitemenu").on("click",function(){getJsonAjaxWhite(); return false});
+$("#blackmenu").on("click",function(){getJsonAjaxBlack(); return false});
+$("#redmenu").on("click",function(){getJsonAjaxRed(); return false});
+$("#bluemenu").on("click",function(){getJsonAjaxBlue(); return false});
+$("#greenmenu").on("click",function(){getJsonAjaxGreen(); return false});
+$("#colorlessmenu").on("click",function(){getJsonAjaxColorless(); return false});
+$("#viewactive").on("click",function(){getJsonAjaxInUse(); return false});
 
 //All of the below are functions that are only for use with COUCHBASE data.
 
@@ -401,6 +418,204 @@ function getJsonAjaxInUse(){
       }
    });
 };
+
+//Functions below to get ONLY specific colored cards from CouchBase.
+function getJsonAjaxWhite(){
+   $.ajax({
+      url: "_view/color-white",
+      type: "GET",
+      dataType: "json",
+      success: function(data){
+         makeJsonDataDisplay(data);
+      },
+      error: function(){
+         console.log("There was an error.")
+      }
+   });
+};
+
+function getJsonAjaxBlack(){
+   $.ajax({
+      url: "_view/color-black",
+      type: "GET",
+      dataType: "json",
+      success: function(data){
+         makeJsonDataDisplay(data);
+      },
+      error: function(){
+         console.log("There was an error.")
+      }
+   });
+};
+
+function getJsonAjaxGreen(){
+   $.ajax({
+      url: "_view/color-green",
+      type: "GET",
+      dataType: "json",
+      success: function(data){
+         makeJsonDataDisplay(data);
+      },
+      error: function(){
+         console.log("There was an error.")
+      }
+   });
+};
+
+function getJsonAjaxRed(){
+      $.ajax({
+         url: "_view/color-red",
+         type: "GET",
+         dataType: "json",
+         success: function(data){
+            makeJsonDataDisplay(data);
+         },
+         error: function(){
+            console.log("There was an error.")
+         }
+      });
+   };
+   
+function getJsonAjaxBlue(){
+      $.ajax({
+         url: "_view/color-blue",
+         type: "GET",
+         dataType: "json",
+         success: function(data){
+            makeJsonDataDisplay(data);
+         },
+         error: function(){
+            console.log("There was an error.")
+         }
+      });
+   };
+   
+function getJsonAjaxColorless(){
+      $.ajax({
+         url: "_view/color-colorless",
+         type: "GET",
+         dataType: "json",
+         success: function(data){
+            makeJsonDataDisplay(data);
+         },
+         error: function(){
+            console.log("There was an error.")
+         }
+      });
+   };
+   
+//Functions to only get specific card types.
+function getJsonAjaxCreature(){
+      $.ajax({
+         url: "_view/type-creature",
+         type: "GET",
+         dataType: "json",
+         success: function(data){
+            makeJsonDataDisplay(data);
+         },
+         error: function(){
+            console.log("There was an error.")
+         }
+      });
+   };
+   
+function getJsonAjaxInstant(){
+      $.ajax({
+         url: "_view/type-instant",
+         type: "GET",
+         dataType: "json",
+         success: function(data){
+            makeJsonDataDisplay(data);
+         },
+         error: function(){
+            console.log("There was an error.")
+         }
+      });
+   };
+
+function getJsonAjaxPlaneswalker(){
+      $.ajax({
+         url: "_view/type-planeswalker",
+         type: "GET",
+         dataType: "json",
+         success: function(data){
+            makeJsonDataDisplay(data);
+         },
+         error: function(){
+            console.log("There was an error.")
+         }
+      });
+   };
+      
+function getJsonAjaxSorcery(){
+      $.ajax({
+         url: "_view/type-sorcery",
+         type: "GET",
+         dataType: "json",
+         success: function(data){
+            makeJsonDataDisplay(data);
+         },
+         error: function(){
+            console.log("There was an error.")
+         }
+      });
+   };
+
+function getJsonAjaxBuff(){
+      $.ajax({
+         url: "_view/type-buff",
+         type: "GET",
+         dataType: "json",
+         success: function(data){
+            makeJsonDataDisplay(data);
+         },
+         error: function(){
+            console.log("There was an error.")
+         }
+      });
+   };
+   
+function getJsonAjaxCurse(){
+      $.ajax({
+         url: "_view/type-curse",
+         type: "GET",
+         dataType: "json",
+         success: function(data){
+            makeJsonDataDisplay(data);
+         },
+         error: function(){
+            console.log("There was an error.")
+         }
+      });
+   };
+   
+function getJsonAjaxArtifact(){
+      $.ajax({
+         url: "_view/type-artifact",
+         type: "GET",
+         dataType: "json",
+         success: function(data){
+            makeJsonDataDisplay(data);
+         },
+         error: function(){
+            console.log("There was an error.")
+         }
+      });
+   };
+
+function getJsonAjaxLand(){
+      $.ajax({
+         url: "_view/type-land",
+         type: "GET",
+         dataType: "json",
+         success: function(data){
+            makeJsonDataDisplay(data);
+         },
+         error: function(){
+            console.log("There was an error.")
+         }
+      });
+   };
 
 //This is the guts of the Json display; works in tandem with it. - FOR USE WITH COUCHBASE ONLY!
 function makeJsonDataDisplay(data){ 
@@ -457,19 +672,24 @@ function deleteCardCouch(deleteID,cardName,cardID){
        name: cardName,
        id: cardID
    };
-   $.couch.db("mtgbinder").removeDoc(doc, {
-        success: function(data) {
-            alert(doc.name + " was successfully removed!");
-            //The below clears out the display bucket that this old card held
-            var displaybucket = "#" + doc.id;
-            $(displaybucket).empty();
-            $("#displaybucketcollapse").collapsibleset("refresh");
-       },
-       error: function(status) {
-         alert("There was an error removing " + doc.name + ". It was not removed.")
-           console.log(status);
-       }
-   });
+   var ask = confirm("Are you sure you want to delete this card?");
+      if(ask){
+         $.couch.db("mtgbinder").removeDoc(doc, {
+              success: function(data) {
+                  alert(doc.name + " was successfully removed!");
+                  //The below clears out the display bucket that this old card held
+                  var displaybucket = "#" + doc.id;
+                  $(displaybucket).empty();
+                  $("#displaybucketcollapse").collapsibleset("refresh");
+             },
+             error: function(status) {
+               alert("There was an error removing " + doc.name + ". It was not removed.")
+                 console.log(status);
+             }
+         });
+      } else {
+         alert("Don't worry! " + cardName + " was not removed.");
+      };
 };
 
 function getCardToEdit(editID){
@@ -517,9 +737,6 @@ function populateFormWithData(data){
       $("#cardtype").selectmenu("refresh");
       $("#manacost").slider("refresh");
 };
-
-
-$("#viewactive").on("click",function(){getJsonAjaxInUse(); return false});
 
 });
 

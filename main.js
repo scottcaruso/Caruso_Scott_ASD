@@ -12,15 +12,6 @@ $(document).on("pageinit", function(){
       }
    });
 
-//On document load, fetch the data from couch.
-$(document).on("pageinit", function(){
-   $.couch.db("mtgbinder").view("planeswalkersbinder/cards", {
-      success: function(data){
-         console.log(data);
-      }
-   })
-});
-
 $("#home").on("pageinit",function(){
    localStorage.clear();
 })
@@ -380,8 +371,8 @@ function storeIdInLocalStorage(id,rev){
 //Saves data from form to couch
 function saveDataToCouch(card){
    $.couch.db("mtgbinder").saveDoc(card, {
-       success: function() {
-         alert($("#cardname").val() + " has been added!");
+       success: function(data) {
+         console.log(data);
        },
        error: function() {
          alert("An error occurred while saving this card.");
